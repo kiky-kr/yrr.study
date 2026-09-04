@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한의학 한문 Web App</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{
+  --blue:#3182F6; --blue-dark:#1B64DA; --blue-soft:#E8F2FF;
+  --teal:#12B5B0;
+  --grad:linear-gradient(105deg,#3182F6 0%,#1F9FC9 55%,#12B5B0 100%);
+  --grad-red:linear-gradient(100deg,#F0445C 0%,#FB7A3C 100%);
+  --grad-soft:linear-gradient(105deg,#E8F2FF 0%,#E2F6F4 100%);
+  --bg:#F2F4F6; --card:#FFFFFF;
+  --ink:#191F28; --gray:#4E5968; --gray2:#8B95A1; --line:#E5E8EB;
+  --btn-gray:#DCE0E5; --btn-gray-h:#D0D5DB;
+  --green:#0FB36B; --green-soft:#E5F7EF;
+  --green-grad:linear-gradient(135deg,#EAF7EF 0%,#DDF1E4 100%);
+  --red:#F04452; --red-soft:#FDECEE;
+  --red-grad:linear-gradient(135deg,#FBEDEE 0%,#F8E1E4 100%);
+  --radius:22px; --radius-sm:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5; letter-spacing:-0.01em;}
+
+.app{display:flex; min-height:100vh;}
+.sidebar{width:236px; flex:none; background:#fff; border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:24px 18px; position:sticky; top:0; height:100vh;}
+.brand-wrap{position:relative; padding-bottom:16px;}
+.brand-wrap::after{content:""; position:absolute; left:0; bottom:0; width:46px; height:3px;
+  border-radius:3px; background:var(--grad);}
+.brand{font-size:18px; font-weight:800; letter-spacing:-0.03em; line-height:1.25; word-break:keep-all;}
+.brand-accent{
+  background:linear-gradient(100deg,#3182F6 0%,#12B5B0 52%,#0FB36B 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;}
+.brand-mid{font-size:13px; color:var(--gray); font-weight:700; letter-spacing:0.06em; margin-top:6px;}
+.brand-sub{font-size:12px; color:var(--gray2); font-weight:600; margin-top:5px;}
+.nav{margin-top:24px; display:flex; flex-direction:column; gap:5px;}
+.nav button{position:relative; display:flex; align-items:center; gap:10px; border:0; background:none; font-family:inherit;
+  cursor:pointer; text-align:left; padding:12px 13px; border-radius:13px; font-weight:700; font-size:14px; color:var(--gray);}
+.nav button .ic{font-size:17px;}
+.nav button.active{background:var(--grad-soft); color:var(--blue-dark);}
+.nav button.active::before{content:""; position:absolute; left:4px; top:50%; transform:translateY(-50%);
+  width:3px; height:18px; border-radius:3px; background:var(--grad);}
+.sidebar .grow{flex:1;}
+.save-pill{display:flex; align-items:center; gap:7px; background:var(--bg); border-radius:12px;
+  padding:11px 12px; font-size:12px; font-weight:700; color:var(--gray);}
+.save-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none;}
+.help-btn{margin-top:8px; border:0; background:none; font-family:inherit; cursor:pointer;
+  color:var(--blue); font-weight:700; font-size:12.5px; padding:8px; border-radius:10px;}
+
+main{flex:1; min-width:0; padding:30px 34px 60px;}
+.main-head{margin-bottom:18px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.main-head h1{font-size:24px; font-weight:800; margin:0; letter-spacing:-0.03em;}
+.main-head p{margin:4px 0 0; color:var(--gray2); font-size:14px; font-weight:500;}
+
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start;}
+.card{background:var(--card); border-radius:var(--radius); padding:24px;}
+.card h2{font-size:13px; font-weight:800; color:var(--gray2); margin:0 0 14px; letter-spacing:.03em;}
+.q-counter{font-weight:700; color:var(--gray2); font-size:12.5px;}
+
+.hanja-line{font-size:27px; font-weight:700; line-height:1.5; word-break:keep-all; margin-top:12px;}
+textarea,input{font-family:inherit; width:100%; border:1.5px solid var(--line); border-radius:14px;
+  padding:14px; font-size:16px; color:var(--ink); resize:none; outline:none; transition:border-color .15s; background:#fff;}
+textarea:focus,input:focus{border-color:var(--blue);}
+
+.btn{display:block; width:100%; border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:16px;
+  padding:15px; border-radius:14px; background:var(--grad); background-size:140% 140%; color:#fff;
+  box-shadow:0 4px 14px rgba(20,140,170,.18); transition:transform .06s, box-shadow .15s, opacity .15s;}
+.btn:hover{box-shadow:0 6px 18px rgba(20,140,170,.26);}
+.btn:active{transform:scale(.985);}
+.btn.ghost{background:var(--btn-gray); color:var(--gray); box-shadow:none;}
+.btn.ghost:hover{background:var(--btn-gray-h); box-shadow:none;}
+.btn.green{background:var(--green); box-shadow:0 4px 14px rgba(15,179,107,.2);} .btn.red{background:var(--red); box-shadow:none;}
+.btn.sm{font-size:14px; padding:12px;}
+.text-actions{display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding:0 4px;}
+.text-btn{border:0; background:none; cursor:pointer; font-family:inherit; font-weight:800; font-size:14px; padding:6px 4px;
+  transition:opacity .15s;}
+.text-btn:hover{opacity:.7;}
+.text-btn .gt{}
+.text-btn.grad-blue .gt, .text-btn.grad-red .gt{color:var(--gray);}
+.btn-row{display:flex; gap:10px;} .btn-row .btn{flex:1;}
+.spacer{height:10px;}
+.mini{border:0; background:var(--bg); color:var(--gray); font-family:inherit; font-weight:700; font-size:12.5px;
+  padding:8px 12px; border-radius:10px; cursor:pointer;}
+.mini:disabled{opacity:.38; cursor:default;}
+.kbd{display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:6px;
+  padding:1px 7px; font-size:11px; font-weight:700; color:var(--gray2);}
+
+.ans-placeholder{color:var(--gray2); font-size:14px; font-weight:600; text-align:center; padding:40px 10px;}
+.ans-line{margin-bottom:14px;}
+.ans-line .ah{font-size:15px; font-weight:700; color:var(--gray2); word-break:keep-all;}
+.ans-line .ai{font-size:17px; font-weight:600; line-height:1.55; margin-top:3px;}
+.src-badge{display:inline-block; background:var(--green-soft); color:var(--green); font-weight:800;
+  font-size:12.5px; padding:6px 12px; border-radius:999px; margin-top:6px;}
+.note{margin-top:14px; font-size:13px; color:var(--gray); line-height:1.65; background:var(--bg); border-radius:12px; padding:12px 14px; display:flex; gap:8px; align-items:flex-start;}
+.note-list{flex:1; min-width:0;}
+.note-item{margin:2px 0; word-break:keep-all;}
+.point{margin-top:12px; font-size:14px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft); border-radius:12px; padding:11px 14px;}
+
+.stats{display:flex; gap:10px; margin-bottom:16px;}
+.stat{flex:1; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-sm); padding:15px 10px; text-align:center;}
+.stat .n{font-size:24px; font-weight:800; line-height:1.1;}
+.stat .l{font-size:11.5px; color:var(--gray2); font-weight:600; margin-top:3px;}
+.stat.ok .n{color:var(--green);} .stat.no .n{color:var(--red);}
+
+.chips{display:flex; gap:8px; margin-bottom:14px;}
+.chip{border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13px; padding:8px 15px; border-radius:999px; background:var(--bg); color:var(--gray);}
+.chip.active{background:var(--ink); color:#fff;}
+.chip.ok.active{background:var(--green);} .chip.no.active{background:var(--red);}
+
+.quiz-top{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px;}
+.counter{font-size:13px; font-weight:700; color:var(--gray2);}
+
+.scene{perspective:1500px; margin-bottom:16px;}
+.flip{position:relative; width:100%; min-height:300px; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.7,.2,1);}
+.flip.flipped{transform:rotateY(180deg);}
+.face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:var(--card);
+  border:1px solid var(--line); border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;}
+.face.back{transform:rotateY(180deg);}
+.big-hanja{font-size:108px; font-weight:700; line-height:1;}
+.big-hun{font-size:34px; font-weight:800; line-height:1.35; word-break:keep-all;}
+.face .cap{font-size:12px; font-weight:700; color:var(--gray2); margin-top:16px; letter-spacing:.04em;}
+.verdict{font-size:13px; font-weight:800; margin-top:14px; padding:6px 15px; border-radius:999px;}
+.verdict.ok{background:var(--green-soft); color:var(--green);}
+.verdict.no{background:var(--red-soft); color:var(--red);}
+
+.reveal-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:34px 24px;
+  text-align:center; margin-bottom:16px; min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.reveal-card .hidden-h{font-size:108px; font-weight:700; line-height:1; animation:pop .3s ease;}
+@keyframes pop{from{opacity:0; transform:translateY(8px) scale(.96);} to{opacity:1; transform:none;}}
+.done-card{text-align:center; padding:44px 20px;}
+.done-card .emoji{font-size:50px;} .done-card h2{font-size:21px; font-weight:800; margin:12px 0 4px; color:var(--ink);}
+
+.review-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(72px,1fr)); gap:9px;}
+.review-item{background:var(--bg); border:2px solid transparent; border-radius:12px; padding:11px 4px; text-align:center; cursor:pointer; user-select:none;}
+.review-item .h{font-size:28px; font-weight:700; line-height:1;}
+.review-item .u{font-size:11px; color:var(--gray2); font-weight:600; margin-top:5px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.review-item.sel{border-color:var(--blue); background:var(--blue-soft);}
+.empty{grid-column:1/-1; text-align:center; color:var(--gray2); font-size:14px; font-weight:600; padding:34px 0;}
+.selact{margin-top:12px;}
+.selinfo{font-size:12.5px; font-weight:800; color:var(--blue-dark); margin-bottom:8px;}
+
+/* original tab */
+.orig-page{margin-bottom:16px;}
+.orig-head{font-size:13px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft);
+  display:inline-block; padding:6px 13px; border-radius:999px; margin-bottom:6px;}
+.orig-block{padding:14px 0; border-top:1px solid var(--line);}
+.orig-h{font-size:21px; font-weight:700; line-height:1.5; word-break:keep-all;}
+.orig-e{font-size:13px; color:var(--gray2); font-weight:600; margin-top:2px;}
+.orig-i{font-size:15px; color:var(--ink); font-weight:500; margin-top:8px; line-height:1.6;}
+.orig-n{font-size:12.5px; color:var(--gray); margin-top:7px; line-height:1.6; display:flex; gap:6px; align-items:flex-start;}
+.orig-pt{font-size:13px; font-weight:800; color:var(--blue-dark); margin-top:7px;}
+
+/* hanja list tab */
+.toggle-row{display:flex; gap:8px; margin-bottom:12px;}
+.tog{border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13.5px; padding:9px 16px; border-radius:999px; background:#fff; color:var(--gray);}
+.tog.active{background:var(--grad); color:#fff;}
+.legend{display:flex; gap:16px; margin-bottom:16px; flex-wrap:wrap;}
+.legend span{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--gray);}
+.legend .sw{width:14px; height:14px; border-radius:4px; border:2px solid;}
+.sw.g{border-color:var(--green); background:var(--green-soft);}
+.sw.r{border-color:var(--red); background:var(--red-soft);}
+.sw.x{border-color:var(--line); background:#fff;}
+.hanja-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:9px;}
+.hcell{border:2px solid var(--line); border-radius:13px; padding:11px 5px; text-align:center; background:#fff; transition:transform .18s, opacity .18s, box-shadow .18s, border-color .18s;}
+.hcell.ok{border-color:var(--green); background:var(--green-grad);}
+.hcell.no{border-color:var(--red); background:var(--red-grad);}
+.hcell .hc{font-size:30px; font-weight:700; line-height:1;}
+.hcell .hu{font-size:11px; color:var(--gray2); font-weight:600; margin-top:6px; line-height:1.2; word-break:keep-all;}
+.search-row{display:flex; gap:8px; margin-bottom:10px;}
+.search-row input{flex:1;}
+.hg-result{font-size:12.5px; font-weight:700; color:var(--blue-dark); margin-bottom:12px; min-height:16px;}
+.hanja-grid.searching .hcell:not(.hit){opacity:.25;}
+.hcell.hit{transform:scale(1.14); border-color:var(--blue); box-shadow:0 8px 24px rgba(49,130,246,.32); position:relative; z-index:3;}
+
+.toast{position:fixed; left:50%; bottom:30px; transform:translateX(-50%) translateY(10px); background:var(--ink); color:#fff;
+  font-weight:700; font-size:14px; padding:12px 20px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; z-index:200; white-space:nowrap;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:300; align-items:center; justify-content:center; padding:24px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff; border-radius:22px; max-width:480px; width:100%; padding:28px; max-height:86vh; overflow:auto;}
+.modal h3{margin:0 0 6px; font-size:19px; font-weight:800;}
+.modal .mode-now{display:inline-block; background:var(--green-soft); color:var(--green); font-size:12px; font-weight:800; padding:5px 11px; border-radius:999px; margin-bottom:14px;}
+.modal ol{margin:0; padding-left:20px;}
+.modal li{font-size:14.5px; color:var(--gray); line-height:1.7; margin-bottom:10px;}
+.modal li b{color:var(--ink);}
+.modal .close{margin-top:8px;}
+
+.view{display:none;} .view.active{display:block;}
+.reset-row{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+.reset-row.end{justify-content:flex-end;}
+
+@media (max-width:900px){
+  .app{flex-direction:column;}
+  .sidebar{width:100%; height:auto; position:static; flex-direction:row; align-items:center; flex-wrap:wrap; gap:10px; padding:16px;}
+  .sidebar .brand-wrap{margin-right:auto;}
+  .nav{flex-direction:row; margin-top:0; flex-wrap:wrap;}
+  .sidebar .grow{display:none;}
+  main{padding:20px 18px 60px;}
+  .cols{grid-template-columns:1fr;}
+}
+/* ============== 시작(스플래시) 화면 ============== */
+#splash{position:fixed; inset:0; z-index:600; overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  padding:48px 24px calc(46px + env(safe-area-inset-bottom,0px));
+  background:
+    radial-gradient(135% 95% at 78% 6%, rgba(49,130,246,.22), transparent 55%),
+    radial-gradient(125% 85% at 10% 20%, rgba(18,181,176,.20), transparent 52%),
+    radial-gradient(150% 105% at 50% 110%, rgba(31,159,201,.17), transparent 56%),
+    #FBFCFE;
+  transition:opacity .55s ease, visibility .55s;}
+#splash.hide{opacity:0; visibility:hidden; pointer-events:none;}
+/* 떠다니는 오로라 광원 */
+.aurora{position:absolute; border-radius:50%; filter:blur(64px); opacity:.85; z-index:0; pointer-events:none;}
+.aurora.a1{width:78vw; height:60vh; top:-16vh; left:-12vw;
+  background:radial-gradient(closest-side, rgba(49,130,246,.50), transparent 72%); animation:auroraA 17s ease-in-out infinite alternate;}
+.aurora.a2{width:64vw; height:54vh; top:-6vh; right:-16vw;
+  background:radial-gradient(closest-side, rgba(18,181,176,.46), transparent 72%); animation:auroraB 21s ease-in-out infinite alternate;}
+.aurora.a3{width:52vw; height:44vh; top:18vh; left:30vw;
+  background:radial-gradient(closest-side, rgba(99,179,237,.34), transparent 72%); animation:auroraC 19s ease-in-out infinite alternate;}
+@keyframes auroraA{from{transform:translate(0,0) scale(1);} to{transform:translate(7vw,5vh) scale(1.12);}}
+@keyframes auroraB{from{transform:translate(0,0) scale(1);} to{transform:translate(-6vw,6vh) scale(1.15);}}
+@keyframes auroraC{from{transform:translate(0,0) scale(1);} to{transform:translate(4vw,-4vh) scale(1.08);}}
+
+.splash-inner{position:relative; z-index:1; width:100%; max-width:440px;}
+.splash-mark{width:62px; height:62px; border-radius:18px; background:var(--grad);
+  display:flex; align-items:center; justify-content:center; color:#fff; font-size:34px; font-weight:700;
+  font-family:'Noto Serif KR','Pretendard',serif; line-height:1;
+  box-shadow:0 12px 30px rgba(31,140,190,.30); margin-bottom:22px;
+  animation:rise .6s .02s both;}
+.splash-title{font-size:34px; font-weight:800; letter-spacing:-.03em; line-height:1.18; color:var(--ink);
+  word-break:keep-all; margin:0; animation:rise .6s .08s both;}
+.splash-title .en{
+  background:linear-gradient(100deg,#3182F6 0%,#1F9FC9 50%,#12B5B0 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;}
+.splash-desc{font-size:15.5px; line-height:1.6; color:var(--gray); font-weight:500; margin:14px 0 0;
+  word-break:keep-all; animation:rise .6s .14s both;}
+.splash-meta{font-size:14px; color:var(--gray); font-weight:700; margin-top:14px; animation:rise .6s .14s both;}
+
+.splash-status{display:flex; align-items:center; gap:9px; margin:30px 0 14px; min-height:22px;
+  font-size:13.5px; font-weight:700; color:var(--gray); animation:rise .6s .22s both;}
+.splash-spin{width:16px; height:16px; border-radius:50%; border:2.5px solid var(--line);
+  border-top-color:var(--blue); animation:spin .7s linear infinite; flex:none;}
+.splash-status.ready{color:var(--green);}
+.splash-status.ready .splash-spin{display:none;}
+.splash-status.err{color:var(--red);}
+.splash-status.err .splash-spin{display:none;}
+.splash-check{width:18px;height:18px;flex:none;display:none;}
+.splash-status.ready .splash-check{display:block;}
+
+.splash-start{display:block; width:100%; border:0; font-family:inherit; cursor:pointer;
+  font-weight:800; font-size:17px; padding:17px; border-radius:16px; color:#fff;
+  background:var(--grad); background-size:160% 160%;
+  box-shadow:0 10px 26px rgba(31,140,190,.28); transition:transform .08s, box-shadow .2s, opacity .25s, filter .25s;
+  animation:rise .6s .26s both;}
+.splash-start:hover{box-shadow:0 14px 32px rgba(31,140,190,.36);}
+.splash-start:active{transform:scale(.985);}
+.splash-start:disabled{cursor:default; background:var(--btn-gray); color:var(--gray2);
+  box-shadow:none; filter:none;}
+.splash-start.live{animation:rise .6s both, glow 2.6s ease-in-out 1s infinite;}
+@keyframes glow{0%,100%{box-shadow:0 10px 26px rgba(31,140,190,.28);} 50%{box-shadow:0 12px 34px rgba(31,140,190,.46);}}
+.splash-retry{display:block; width:100%; margin-top:10px; border:0; background:none; cursor:pointer;
+  font-family:inherit; font-weight:700; font-size:14px; color:var(--gray); padding:8px;}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes rise{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;}}
+
+/* 태블릿·데스크탑: 모바일처럼 가운데 하단 정렬 + 살짝 키움 */
+@media (min-width:680px){
+  #splash{padding:56px 48px calc(64px + env(safe-area-inset-bottom,0px));}
+  .splash-inner{max-width:480px;}
+  .splash-title{font-size:40px;}
+  .splash-desc{font-size:16.5px;}
+  .splash-mark{width:68px; height:68px; font-size:38px; border-radius:20px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .aurora{animation:none;}
+  .splash-start.live{animation:rise .6s both;}
+  .splash-mark,.splash-title,.splash-desc,.splash-meta,.splash-status,.splash-start{animation:none;}
+}
+</style>
+</head>
+<body>
+<div id="splash">
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+  <div class="aurora a3"></div>
+  <div class="splash-inner">
+    <h1 class="splash-title">한의학 한문 <span class="en">Web App</span></h1>
+    <div class="splash-meta">정헌영 교수님 · 예과 1학년 2학기 중간 · 25 끼끼</div>
+
+    <div class="splash-status" id="splash-status">
+      <span class="splash-spin"></span>
+      <svg class="splash-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span id="splash-status-text">Google Sheets 연동 중…</span>
+    </div>
+
+    <button class="splash-start" id="splash-start" disabled>준비 중…</button>
+    <button class="splash-retry" id="splash-retry" style="display:none">다시 시도</button>
+  </div>
+</div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand-wrap">
+      <div class="brand">한의학 한문 <span class="brand-accent">Web App</span></div>
+      <div class="brand-mid">By. 25 끼끼</div>
+      <div class="brand-sub">예과 1학년 2학기 중간 · 정헌영 교수님</div>
+    </div>
+    <nav class="nav">
+      <button class="active" data-view="1"><span class="ic">📝</span>해석 쓰기</button>
+      <button data-view="2"><span class="ic">🀄</span>한자 → 훈음</button>
+      <button data-view="3"><span class="ic">💡</span>훈음 → 한자</button>
+      <button data-view="4"><span class="ic">📜</span>원문 보기</button>
+      <button data-view="5"><span class="ic">🔠</span>한자 목록</button>
+    </nav>
+    <div class="grow"></div>
+    <div class="save-pill"><span class="dot"></span><span id="save-text">자동 저장 중</span></div>
+    <button class="help-btn" id="help-open">저장은 어떻게 되나요?</button>
+  </aside>
+
+  <main>
+    <!-- VIEW 1 : 해석 쓰기 -->
+    <section id="view1" class="view active">
+      <div class="main-head">
+        <div><h1>해석 쓰기</h1><p>구분선으로 묶인 문장 단위 · 한자만 보고 해석을 써보세요 · 총 <span id="s1-total">0</span>문제</p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s1-shuffle">🔀 순서 셔플</button><button class="mini" id="s1-restore">↩︎ 원래 순서</button></div>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <div class="card">
+            <h2>문제 <span class="q-counter" id="s1-counter"></span></h2>
+            <div id="s1-hanja"></div>
+            <div class="spacer"></div><div class="spacer"></div>
+            <textarea id="s1-input" rows="4" placeholder="이 묶음의 해석을 직접 써보세요"></textarea>
+            <div class="spacer"></div>
+            <button class="btn" id="s1-check">정답 확인</button>
+            <div class="spacer"></div>
+            <div class="btn-row">
+              <button class="btn ghost" id="s1-prev">← 이전</button>
+              <button class="btn ghost" id="s1-next">다음 →</button>
+            </div>
+          </div>
+          <div class="text-actions">
+            <button class="text-btn grad-red" id="s1-retry"><span class="gt">틀린 문제만 다시</span></button>
+            <button class="text-btn grad-blue" id="s1-reset"><span class="gt">전체 리셋</span></button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s1-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s1-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s1-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="spacer"></div><div class="spacer"></div>
+          <h2>정답 (원문 해석)</h2>
+          <div id="s1-answer"><div class="ans-placeholder">‘정답 확인’을 누르면<br>여기에 원문 해석과 출처가 표시됩니다</div></div>
+          <div id="s1-grade-area" style="display:none">
+            <div class="spacer"></div>
+            <div class="btn-row">
+              <button class="btn red" id="s1-wrong">✕ 틀렸어요</button>
+              <button class="btn green" id="s1-right">✓ 맞았어요</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2 : 한자 → 훈음 -->
+    <section id="view2" class="view">
+      <div class="main-head"><div><h1>한자 → 훈음</h1>
+        <p>한자를 보고 훈·음 입력 → <span class="kbd">Enter</span> 채점 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s2-shuffle">🔀 셔플</button><button class="mini" id="s2-restore">↩︎ 원래 순서</button></div></div>
+      <div class="cols">
+        <div class="card">
+          <div id="s2-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="s2-back">← 이전 문제</button>
+                <button class="mini" id="s2-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="s2-counter"></span>
+            </div>
+            <div class="scene">
+              <div class="flip" id="s2-flip">
+                <div class="face front"><div class="big-hanja" id="s2-hanja"></div><div class="cap">훈과 음을 입력하세요</div></div>
+                <div class="face back"><div class="cap">정답</div><div class="big-hun" id="s2-answer"></div><div class="verdict" id="s2-verdict"></div></div>
+              </div>
+            </div>
+            <div id="s2-input-area">
+              <input id="s2-input" type="text" placeholder="예: 덮을 개" autocomplete="off">
+              <div class="spacer"></div>
+              <button class="btn" id="s2-submit">정답 입력 (Enter)</button>
+            </div>
+            <div id="s2-next-area" style="display:none">
+              <div class="btn-row">
+                <button class="btn red" id="s2-wrong">✕ 틀림 (←)</button>
+                <button class="btn green" id="s2-right">✓ 맞음 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="s2-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2>
+            <p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s2-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s2-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s2-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="2">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="2">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="2">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="s2-review" class="review-list"></div>
+          <div id="s2-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="s2-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="s2-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3 : 훈음 → 한자 -->
+    <section id="view3" class="view">
+      <div class="main-head"><div><h1>훈음 → 한자</h1>
+        <p>훈·음을 보고 떠올린 뒤 <span class="kbd">Space</span> <span class="kbd">Enter</span> 정답 보기 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s3-shuffle">🔀 셔플</button><button class="mini" id="s3-restore">↩︎ 원래 순서</button></div></div>
+      <div class="cols">
+        <div class="card">
+          <div id="s3-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="s3-back">← 이전 문제</button>
+                <button class="mini" id="s3-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="s3-counter"></span>
+            </div>
+            <div class="reveal-card">
+              <div class="big-hun" id="s3-hun"></div>
+              <div class="cap" id="s3-hint">머릿속으로 한자를 떠올려보세요</div>
+              <div id="s3-hanja-wrap" style="display:none; margin-top:16px;"><div class="hidden-h" id="s3-hanja"></div></div>
+            </div>
+            <div id="s3-reveal-area"><button class="btn" id="s3-reveal">정답 보기 (Space)</button></div>
+            <div id="s3-grade-area" style="display:none">
+              <div style="text-align:center; font-size:12px; font-weight:700; color:var(--gray2); margin-bottom:10px;">맞았나요?</div>
+              <div class="btn-row">
+                <button class="btn red" id="s3-wrong">✕ 틀렸어요 (←)</button>
+                <button class="btn green" id="s3-right">✓ 맞았어요 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="s3-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2>
+            <p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s3-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s3-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s3-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="3">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="3">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="3">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="s3-review" class="review-list"></div>
+          <div id="s3-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="s3-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="s3-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4 : 원문 보기 -->
+    <section id="view4" class="view">
+      <div class="main-head"><div><h1>원문 보기</h1><p>전체 원문 · 한자 / 음 / 해석 / 주석</p></div></div>
+      <div class="card"><div id="orig-body"></div></div>
+    </section>
+
+    <!-- VIEW 5 : 한자 목록 -->
+    <section id="view5" class="view">
+      <div class="main-head"><div><h1>전체 한자 목록</h1><p>맞은 한자 = 초록, 틀린 한자 = 빨강, 아직 안 한 한자 = 회색 · 총 <span id="hg-total">0</span>자</p></div></div>
+      <div class="toggle-row">
+        <button class="tog active" data-tg="2">한자 → 훈음 기준</button>
+        <button class="tog" data-tg="3">훈음 → 한자 기준</button>
+      </div>
+      <div class="legend">
+        <span><span class="sw g"></span>맞음 <b id="hg-ok" style="margin-left:2px">0</b></span>
+        <span><span class="sw r"></span>틀림 <b id="hg-no" style="margin-left:2px">0</b></span>
+        <span><span class="sw x"></span>안 함 <b id="hg-rest" style="margin-left:2px">0</b></span>
+      </div>
+      <div class="search-row">
+        <input id="hg-search" type="text" placeholder="음·훈 또는 한자 검색 (예: 덮을 개 · 蓋 · 개)" autocomplete="off">
+        <button class="mini" id="hg-clear">닫기</button>
+      </div>
+      <div id="hg-result" class="hg-result"></div>
+      <div id="hanja-grid" class="hanja-grid"></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-bg" id="help-bg">
+  <div class="modal">
+    <h3>저장은 자동으로 됩니다</h3>
+    <div class="mode-now" id="mode-now">저장 위치 확인 중…</div>
+    <ol>
+      <li><b>따로 누를 버튼이 없어요.</b> 답을 쓰거나 채점하면 그 즉시 자동 저장됩니다. 사이드바에 잠깐 “저장됨 ✓”이 뜨면 저장된 거예요.</li>
+      <li><b>같은 곳에서 다시 열면 이어집니다.</b> 풀던 위치, 작성한 해석, 맞은·틀린 기록이 그대로 남아요.</li>
+      <li><b>아이패드에서 계속 쓰려면:</b> 이 파일을 <b>다운로드</b>해서 <b>사파리(또는 크롬)</b>로 여세요. 그 브라우저에 저장되고, 다음에 <b>같은 브라우저</b>로 열면 이어집니다. 홈 화면에 추가해두면 앱처럼 쓸 수 있어요.</li>
+      <li><b>주의:</b> 시크릿(비공개) 모드로 열거나 브라우저 기록·사이트 데이터를 지우면 저장 내용도 함께 사라집니다.</li>
+      <li><b>문제 내용은 구글 시트에서 관리돼요.</b> 한자·해석에 오타가 있으면 연결된 구글 시트에서 고친 뒤, 이 페이지를 <b>새로고침</b>하면 Apps Script를 통해 바로 반영됩니다. (앱을 다시 만들 필요 없어요.)</li>
+    </ol>
+    <button class="btn close" id="help-close">알겠어요</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   데이터 소스 : Google Apps Script 웹앱 (JSON)
+   ---------------------------------------------------------------------
+   구글 시트의 '한자' / '해석' 탭을 Apps Script가 읽어서 JSON으로 돌려줍니다.
+   오타는 시트에서 고치고 이 페이지를 새로고침하면 바로 반영돼요.
+
+   ▷ 아래 GAS_URL 에 본인의 Apps Script "웹 앱" 배포 주소를 붙여넣으세요.
+     (확장 프로그램 > Apps Script 에 Code.gs 붙여넣고 '웹 앱으로 배포' →
+      나온 https://script.google.com/macros/s/.../exec 주소)
+
+   Apps Script가 돌려주는 JSON 형태:
+     { ok:true,
+       hanja:     [{hanja, huneum}, ...],
+       sentences: [{page, hanja, eum, translation, note1..note10}, ...] }
+   ===================================================================== */
+const GAS_URL = "https://script.google.com/macros/s/AKfycby9WPc-b-t_6ysZmK0FPkesT2Cx_QxnHe8_Ml-0BeRVgrfe74aVjTf288g0-ihwsI4n/exec";
+
+async function fetchData(){
+  if(!GAS_URL || GAS_URL.indexOf("PASTE_YOUR")===0){
+    throw new Error("아직 Apps Script 웹앱 주소가 연결되지 않았어요. 코드의 GAS_URL 값을 본인 배포 주소로 바꿔 주세요.");
+  }
+  const res=await fetch(GAS_URL,{cache:"no-store",redirect:"follow"});
+  if(!res.ok) throw new Error("웹앱을 불러오지 못했어요 (HTTP "+res.status+")");
+  const data=await res.json();
+  if(!data || data.ok!==true){
+    throw new Error((data && data.error) ? data.error : "데이터 형식이 올바르지 않아요");
+  }
+  return data;
+}
+
+/* ---- 시트 → 앱 데이터 구조로 변환 ---- */
+// BLOCKS: [{p, L:[[hanja,eum,translation],...], n:"주석", pt:""}]
+// HANJA : [{c, h}],  HUN: {char: hun}
+let BLOCKS=[];
+let HANJA=[];
+let HUN={};
+
+function buildHanja(rows){
+  const seen=new Set(); const arr=[]; const hun={};
+  rows.forEach(o=>{
+    const c=o.hanja||o.char||o["한자"]||"";
+    // 'hun-eum' 헤더는 정규화 후 huneum. 호환을 위해 여러 키를 시도.
+    const h=o.huneum||o.hun||o["훈음"]||o.eum||"";
+    if(!c) return;
+    if(!seen.has(c)){ seen.add(c); arr.push({c,h}); hun[c]=h; }
+  });
+  return {arr,hun};
+}
+function buildBlocks(rows){
+  // page 순서를 유지하면서, 같은 page 연속 행을 한 묶음으로 합침.
+  // (page가 떨어져 있다 다시 나오면 새 묶음으로 봄)
+  const blocks=[]; let cur=null; let curPage=null;
+  rows.forEach(o=>{
+    const p=o.page||o["페이지"]||"";
+    const hanja=o.hanja||o["한자"]||o["원문"]||"";
+    const eum=o.eum||o["음"]||"";
+    const tr=o.translation||o["해석"]||"";
+    // 주석 note1..note10 모으기
+    const notes=[];
+    for(let k=1;k<=10;k++){
+      const v=o["note"+k]||o["주석"+k]||"";
+      if(v) notes.push(v);
+    }
+    if(!hanja && !eum && !tr) return; // 완전 빈 행 무시
+    const pageNum = p===""?(curPage==null?0:curPage):(isNaN(+p)?p:+p);
+    if(cur===null || pageNum!==curPage){
+      cur={p:pageNum, L:[], n:"", pt:"", _notes:[]};
+      blocks.push(cur); curPage=pageNum;
+    }
+    cur.L.push([hanja,eum,tr]);
+    notes.forEach(n=>cur._notes.push(n));
+  });
+  // 주석: 배열(notes)로 보존해서 화면에서 칸별 줄바꿈. n은 검색 등 호환용 합본.
+  blocks.forEach(b=>{ b.notes=b._notes.slice(); b.n=b._notes.join(" / "); delete b._notes; });
+  return blocks;
+}
+
+const $=id=>document.getElementById(id);
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1300);}
+function norm(s){return (s||"").replace(/\s+/g,"").replace(/[()]/g,"").toLowerCase();}
+function matchHun(inp,cor){const ni=norm(inp); if(!ni) return false; return cor.split("/").some(p=>norm(p)===ni)||norm(cor)===ni;}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---- Storage : cloud (Claude) + localStorage fallback ---- */
+const store={
+  mode:(typeof window!=="undefined" && window.storage && typeof window.storage.get==="function")?"cloud":"local",
+  async get(k){try{ if(this.mode==="cloud"){const r=await window.storage.get(k);return r?r.value:null;} return localStorage.getItem(k);}catch(e){try{return localStorage.getItem(k);}catch(_){return null;}}},
+  async set(k,v){try{ if(this.mode==="cloud"){await window.storage.set(k,v);return;} localStorage.setItem(k,v);}catch(e){try{localStorage.setItem(k,v);}catch(_){}}}
+};
+const KEY="jeonghanmun_sem2_mid_v1";
+let STATE={ s1:{order:[],pos:0,answers:{},ok:[],no:[]}, s2:{order:[],pos:0,ok:[],no:[],hist:[]}, s3:{order:[],pos:0,ok:[],no:[],hist:[]} };
+
+let dataChangeNote = ""; // 데이터 변경 감지 안내 (init에서 토스트로 표시)
+function ensureShape(){
+  // ----- 해석(s1) : BLOCKS 인덱스 기반 -----
+  if(!Array.isArray(STATE.s1.order) || STATE.s1.order.length!==BLOCKS.length
+     || !STATE.s1.order.every(i=>Number.isInteger(i) && i>=0 && i<BLOCKS.length)){
+    STATE.s1.order=BLOCKS.map((_,i)=>i);
+    STATE.s1.pos=0;
+  }
+  if(typeof STATE.s1.pos!=="number" || STATE.s1.pos<0 || STATE.s1.pos>=Math.max(1,BLOCKS.length)) STATE.s1.pos=0;
+  if(!STATE.s1.answers || typeof STATE.s1.answers!=="object") STATE.s1.answers={};
+  // s1 채점기록(ok/no): BLOCKS 범위를 벗어난 인덱스 제거
+  if(!Array.isArray(STATE.s1.ok)) STATE.s1.ok=[];
+  if(!Array.isArray(STATE.s1.no)) STATE.s1.no=[];
+  STATE.s1.ok=STATE.s1.ok.filter(i=>Number.isInteger(i)&&i>=0&&i<BLOCKS.length);
+  STATE.s1.no=STATE.s1.no.filter(i=>Number.isInteger(i)&&i>=0&&i<BLOCKS.length);
+
+  // ----- 한자(s2,s3) : 실제 존재하는 한자 글자 기준으로 동기화 -----
+  const validChars = HANJA.map(x=>x.c);
+  const validSet = new Set(validChars);
+  let removedCount=0, addedCount=0;
+  ["s2","s3"].forEach(k=>{
+    const o = STATE[k];
+    if(!Array.isArray(o.ok)) o.ok=[];
+    if(!Array.isArray(o.no)) o.no=[];
+    if(!Array.isArray(o.hist)) o.hist=[];
+    if(!Array.isArray(o.order)) o.order=[];
+
+    // 변경 감지 (s2 기준으로 한 번만 집계)
+    if(k==="s2" && o.order.length){
+      const before=new Set(o.order);
+      removedCount = o.order.filter(c=>!validSet.has(c)).length;
+      addedCount = validChars.filter(c=>!before.has(c)).length;
+    }
+
+    // 1) ok/no/hist 에서 현재 목록에 없는 한자 제거 (꼬임 방지)
+    o.ok   = o.ok.filter(c=>validSet.has(c));
+    o.no   = o.no.filter(c=>validSet.has(c));
+    o.hist = o.hist.filter(c=>validSet.has(c));
+
+    // 2) order 재정렬: 기존 순서 중 살아있는 것 유지 + 새로 생긴 한자는 뒤에 추가
+    const keep = o.order.filter(c=>validSet.has(c));
+    const keepSet = new Set(keep);
+    const added = validChars.filter(c=>!keepSet.has(c));
+    o.order = keep.concat(added);
+
+    // 3) order가 완전히 비었거나(첫 실행) 길이가 안 맞으면 기본 순서로
+    if(o.order.length!==validChars.length){ o.order = validChars.slice(); }
+
+    if(typeof o.pos!=="number" || o.pos<0) o.pos=0;
+  });
+
+  // 안내 문구 구성 (추가/삭제가 실제로 있었을 때만)
+  if(addedCount || removedCount){
+    const parts=[];
+    if(addedCount) parts.push("새 한자 "+addedCount+"자 추가");
+    if(removedCount) parts.push("빠진 한자 "+removedCount+"자 정리");
+    dataChangeNote = "시트가 바뀌었어요 · "+parts.join(" · ");
+  }
+}
+async function loadState(){ const raw=await store.get(KEY); if(raw){try{STATE=Object.assign(STATE,JSON.parse(raw));}catch(e){}} ensureShape(); }
+let saveTimer=null;
+function saveState(){ if(saveTimer)clearTimeout(saveTimer); saveTimer=setTimeout(async()=>{await store.set(KEY,JSON.stringify(STATE));flashSave();},250); }
+function flashSave(){const t=$("save-text");t.textContent="저장됨 ✓";setTimeout(()=>{t.textContent="자동 저장 중";},1400);}
+
+/* ---- nav ---- */
+let curView=1;
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    curView=parseInt(b.dataset.view);
+    document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));
+    document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    $("view"+curView).classList.add("active");
+    if(curView===5) renderHanjaGrid();
+    if(curView===2) setTimeout(()=>{try{$("s2-input").focus({preventScroll:true});}catch(e){}},0);
+    window.scrollTo(0,0);
+  });
+});
+
+/* ---- help ---- */
+$("help-open").addEventListener("click",()=>{ $("mode-now").textContent= store.mode==="cloud"?"지금: 클로드 앱에 자동 저장 중":"지금: 이 브라우저에 자동 저장 중"; $("help-bg").classList.add("show"); });
+$("help-close").addEventListener("click",()=>$("help-bg").classList.remove("show"));
+$("help-bg").addEventListener("click",e=>{if(e.target===$("help-bg"))$("help-bg").classList.remove("show");});
+
+/* =====================================================================
+   SHEET 1 : 해석 쓰기
+   ===================================================================== */
+function s1Block(){ return BLOCKS[STATE.s1.order[STATE.s1.pos]]; }
+function renderS1Stats(){
+  const done=new Set([...STATE.s1.ok, ...STATE.s1.no]);
+  const left=BLOCKS.length - done.size;
+  $("s1-left").textContent=Math.max(0,left);
+  $("s1-ok").textContent=STATE.s1.ok.length;
+  $("s1-no").textContent=STATE.s1.no.length;
+}
+function renderS1(){
+  if(!BLOCKS.length){
+    $("s1-total").textContent=0; $("s1-counter").textContent="0 / 0";
+    $("s1-hanja").innerHTML='<div class="ans-placeholder">해석 탭에 데이터가 없어요</div>';
+    if($("s1-grade-area")) $("s1-grade-area").style.display="none";
+    renderS1Stats();
+    return;
+  }
+  const b=s1Block(); const bi=STATE.s1.order[STATE.s1.pos];
+  $("s1-total").textContent=BLOCKS.length;
+  $("s1-counter").textContent=(STATE.s1.pos+1)+" / "+BLOCKS.length;
+  $("s1-hanja").innerHTML=b.L.map(l=>`<div class="hanja-line">${esc(l[0])}</div>`).join("");
+  $("s1-input").value=STATE.s1.answers[bi]||"";
+  $("s1-answer").innerHTML=`<div class="ans-placeholder">‘정답 확인’을 누르면<br>여기에 원문 해석과 출처가 표시됩니다</div>`;
+  $("s1-grade-area").style.display="none"; // 정답 확인 전엔 채점 버튼 숨김
+  renderS1Stats();
+}
+function notesHtml(b, cls){
+  const arr = (b.notes && b.notes.length) ? b.notes : (b.n?[b.n]:[]);
+  if(!arr.length) return "";
+  const items = arr.map(t=>`<div class="note-item">• ${esc(t)}</div>`).join("");
+  return `<div class="${cls}">📌<div class="note-list">${items}</div></div>`;
+}
+function showS1Answer(){
+  const b=s1Block();
+  let lines=b.L.map(l=>`<div class="ans-line"><div class="ah">${esc(l[0])}</div><div class="ai">${esc(l[2])}</div></div>`).join("");
+  let note=notesHtml(b,"note");
+  let point=b.pt?`<div class="point">▶︎ ${esc(b.pt)}</div>`:"";
+  $("s1-answer").innerHTML=lines+`<span class="src-badge">📖 출처 · ${esc(String(b.p))}페이지</span>`+note+point;
+  $("s1-grade-area").style.display="block"; // 정답 확인 후 맞음/틀림 버튼 노출
+}
+// 해석 채점: 현재 묶음을 맞음/틀림으로 기록하고 다음 문제로
+function gradeS1(isOk){
+  const bi=STATE.s1.order[STATE.s1.pos];
+  STATE.s1.ok=STATE.s1.ok.filter(i=>i!==bi);
+  STATE.s1.no=STATE.s1.no.filter(i=>i!==bi);
+  (isOk?STATE.s1.ok:STATE.s1.no).push(bi);
+  saveState();
+  // 다음 문제로 (마지막이면 그대로, 통계만 갱신)
+  if(STATE.s1.pos<BLOCKS.length-1){ STATE.s1.pos++; renderS1(); }
+  else { renderS1(); }
+  toast(isOk?"맞음으로 표시했어요":"틀림으로 표시했어요");
+}
+$("s1-check").addEventListener("click",showS1Answer);
+$("s1-input").addEventListener("input",e=>{ STATE.s1.answers[STATE.s1.order[STATE.s1.pos]]=e.target.value; saveState(); });
+$("s1-prev").addEventListener("click",()=>{ if(STATE.s1.pos>0){STATE.s1.pos--;saveState();renderS1();} });
+$("s1-next").addEventListener("click",()=>{ if(STATE.s1.pos<BLOCKS.length-1){STATE.s1.pos++;saveState();renderS1();} });
+$("s1-shuffle").addEventListener("click",()=>{ shuffle(STATE.s1.order); STATE.s1.pos=0; saveState(); renderS1(); toast("순서를 섞었어요"); });
+$("s1-right").addEventListener("click",()=>gradeS1(true));
+$("s1-wrong").addEventListener("click",()=>gradeS1(false));
+$("s1-retry").addEventListener("click",()=>{
+  if(!STATE.s1.no.length){ toast("틀린 문제가 없어요"); return; }
+  // 틀린 묶음만 순서로 만들어 처음부터
+  const wrong=STATE.s1.no.slice();
+  STATE.s1.order = wrong.concat(BLOCKS.map((_,i)=>i).filter(i=>!wrong.includes(i)));
+  STATE.s1.pos=0;
+  saveState(); renderS1(); toast("틀린 문제부터 다시 풀어요");
+});
+$("s1-reset").addEventListener("click",()=>{
+  if(confirm("작성한 해석과 채점 기록을 모두 지울까요?")){
+    STATE.s1.answers={}; STATE.s1.ok=[]; STATE.s1.no=[]; STATE.s1.pos=0;
+    saveState(); renderS1(); toast("초기화 완료");
+  }
+});
+
+/* =====================================================================
+   SHEETS 2 & 3 : generic engine
+   ===================================================================== */
+function st(s){ return s===2?STATE.s2:STATE.s3; }
+function rem(s){ const o=st(s); const done=new Set([...o.ok,...o.no]); return o.order.filter(c=>!done.has(c)); }
+function curChar(s){ const r=rem(s); const o=st(s); if(o.pos>=r.length)o.pos=0; return r[o.pos]; }
+
+function record(s,ok){
+  const r=rem(s); const o=st(s); if(!r.length) return;
+  const c=r[o.pos];
+  o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+  (ok?o.ok:o.no).push(c); o.hist.push(c);
+  saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+}
+function back(s){
+  const o=st(s); if(!o.hist.length){ toast("되돌릴 문제가 없어요"); return; }
+  const c=o.hist.pop();
+  o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+  const r=rem(s); o.pos=Math.max(0,r.indexOf(c));
+  saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+}
+function doShuffle(s){ const o=st(s); shuffle(o.order); o.pos=0; saveState(); (s===2?renderS2:renderS3)(); toast("문제를 섞었어요"); }
+
+/* ----- Sheet 2 render ----- */
+function renderS2(){
+  const o=STATE.s2;
+  $("s2-ok").textContent=o.ok.length; $("s2-no").textContent=o.no.length;
+  const r=rem(2); $("s2-left").textContent=r.length;
+  $("s2-back").disabled=o.hist.length===0;
+  if(!r.length){ $("s2-quiz").style.display="none"; $("s2-done").style.display="block"; }
+  else{
+    $("s2-quiz").style.display="block"; $("s2-done").style.display="none";
+    if(o.pos>=r.length)o.pos=0;
+    const c=r[o.pos];
+    $("s2-counter").textContent=(o.pos+1)+" / "+r.length+" 문제";
+    $("s2-hanja").textContent=c; $("s2-answer").textContent=HUN[c];
+    $("s2-flip").classList.remove("flipped");
+    $("s2-input").value=""; $("s2-input-area").style.display="block"; $("s2-next-area").style.display="none";
+    $("s2-verdict").className="verdict";
+  }
+  renderReview(2);
+}
+function s2Submit(){
+  const r=rem(2); if(!r.length) return;
+  const c=r[STATE.s2.pos]; const ok=matchHun($("s2-input").value,HUN[c]);
+  const v=$("s2-verdict");
+  if(ok){v.className="verdict ok";v.textContent="입력한 답이 정답과 일치해요 ✓";}
+  else{v.className="verdict no";v.textContent="입력한 답과 달라요 — 직접 채점하세요";}
+  $("s2-flip").classList.add("flipped");
+  $("s2-input-area").style.display="none"; $("s2-next-area").style.display="block";
+  try{$("s2-input").blur();}catch(e){}
+}
+$("s2-submit").addEventListener("click",s2Submit);
+$("s2-wrong").addEventListener("click",()=>record(2,false));
+$("s2-right").addEventListener("click",()=>record(2,true));
+$("s2-back").addEventListener("click",()=>back(2));
+$("s2-shuffle").addEventListener("click",()=>doShuffle(2));
+$("s2-reset").addEventListener("click",()=>{ if(confirm("시험지2의 채점 기록을 모두 초기화할까요?")){ STATE.s2.ok=[];STATE.s2.no=[];STATE.s2.hist=[];STATE.s2.pos=0; selS2.clear(); saveState(); renderS2(); if(curView===5)renderHanjaGrid(); toast("초기화 완료"); } });
+$("s2-retry").addEventListener("click",()=>{ if(!STATE.s2.no.length){toast("틀린 문제가 없어요");return;} if(confirm("틀린 문제 "+STATE.s2.no.length+"개를 다시 풀까요?")){ STATE.s2.no=[];STATE.s2.pos=0; selS2.clear(); saveState(); renderS2(); toast("틀린 문제 다시 풀기"); } });
+
+/* ----- Sheet 3 render ----- */
+function renderS3(){
+  const o=STATE.s3;
+  $("s3-ok").textContent=o.ok.length; $("s3-no").textContent=o.no.length;
+  const r=rem(3); $("s3-left").textContent=r.length;
+  $("s3-back").disabled=o.hist.length===0;
+  if(!r.length){ $("s3-quiz").style.display="none"; $("s3-done").style.display="block"; }
+  else{
+    $("s3-quiz").style.display="block"; $("s3-done").style.display="none";
+    if(o.pos>=r.length)o.pos=0;
+    const c=r[o.pos];
+    $("s3-counter").textContent=(o.pos+1)+" / "+r.length+" 문제";
+    $("s3-hun").textContent=HUN[c]; $("s3-hanja").textContent=c;
+    $("s3-hanja-wrap").style.display="none"; $("s3-hint").style.display="block";
+    $("s3-reveal-area").style.display="block"; $("s3-grade-area").style.display="none";
+  }
+  renderReview(3);
+}
+function s3Reveal(){ $("s3-hanja-wrap").style.display="block"; $("s3-hint").style.display="none"; $("s3-reveal-area").style.display="none"; $("s3-grade-area").style.display="block"; }
+$("s3-reveal").addEventListener("click",s3Reveal);
+$("s3-wrong").addEventListener("click",()=>record(3,false));
+$("s3-right").addEventListener("click",()=>record(3,true));
+$("s3-back").addEventListener("click",()=>back(3));
+$("s3-shuffle").addEventListener("click",()=>doShuffle(3));
+$("s3-reset").addEventListener("click",()=>{ if(confirm("시험지3의 채점 기록을 모두 초기화할까요?")){ STATE.s3.ok=[];STATE.s3.no=[];STATE.s3.hist=[];STATE.s3.pos=0; selS3.clear(); saveState(); renderS3(); if(curView===5)renderHanjaGrid(); toast("초기화 완료"); } });
+$("s3-retry").addEventListener("click",()=>{ if(!STATE.s3.no.length){toast("틀린 문제가 없어요");return;} if(confirm("틀린 문제 "+STATE.s3.no.length+"개를 다시 풀까요?")){ STATE.s3.no=[];STATE.s3.pos=0; selS3.clear(); saveState(); renderS3(); toast("틀린 문제 다시 풀기"); } });
+
+/* =====================================================================
+   REVIEW + SELECTION (move / reset)
+   ===================================================================== */
+const filterState={2:"all",3:"all"};
+const selS2=new Set(), selS3=new Set();
+function sel(s){return s===2?selS2:selS3;}
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click",()=>{
+    const s=parseInt(ch.dataset.sheet); filterState[s]=ch.dataset.f; sel(s).clear();
+    document.querySelectorAll('.chip[data-sheet="'+s+'"]').forEach(c=>c.classList.toggle("active",c===ch));
+    renderReview(s);
+  });
+});
+function renderReview(s){
+  const o=st(s); const box=$("s"+s+"-review"); const f=filterState[s];
+  let arr;
+  if(f==="all") arr=[...o.ok.map(c=>({c,ok:true})),...o.no.map(c=>({c,ok:false}))];
+  else if(f==="ok") arr=o.ok.map(c=>({c,ok:true}));
+  else arr=o.no.map(c=>({c,ok:false}));
+  if(!arr.length){ box.innerHTML='<div class="empty">아직 기록이 없어요</div>'; renderSelact(s); return; }
+  box.innerHTML=arr.map(it=>{
+    const selCls=sel(s).has(it.c)?" sel":"";
+    return `<div class="review-item${selCls}" data-c="${esc(it.c)}" data-sheet="${s}"><div class="h" style="color:${it.ok?'var(--green)':'var(--red)'}">${esc(it.c)}</div><div class="u">${esc(HUN[it.c]||"")}</div></div>`;
+  }).join("");
+  renderSelact(s);
+}
+document.addEventListener("click",e=>{
+  const item=e.target.closest(".review-item"); if(!item)return;
+  const s=parseInt(item.dataset.sheet), c=item.dataset.c, set=sel(s);
+  if(set.has(c))set.delete(c); else set.add(c);
+  renderReview(s);
+});
+function renderSelact(s){
+  const box=$("s"+s+"-selact"); const f=filterState[s]; const n=sel(s).size;
+  if(n===0){ box.innerHTML=""; return; }
+  let btns="";
+  if(f==="ok") btns=`<button class="btn red sm" data-act="toWrong" data-sheet="${s}">틀림으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else if(f==="no") btns=`<button class="btn green sm" data-act="toRight" data-sheet="${s}">맞음으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else btns=`<button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 미학습으로 리셋</button>`;
+  box.innerHTML=`<div class="selinfo">선택한 ${n}개</div><div class="btn-row">${btns}</div>`;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".selact button"); if(!b)return;
+  const s=parseInt(b.dataset.sheet), act=b.dataset.act, o=st(s), set=sel(s);
+  if(!set.size)return;
+  set.forEach(c=>{
+    o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+    if(act==="toWrong")o.no.push(c); else if(act==="toRight")o.ok.push(c);
+  });
+  set.clear(); saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+  toast("적용했어요");
+});
+
+/* =====================================================================
+   KEYBOARD : 틀림=← , 맞음=→ / Space / Enter
+   ===================================================================== */
+document.addEventListener("keydown",e=>{
+  if($("help-bg").classList.contains("show")) return;
+  const tag=(e.target.tagName||"").toUpperCase();
+  if(curView===2){
+    if($("s2-input-area").style.display!=="none"){
+      if(e.key==="Enter"){ e.preventDefault(); s2Submit(); }
+      return;
+    }
+    if($("s2-next-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); record(2,false); }
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){ e.preventDefault(); record(2,true); }
+    }
+  } else if(curView===3){
+    if(tag==="INPUT"||tag==="TEXTAREA") return;
+    if($("s3-reveal-area").style.display!=="none"){
+      if(e.key===" "||e.key==="Enter"){ e.preventDefault(); s3Reveal(); }
+    } else if($("s3-grade-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); record(3,false); }
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){ e.preventDefault(); record(3,true); }
+    }
+  } else if(curView===1){
+    if(tag==="TEXTAREA"||tag==="INPUT") return;
+    if(e.key==="ArrowLeft"){ $("s1-prev").click(); }
+    else if(e.key==="ArrowRight"){ $("s1-next").click(); }
+    else if(e.key==="Enter"||e.key===" "){ e.preventDefault(); showS1Answer(); }
+  }
+});
+
+/* =====================================================================
+   VIEW 4 : 원문 보기
+   ===================================================================== */
+function renderOriginal(){
+  // 시트에 적힌 등장 순서를 그대로 유지 (page 값으로 그룹 헤더만 표시)
+  let html="";
+  let lastPage=null;
+  BLOCKS.forEach(b=>{
+    if(b.p!==lastPage){
+      if(lastPage!==null) html+=`</div>`;
+      html+=`<div class="orig-page"><div class="orig-head">정한문 · ${esc(String(b.p))}페이지</div>`;
+      lastPage=b.p;
+    }
+    html+=`<div class="orig-block">`;
+    b.L.forEach(l=>{
+      html+=`<div class="orig-h">${esc(l[0])}</div><div class="orig-e">${esc(l[1])}</div><div class="orig-i">${esc(l[2])}</div>`;
+    });
+    html+=notesHtml(b,"orig-n");
+    if(b.pt) html+=`<div class="orig-pt">▶︎ ${esc(b.pt)}</div>`;
+    html+=`</div>`;
+  });
+  if(lastPage!==null) html+=`</div>`;
+  $("orig-body").innerHTML=html;
+}
+
+/* =====================================================================
+   VIEW 5 : 한자 목록 (바둑판)
+   ===================================================================== */
+let hgTab=2;
+document.querySelectorAll(".tog").forEach(t=>{
+  t.addEventListener("click",()=>{ hgTab=parseInt(t.dataset.tg); document.querySelectorAll(".tog").forEach(x=>x.classList.toggle("active",x===t)); renderHanjaGrid(); });
+});
+function renderHanjaGrid(){
+  const o=st(hgTab); const okS=new Set(o.ok), noS=new Set(o.no);
+  let okc=0,noc=0;
+  const cells=HANJA.map(x=>{
+    let cls=""; if(okS.has(x.c)){cls=" ok";okc++;} else if(noS.has(x.c)){cls=" no";noc++;}
+    return `<div class="hcell${cls}" data-c="${esc(x.c)}" data-h="${esc(x.h)}"><div class="hc">${esc(x.c)}</div><div class="hu">${esc(x.h)}</div></div>`;
+  }).join("");
+  $("hanja-grid").innerHTML=cells;
+  $("hg-total").textContent=HANJA.length;
+  $("hg-ok").textContent=okc; $("hg-no").textContent=noc; $("hg-rest").textContent=HANJA.length-okc-noc;
+  applySearch();
+}
+/* ---- hanja list search ---- */
+function applySearch(){
+  const grid=$("hanja-grid"); if(!grid) return;
+  const q=($("hg-search").value||"").trim();
+  const cells=grid.querySelectorAll(".hcell");
+  if(!q){ grid.classList.remove("searching"); cells.forEach(c=>c.classList.remove("hit")); $("hg-result").textContent=""; return; }
+  const nq=q.replace(/\s+/g,"").toLowerCase();
+  let n=0, first=null;
+  cells.forEach(c=>{
+    const ch=c.dataset.c||"", hu=(c.dataset.h||"").toLowerCase();
+    const hit = ch===q || ch.includes(q) || hu.includes(q.toLowerCase()) || hu.replace(/\s+/g,"").includes(nq);
+    c.classList.toggle("hit",hit);
+    if(hit){ n++; if(!first)first=c; }
+  });
+  grid.classList.add("searching");
+  $("hg-result").textContent = n ? (n+"개 찾음") : "결과가 없어요";
+  if(first) first.scrollIntoView({behavior:"smooth",block:"center"});
+}
+$("hg-search").addEventListener("input",applySearch);
+$("hg-clear").addEventListener("click",()=>{ $("hg-search").value=""; applySearch(); $("hg-search").blur(); });
+
+/* ---- skip (mark nothing, move to next remaining) ---- */
+function skip(s){ const r=rem(s); const o=st(s); if(r.length<=1){ toast("건너뛸 다른 문제가 없어요"); return; } o.pos=(o.pos+1)%r.length; saveState(); (s===2?renderS2:renderS3)(); }
+$("s2-skip").addEventListener("click",()=>skip(2));
+$("s3-skip").addEventListener("click",()=>skip(3));
+
+/* ---- restore original order ---- */
+$("s1-restore").addEventListener("click",()=>{ STATE.s1.order=BLOCKS.map((_,i)=>i); STATE.s1.pos=0; saveState(); renderS1(); toast("원래 순서로 되돌렸어요"); });
+function restoreOrder(s){ const o=st(s); o.order=HANJA.map(x=>x.c); o.pos=0; saveState(); (s===2?renderS2:renderS3)(); toast("원래 순서로 되돌렸어요"); }
+$("s2-restore").addEventListener("click",()=>restoreOrder(2));
+$("s3-restore").addEventListener("click",()=>restoreOrder(3));
+
+/* ---- init : 구글 시트에서 데이터 로드 후 렌더 ---- */
+function showLoadError(msg){
+  const m=document.querySelector("main");
+  if(!m) return;
+  m.innerHTML=
+    '<div class="card" style="max-width:620px;margin:40px auto;text-align:center">'
+    +'<div style="font-size:42px">📕</div>'
+    +'<h2 style="color:var(--ink);font-size:20px;margin:12px 0 6px">시트를 불러오지 못했어요</h2>'
+    +'<p style="color:var(--gray);font-size:14px;line-height:1.7;margin:0 0 16px">'+esc(msg)+'</p>'
+    +'<div class="note" style="text-align:left">확인할 점:<br>'
+    +'1) 코드의 <b>GAS_URL</b> 에 본인 Apps Script <b>웹 앱 배포 주소</b>(…/exec)를 넣었나요?<br>'
+    +'2) Apps Script를 <b>‘웹 앱’</b>으로, <b>액세스 권한: 모든 사용자</b>로 배포했나요?<br>'
+    +'3) 시트 탭 이름이 <b>‘한자’</b>, <b>‘해석’</b>이 맞나요?<br>'
+    +'4) 인터넷 연결을 확인하고 새로고침해 주세요.</div>'
+    +'<div class="spacer"></div>'
+    +'<button class="btn" onclick="location.reload()">다시 시도</button>'
+    +'</div>';
+}
+function showLoading(){
+  const m=document.querySelector("main");
+  if(!m) return;
+  if(document.getElementById("boot-loading")) return;
+  const d=document.createElement("div");
+  d.id="boot-loading";
+  d.style.cssText="position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;";
+  d.innerHTML='<div style="font-size:40px">📖</div>'
+    +'<div style="font-weight:800;font-size:16px;color:var(--ink)">구글 시트에서 자료를 불러오는 중…</div>'
+    +'<div style="font-size:13px;color:var(--gray2);font-weight:600">잠시만 기다려 주세요</div>';
+  document.body.appendChild(d);
+}
+function hideLoading(){ const d=document.getElementById("boot-loading"); if(d) d.remove(); }
+
+/* ---- 스플래시(시작 화면) 제어 ---- */
+function splashReady(){
+  const st=$("splash-status");
+  $("splash-status-text").textContent="연동 완료";
+  st.classList.add("ready");
+  const b=$("splash-start");
+  b.disabled=false; b.textContent="시작하기"; b.classList.add("live");
+}
+function splashError(msg){
+  const st=$("splash-status");
+  st.classList.add("err");
+  $("splash-status-text").textContent="연동에 실패했어요";
+  $("splash-start").style.display="none";
+  $("splash-retry").style.display="block";
+  showLoadError(msg);
+}
+(function(){
+  const start=$("splash-start"), retry=$("splash-retry");
+  if(start) start.addEventListener("click",()=>{
+    if(start.disabled) return;
+    const s=$("splash"); s.classList.add("hide");
+    setTimeout(()=>{ if(s) s.remove(); if(dataChangeNote){ toast(dataChangeNote); } },620);
+  });
+  if(retry) retry.addEventListener("click",()=>location.reload());
+})();
+
+(async function(){
+  const t0=Date.now();
+  const settle=fn=>setTimeout(fn, Math.max(0, 700-(Date.now()-t0)));
+  try{
+    const data = await fetchData();
+    const hj=buildHanja(data.hanja||[]);
+    HANJA=hj.arr; HUN=hj.hun;
+    BLOCKS=buildBlocks(data.sentences||[]);
+
+    if(!HANJA.length && !BLOCKS.length){
+      throw new Error("시트에서 한자와 문장 데이터를 모두 찾지 못했어요. 헤더(첫 줄)와 내용이 올바른지 확인해 주세요.");
+    }
+
+    await loadState();
+    saveState();
+    renderS1(); renderS2(); renderS3(); renderOriginal(); renderHanjaGrid();
+    settle(splashReady);
+  }catch(err){
+    settle(()=>splashError((err && err.message) ? err.message : String(err)));
+  }
+})();
+</script>
+</body>
+</html>

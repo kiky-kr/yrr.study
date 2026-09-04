@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한의학 한문 Web App</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{
+  --blue:#3182F6; --blue-dark:#1B64DA; --blue-soft:#E8F2FF;
+  --teal:#12B5B0;
+  --grad:linear-gradient(105deg,#3182F6 0%,#1F9FC9 55%,#12B5B0 100%);
+  --grad-red:linear-gradient(100deg,#F0445C 0%,#FB7A3C 100%);
+  --grad-soft:linear-gradient(105deg,#E8F2FF 0%,#E2F6F4 100%);
+  --bg:#F2F4F6; --card:#FFFFFF;
+  --ink:#191F28; --gray:#4E5968; --gray2:#8B95A1; --line:#E5E8EB;
+  --btn-gray:#DCE0E5; --btn-gray-h:#D0D5DB;
+  --green:#0FB36B; --green-soft:#E5F7EF;
+  --green-grad:linear-gradient(135deg,#EAF7EF 0%,#DDF1E4 100%);
+  --red:#F04452; --red-soft:#FDECEE;
+  --red-grad:linear-gradient(135deg,#FBEDEE 0%,#F8E1E4 100%);
+  --radius:22px; --radius-sm:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5; letter-spacing:-0.01em;}
+
+.app{display:flex; min-height:100vh;}
+.sidebar{width:236px; flex:none; background:#fff; border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:24px 18px; position:sticky; top:0; height:100vh;}
+.brand-wrap{position:relative; padding-bottom:16px;}
+.brand-wrap::after{content:""; position:absolute; left:0; bottom:0; width:46px; height:3px;
+  border-radius:3px; background:var(--grad);}
+.brand{font-size:18px; font-weight:800; letter-spacing:-0.03em; line-height:1.25; word-break:keep-all;}
+.brand-accent{
+  background:linear-gradient(100deg,#3182F6 0%,#12B5B0 52%,#0FB36B 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;}
+.brand-mid{font-size:13px; color:var(--gray); font-weight:700; letter-spacing:0.06em; margin-top:6px;}
+.brand-sub{font-size:12px; color:var(--gray2); font-weight:600; margin-top:5px;}
+.nav{margin-top:24px; display:flex; flex-direction:column; gap:5px;}
+.nav button{position:relative; display:flex; align-items:center; gap:10px; border:0; background:none; font-family:inherit;
+  cursor:pointer; text-align:left; padding:12px 13px; border-radius:13px; font-weight:700; font-size:14px; color:var(--gray);}
+.nav button .ic{font-size:17px;}
+.nav button.active{background:var(--grad-soft); color:var(--blue-dark);}
+.nav button.active::before{content:""; position:absolute; left:4px; top:50%; transform:translateY(-50%);
+  width:3px; height:18px; border-radius:3px; background:var(--grad);}
+.sidebar .grow{flex:1;}
+.save-pill{display:flex; align-items:center; gap:7px; background:var(--bg); border-radius:12px;
+  padding:11px 12px; font-size:12px; font-weight:700; color:var(--gray);}
+.save-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none;}
+.help-btn{margin-top:8px; border:0; background:none; font-family:inherit; cursor:pointer;
+  color:var(--blue); font-weight:700; font-size:12.5px; padding:8px; border-radius:10px;}
+
+main{flex:1; min-width:0; padding:30px 34px 60px;}
+.main-head{margin-bottom:18px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.main-head h1{font-size:24px; font-weight:800; margin:0; letter-spacing:-0.03em;}
+.main-head p{margin:4px 0 0; color:var(--gray2); font-size:14px; font-weight:500;}
+
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start;}
+.card{background:var(--card); border-radius:var(--radius); padding:24px;}
+.card h2{font-size:13px; font-weight:800; color:var(--gray2); margin:0 0 14px; letter-spacing:.03em;}
+.q-counter{font-weight:700; color:var(--gray2); font-size:12.5px;}
+
+.hanja-line{font-size:27px; font-weight:700; line-height:1.5; word-break:keep-all; margin-top:12px;}
+textarea,input{font-family:inherit; width:100%; border:1.5px solid var(--line); border-radius:14px;
+  padding:14px; font-size:16px; color:var(--ink); resize:none; outline:none; transition:border-color .15s; background:#fff;}
+textarea:focus,input:focus{border-color:var(--blue);}
+
+.btn{display:block; width:100%; border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:16px;
+  padding:15px; border-radius:14px; background:var(--grad); background-size:140% 140%; color:#fff;
+  box-shadow:0 4px 14px rgba(20,140,170,.18); transition:transform .06s, box-shadow .15s, opacity .15s;}
+.btn:hover{box-shadow:0 6px 18px rgba(20,140,170,.26);}
+.btn:active{transform:scale(.985);}
+.btn.ghost{background:var(--btn-gray); color:var(--gray); box-shadow:none;}
+.btn.ghost:hover{background:var(--btn-gray-h); box-shadow:none;}
+.btn.green{background:var(--green); box-shadow:0 4px 14px rgba(15,179,107,.2);} .btn.red{background:var(--red); box-shadow:none;}
+.btn.sm{font-size:14px; padding:12px;}
+.text-actions{display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding:0 4px;}
+.text-btn{border:0; background:none; cursor:pointer; font-family:inherit; font-weight:800; font-size:14px; padding:6px 4px;
+  transition:opacity .15s;}
+.text-btn:hover{opacity:.7;}
+.text-btn .gt{}
+.text-btn.grad-blue .gt, .text-btn.grad-red .gt{color:var(--gray);}
+.btn-row{display:flex; gap:10px;} .btn-row .btn{flex:1;}
+.spacer{height:10px;}
+.mini{border:0; background:var(--bg); color:var(--gray); font-family:inherit; font-weight:700; font-size:12.5px;
+  padding:8px 12px; border-radius:10px; cursor:pointer;}
+.mini:disabled{opacity:.38; cursor:default;}
+.kbd{display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:6px;
+  padding:1px 7px; font-size:11px; font-weight:700; color:var(--gray2);}
+
+.ans-placeholder{color:var(--gray2); font-size:14px; font-weight:600; text-align:center; padding:40px 10px;}
+.ans-line{margin-bottom:14px;}
+.ans-line .ah{font-size:15px; font-weight:700; color:var(--gray2); word-break:keep-all;}
+.ans-line .ai{font-size:17px; font-weight:600; line-height:1.55; margin-top:3px;}
+.src-badge{display:inline-block; background:var(--green-soft); color:var(--green); font-weight:800;
+  font-size:12.5px; padding:6px 12px; border-radius:999px; margin-top:6px;}
+.note{margin-top:14px; font-size:13px; color:var(--gray); line-height:1.65; background:var(--bg); border-radius:12px; padding:12px 14px; display:flex; gap:8px; align-items:flex-start;}
+.note-list{flex:1; min-width:0;}
+.note-item{margin:2px 0; word-break:keep-all;}
+.point{margin-top:12px; font-size:14px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft); border-radius:12px; padding:11px 14px;}
+
+.stats{display:flex; gap:10px; margin-bottom:16px;}
+.stat{flex:1; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-sm); padding:15px 10px; text-align:center;}
+.stat .n{font-size:24px; font-weight:800; line-height:1.1;}
+.stat .l{font-size:11.5px; color:var(--gray2); font-weight:600; margin-top:3px;}
+.stat.ok .n{color:var(--green);} .stat.no .n{color:var(--red);}
+
+.chips{display:flex; gap:8px; margin-bottom:14px;}
+.chip{border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13px; padding:8px 15px; border-radius:999px; background:var(--bg); color:var(--gray);}
+.chip.active{background:var(--ink); color:#fff;}
+.chip.ok.active{background:var(--green);} .chip.no.active{background:var(--red);}
+
+.quiz-top{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px;}
+.counter{font-size:13px; font-weight:700; color:var(--gray2);}
+
+.scene{perspective:1500px; margin-bottom:16px;}
+.flip{position:relative; width:100%; min-height:300px; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.7,.2,1);}
+.flip.flipped{transform:rotateY(180deg);}
+.face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:var(--card);
+  border:1px solid var(--line); border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;}
+.face.back{transform:rotateY(180deg);}
+.big-hanja{font-size:108px; font-weight:700; line-height:1;}
+.big-hun{font-size:34px; font-weight:800; line-height:1.35; word-break:keep-all;}
+.face .cap{font-size:12px; font-weight:700; color:var(--gray2); margin-top:16px; letter-spacing:.04em;}
+.verdict{font-size:13px; font-weight:800; margin-top:14px; padding:6px 15px; border-radius:999px;}
+.verdict.ok{background:var(--green-soft); color:var(--green);}
+.verdict.no{background:var(--red-soft); color:var(--red);}
+
+.reveal-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:34px 24px;
+  text-align:center; margin-bottom:16px; min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.reveal-card .hidden-h{font-size:108px; font-weight:700; line-height:1; animation:pop .3s ease;}
+@keyframes pop{from{opacity:0; transform:translateY(8px) scale(.96);} to{opacity:1; transform:none;}}
+.done-card{text-align:center; padding:44px 20px;}
+.done-card .emoji{font-size:50px;} .done-card h2{font-size:21px; font-weight:800; margin:12px 0 4px; color:var(--ink);}
+
+.review-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(72px,1fr)); gap:9px;}
+.review-item{background:var(--bg); border:2px solid transparent; border-radius:12px; padding:11px 4px; text-align:center; cursor:pointer; user-select:none;}
+.review-item .h{font-size:28px; font-weight:700; line-height:1;}
+.review-item .u{font-size:11px; color:var(--gray2); font-weight:600; margin-top:5px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.review-item.sel{border-color:var(--blue); background:var(--blue-soft);}
+.empty{grid-column:1/-1; text-align:center; color:var(--gray2); font-size:14px; font-weight:600; padding:34px 0;}
+.selact{margin-top:12px;}
+.selinfo{font-size:12.5px; font-weight:800; color:var(--blue-dark); margin-bottom:8px;}
+
+/* original tab */
+.orig-page{margin-bottom:16px;}
+.orig-head{font-size:13px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft);
+  display:inline-block; padding:6px 13px; border-radius:999px; margin-bottom:6px;}
+.orig-block{padding:14px 0; border-top:1px solid var(--line);}
+.orig-h{font-size:21px; font-weight:700; line-height:1.5; word-break:keep-all;}
+.orig-e{font-size:13px; color:var(--gray2); font-weight:600; margin-top:2px;}
+.orig-i{font-size:15px; color:var(--ink); font-weight:500; margin-top:8px; line-height:1.6;}
+.orig-n{font-size:12.5px; color:var(--gray); margin-top:7px; line-height:1.6; display:flex; gap:6px; align-items:flex-start;}
+.orig-pt{font-size:13px; font-weight:800; color:var(--blue-dark); margin-top:7px;}
+
+/* hanja list tab */
+.toggle-row{display:flex; gap:8px; margin-bottom:12px;}
+.tog{border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13.5px; padding:9px 16px; border-radius:999px; background:#fff; color:var(--gray);}
+.tog.active{background:var(--grad); color:#fff;}
+.legend{display:flex; gap:16px; margin-bottom:16px; flex-wrap:wrap;}
+.legend span{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--gray);}
+.legend .sw{width:14px; height:14px; border-radius:4px; border:2px solid;}
+.sw.g{border-color:var(--green); background:var(--green-soft);}
+.sw.r{border-color:var(--red); background:var(--red-soft);}
+.sw.x{border-color:var(--line); background:#fff;}
+.hanja-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:9px;}
+.hcell{border:2px solid var(--line); border-radius:13px; padding:11px 5px; text-align:center; background:#fff; transition:transform .18s, opacity .18s, box-shadow .18s, border-color .18s;}
+.hcell.ok{border-color:var(--green); background:var(--green-grad);}
+.hcell.no{border-color:var(--red); background:var(--red-grad);}
+.hcell .hc{font-size:30px; font-weight:700; line-height:1;}
+.hcell .hu{font-size:11px; color:var(--gray2); font-weight:600; margin-top:6px; line-height:1.2; word-break:keep-all;}
+.search-row{display:flex; gap:8px; margin-bottom:10px;}
+.search-row input{flex:1;}
+.hg-result{font-size:12.5px; font-weight:700; color:var(--blue-dark); margin-bottom:12px; min-height:16px;}
+.hanja-grid.searching .hcell:not(.hit){opacity:.25;}
+.hcell.hit{transform:scale(1.14); border-color:var(--blue); box-shadow:0 8px 24px rgba(49,130,246,.32); position:relative; z-index:3;}
+
+.toast{position:fixed; left:50%; bottom:30px; transform:translateX(-50%) translateY(10px); background:var(--ink); color:#fff;
+  font-weight:700; font-size:14px; padding:12px 20px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; z-index:200; white-space:nowrap;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:300; align-items:center; justify-content:center; padding:24px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff; border-radius:22px; max-width:480px; width:100%; padding:28px; max-height:86vh; overflow:auto;}
+.modal h3{margin:0 0 6px; font-size:19px; font-weight:800;}
+.modal .mode-now{display:inline-block; background:var(--green-soft); color:var(--green); font-size:12px; font-weight:800; padding:5px 11px; border-radius:999px; margin-bottom:14px;}
+.modal ol{margin:0; padding-left:20px;}
+.modal li{font-size:14.5px; color:var(--gray); line-height:1.7; margin-bottom:10px;}
+.modal li b{color:var(--ink);}
+.modal .close{margin-top:8px;}
+
+.view{display:none;} .view.active{display:block;}
+.reset-row{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+.reset-row.end{justify-content:flex-end;}
+
+@media (max-width:900px){
+  .app{flex-direction:column;}
+  .sidebar{width:100%; height:auto; position:static; flex-direction:row; align-items:center; flex-wrap:wrap; gap:10px; padding:16px;}
+  .sidebar .brand-wrap{margin-right:auto;}
+  .nav{flex-direction:row; margin-top:0; flex-wrap:wrap;}
+  .sidebar .grow{display:none;}
+  main{padding:20px 18px 60px;}
+  .cols{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand-wrap">
+      <div class="brand">한의학 한문 <span class="brand-accent">Web App</span></div>
+      <div class="brand-mid">By. 25 끼끼</div>
+      <div class="brand-sub">예과 1학년 1학기 기말 · 정헌영 교수님</div>
+    </div>
+    <nav class="nav">
+      <button class="active" data-view="1"><span class="ic">📝</span>해석 쓰기</button>
+      <button data-view="2"><span class="ic">🀄</span>한자 → 훈음</button>
+      <button data-view="3"><span class="ic">💡</span>훈음 → 한자</button>
+      <button data-view="4"><span class="ic">📜</span>원문 보기</button>
+      <button data-view="5"><span class="ic">🔠</span>한자 목록</button>
+    </nav>
+    <div class="grow"></div>
+    <div class="save-pill"><span class="dot"></span><span id="save-text">자동 저장 중</span></div>
+    <button class="help-btn" id="help-open">저장은 어떻게 되나요?</button>
+  </aside>
+
+  <main>
+    <!-- VIEW 1 : 해석 쓰기 -->
+    <section id="view1" class="view active">
+      <div class="main-head">
+        <div><h1>해석 쓰기</h1><p>구분선으로 묶인 문장 단위 · 한자만 보고 해석을 써보세요 · 총 <span id="s1-total">0</span>문제</p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s1-shuffle">🔀 순서 셔플</button><button class="mini" id="s1-restore">↩︎ 원래 순서</button></div>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <div class="card">
+            <h2>문제 <span class="q-counter" id="s1-counter"></span></h2>
+            <div id="s1-hanja"></div>
+            <div class="spacer"></div><div class="spacer"></div>
+            <textarea id="s1-input" rows="4" placeholder="이 묶음의 해석을 직접 써보세요"></textarea>
+            <div class="spacer"></div>
+            <button class="btn" id="s1-check">정답 확인</button>
+            <div class="spacer"></div>
+            <div class="btn-row">
+              <button class="btn ghost" id="s1-prev">← 이전</button>
+              <button class="btn ghost" id="s1-next">다음 →</button>
+            </div>
+          </div>
+          <div class="text-actions">
+            <button class="text-btn grad-red" id="s1-retry"><span class="gt">틀린 문제만 다시</span></button>
+            <button class="text-btn grad-blue" id="s1-reset"><span class="gt">전체 리셋</span></button>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s1-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s1-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s1-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="spacer"></div><div class="spacer"></div>
+          <h2>정답 (원문 해석)</h2>
+          <div id="s1-answer"><div class="ans-placeholder">‘정답 확인’을 누르면<br>여기에 원문 해석과 출처가 표시됩니다</div></div>
+          <div id="s1-grade-area" style="display:none">
+            <div class="spacer"></div>
+            <div class="btn-row">
+              <button class="btn red" id="s1-wrong">✕ 틀렸어요</button>
+              <button class="btn green" id="s1-right">✓ 맞았어요</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2 : 한자 → 훈음 -->
+    <section id="view2" class="view">
+      <div class="main-head"><div><h1>한자 → 훈음</h1>
+        <p>한자를 보고 훈·음 입력 → <span class="kbd">Enter</span> 채점 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s2-shuffle">🔀 셔플</button><button class="mini" id="s2-restore">↩︎ 원래 순서</button></div></div>
+      <div class="cols">
+        <div class="card">
+          <div id="s2-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="s2-back">← 이전 문제</button>
+                <button class="mini" id="s2-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="s2-counter"></span>
+            </div>
+            <div class="scene">
+              <div class="flip" id="s2-flip">
+                <div class="face front"><div class="big-hanja" id="s2-hanja"></div><div class="cap">훈과 음을 입력하세요</div></div>
+                <div class="face back"><div class="cap">정답</div><div class="big-hun" id="s2-answer"></div><div class="verdict" id="s2-verdict"></div></div>
+              </div>
+            </div>
+            <div id="s2-input-area">
+              <input id="s2-input" type="text" placeholder="예: 덮을 개" autocomplete="off">
+              <div class="spacer"></div>
+              <button class="btn" id="s2-submit">정답 입력 (Enter)</button>
+            </div>
+            <div id="s2-next-area" style="display:none">
+              <div class="btn-row">
+                <button class="btn red" id="s2-wrong">✕ 틀림 (←)</button>
+                <button class="btn green" id="s2-right">✓ 맞음 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="s2-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2>
+            <p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s2-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s2-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s2-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="2">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="2">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="2">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="s2-review" class="review-list"></div>
+          <div id="s2-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="s2-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="s2-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3 : 훈음 → 한자 -->
+    <section id="view3" class="view">
+      <div class="main-head"><div><h1>훈음 → 한자</h1>
+        <p>훈·음을 보고 떠올린 뒤 <span class="kbd">Space</span> <span class="kbd">Enter</span> 정답 보기 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="s3-shuffle">🔀 셔플</button><button class="mini" id="s3-restore">↩︎ 원래 순서</button></div></div>
+      <div class="cols">
+        <div class="card">
+          <div id="s3-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="s3-back">← 이전 문제</button>
+                <button class="mini" id="s3-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="s3-counter"></span>
+            </div>
+            <div class="reveal-card">
+              <div class="big-hun" id="s3-hun"></div>
+              <div class="cap" id="s3-hint">머릿속으로 한자를 떠올려보세요</div>
+              <div id="s3-hanja-wrap" style="display:none; margin-top:16px;"><div class="hidden-h" id="s3-hanja"></div></div>
+            </div>
+            <div id="s3-reveal-area"><button class="btn" id="s3-reveal">정답 보기 (Space)</button></div>
+            <div id="s3-grade-area" style="display:none">
+              <div style="text-align:center; font-size:12px; font-weight:700; color:var(--gray2); margin-bottom:10px;">맞았나요?</div>
+              <div class="btn-row">
+                <button class="btn red" id="s3-wrong">✕ 틀렸어요 (←)</button>
+                <button class="btn green" id="s3-right">✓ 맞았어요 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="s3-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2>
+            <p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="s3-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="s3-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="s3-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="3">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="3">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="3">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="s3-review" class="review-list"></div>
+          <div id="s3-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="s3-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="s3-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4 : 원문 보기 -->
+    <section id="view4" class="view">
+      <div class="main-head"><div><h1>원문 보기</h1><p>전체 원문 · 한자 / 음 / 해석 / 주석</p></div></div>
+      <div class="card"><div id="orig-body"></div></div>
+    </section>
+
+    <!-- VIEW 5 : 한자 목록 -->
+    <section id="view5" class="view">
+      <div class="main-head"><div><h1>전체 한자 목록</h1><p>맞은 한자 = 초록, 틀린 한자 = 빨강, 아직 안 한 한자 = 회색 · 총 <span id="hg-total">0</span>자</p></div></div>
+      <div class="toggle-row">
+        <button class="tog active" data-tg="2">한자 → 훈음 기준</button>
+        <button class="tog" data-tg="3">훈음 → 한자 기준</button>
+      </div>
+      <div class="legend">
+        <span><span class="sw g"></span>맞음 <b id="hg-ok" style="margin-left:2px">0</b></span>
+        <span><span class="sw r"></span>틀림 <b id="hg-no" style="margin-left:2px">0</b></span>
+        <span><span class="sw x"></span>안 함 <b id="hg-rest" style="margin-left:2px">0</b></span>
+      </div>
+      <div class="search-row">
+        <input id="hg-search" type="text" placeholder="음·훈 또는 한자 검색 (예: 덮을 개 · 蓋 · 개)" autocomplete="off">
+        <button class="mini" id="hg-clear">닫기</button>
+      </div>
+      <div id="hg-result" class="hg-result"></div>
+      <div id="hanja-grid" class="hanja-grid"></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-bg" id="help-bg">
+  <div class="modal">
+    <h3>저장은 자동으로 됩니다</h3>
+    <div class="mode-now" id="mode-now">저장 위치 확인 중…</div>
+    <ol>
+      <li><b>따로 누를 버튼이 없어요.</b> 답을 쓰거나 채점하면 그 즉시 자동 저장됩니다. 사이드바에 잠깐 “저장됨 ✓”이 뜨면 저장된 거예요.</li>
+      <li><b>같은 곳에서 다시 열면 이어집니다.</b> 풀던 위치, 작성한 해석, 맞은·틀린 기록이 그대로 남아요.</li>
+      <li><b>아이패드에서 계속 쓰려면:</b> 이 파일을 <b>다운로드</b>해서 <b>사파리(또는 크롬)</b>로 여세요. 그 브라우저에 저장되고, 다음에 <b>같은 브라우저</b>로 열면 이어집니다. 홈 화면에 추가해두면 앱처럼 쓸 수 있어요.</li>
+      <li><b>주의:</b> 시크릿(비공개) 모드로 열거나 브라우저 기록·사이트 데이터를 지우면 저장 내용도 함께 사라집니다.</li>
+      <li><b>1학기 기말 범위의 한자·해석이 담겨 있어요.</b> 인터넷 없이도 작동하며, 모든 진행 기록은 이 기기 브라우저에 저장됩니다.</li>
+    </ol>
+    <button class="btn close" id="help-close">알겠어요</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   데이터 소스 : 코드 내장 (1학기 기말 — 고정 데이터)
+   ---------------------------------------------------------------------
+   1학기는 이미 끝난 시험이라 데이터를 코드에 직접 담았습니다.
+   (구글 시트 연동 없음 — 파일 하나로 바로 작동)
+   ===================================================================== */
+const BLOCKS = [
+{p:1,L:[
+["蓋方藥 而外於本草","개방약 이외어본초","대개 처방과 약을 사용하는 것이 신농본초경에서 벗어나거나"],
+["理趣 而外於素難 及張劉李朱","이취 이외어소난 급장유이주","이치와 취지가 <소문>과 <난경> 및 류완소, 장종정, 이고, 주진형에서 벗어난다면"],
+["縱有小方捷法 終不是大家數","종유소방첩법 종불시대가수","비록 쉽고 빠른 방법이 있을지라도 끝내 대가의 술수는 아니기 때문에"],
+["愼不可爲其誣惑","신불가위기무혹","삼가 그것에 속고 미혹되어서는 안 된다."]
+],n:"本草: 신농본초경을 가리킴. 최초의 약물학 저서. / 張劉李朱: 금원사대가라 부르는 류완소·장종정·이고·주진형. / 縱: 비록. 終: 끝내, 마침내. / 誣惑: 속고 미혹되다.",pt:"지식을 넓히고 검증받아라."},
+
+{p:2,L:[
+["入門書既融會貫通而後 可成一小醫","입문서기융회관통이후 가성일소의","'의학입문'을 이미 자세히 이해하고 꿰뚫어 통한 뒤에 하나의 의사(평범한 의사)를 이룰 수 있다."],
+["愈加靜坐 玩讀儒書","유가정좌 완독유서","더욱 가만히 앉아서 유교의 서적을 깊이 생각하면서 읽어서"],
+["稍知陰陽消長","초지음양소장","조금 음양이 소장하는 것을 알았으면"],
+["以已驗人","이기험인","자기로써 타인에게 증험하고,"],
+["由親及疎","유친급소","친한 사람으로부터 소원한 사람에게 미친다."]
+],n:"融會: 자세히 이해함. 貫通: 꿰뚫어 통함. 小醫: 평범한 의사. / 愈: 여기서는 '더욱 유'. / 消長: 쇠하여 사라짐과 성하여 자라남. / 已: 자기. 人: 타인.",pt:""},
+
+{p:3,L:[
+["自料作車於室 天下合轍然後","자료작차어실 천하 합철연후","스스로 헤아려 방에서 수레를 만들어서 천하의 수레바퀴와 합치된 뒤에"],
+["可以應人之求","가이응인지구","타인의 요구에 대응할 수 있다."]
+],n:"自料作車於室 天下合轍然後: 보편적이며 합당한 원리를 뜻함.",pt:"진료를 할 수 있는 자격."},
+
+{p:3,L:[
+["及其行持","급기행지","또한 행동과 마음가짐에 있어서는"],
+["尤不可無定規","우불가무정규","더욱 일정한 규칙이 없어서는 안된다."]
+],n:"",pt:""},
+
+{p:4,L:[
+["每五鼓 淸心靜坐","매오고 청심정좌","매일 오고에 마음을 맑게 하고 가만히 앉고"],
+["及早起 仍玩儒書一二 以雪心源","급조기 잉완유서일이 이설심원","또한 일찍 일어나 거듭 유서 한두 권을 읽어서 마음의 근원을 씻어낸다."],
+["(時時 不失平旦之氣 爲妙)","시시 불실평단지기 위묘","자주자주 평단지기를 잃지 않는 것이 중요하다."]
+],n:"五鼓: 오경과 같음. 새벽 3~5시. / 仍: 인할 잉. 雪: 씻을 설. / 平旦之氣: 평단은 인시로 새벽 3~5시. 평단지기는 새벽의 안정된 상태.",pt:"진료에 임하는 태도 1"},
+
+{p:5,L:[
+["及其爲人診視 先問證起何日","급기위인진시 선문증기하일","또한 타인을 위하여 진찰할 때는 먼저 병증이 어느 날에 일어났는지 묻되"],
+["從頭至足 照依傷寒初證 雜證及內外傷辨法 逐一詳問","종두지족 조의상한초증 잡증급내외상변법 축일상문","처음부터 끝까지 상한의 초증과 잡증및 내외상변법에 의거하여 대조하여 하나씩 상세히 묻는다."]
+],n:"照: 대조하다. 傷寒: 한사가 침입하여 생긴 외감열성병. 內傷: 칠정·음식·노권·방사 등으로 내부 장기가 손상된 병증. 外感: 六淫의 침입으로 발생하는 병증. 雜證: 상한병이 7일을 지나도 낫지 않은 병증.",pt:""},
+
+{p:5,L:[
+["證雖重而門類明白者","증수중이문류명백자","병증이 위중하더라도 문류가 명백한 경우에는"],
+["不須診脈 亦可議方","불수진맥 역가의방","반드시 진맥을 하지 않더라도 또한 처방을 의논할 수 있다."]
+],n:"",pt:""},
+
+{p:6,L:[
+["證雖輕而題目未定者","증수경이제목미정자","(그러나) 병증이 비록 가볍더라도 제목을 (분류가) 정할 수 없는 경우에는"],
+["必須仔細察脈","필수자세찰맥","반드시 자세하게 맥을 살펴야 한다."]
+],n:"仔細: 아주 작고 하찮은 부분까지 구체적이고 분명함.",pt:""},
+
+{p:6,L:[
+["(男必先左後右 女必先右後左 所以順陰陽升降也)","남필선좌후우 녀필선우후좌 소이순음양승강야","남자는 반드시 먼저 왼쪽을 진맥하고 나중에 오른쪽을 진맥하며, 여자는 반드시 먼저 오른쪽을 진맥하고 나중에 왼쪽을 진맥하는 것은 음양이 승강하는 이치에 순응하는 까닭이다."]
+],n:"男左女右. / 男·陽·天氣·左旋, 女·陰·地氣·右旋.",pt:""},
+
+{p:6,L:[
+["先單看 以知各經隱曲 次總看 以決虛實死生","선단간 이지각경은곡 차총간 이결허실사생","먼저는 단간을 해서 각 경맥의 숨은 사정을 알고, 다음에 총간을 해서 허실과 사생을 결정한다."]
+],n:"單看: 촌구맥을 좌우, 다시 촌·관·척으로 나누어 한 부분씩 진찰. 隱曲: 숨겨져 있는 자세한 사정. 總看: 단번에 전체를 진맥.",pt:"자세히 진찰하라!"},
+
+{p:7,L:[
+["卽診後 對病家 言必以實","즉진후 대병가 언필이실","진맥한 뒤에는 병가에 대하여 반드시 사실을 말하되"]
+],n:"實: 열매 실, 사실·진실.",pt:""},
+
+{p:7,L:[
+["或虛或實 可治易治難治 說出幾分證候 以驗自己精神","혹허혹실 가치이치난치 설출기분증후 이험자기정신","혹은 허한지 혹은 실한지, 치료할 수 있는지 쉽게 치료할 수 있는지 치료하기 어려운지, 증후가 어느 정도인지를 말해서 자기의 정신을 증험한다."]
+],n:"幾分: '얼마나', '어느 정도'의 뜻.",pt:""},
+
+{p:7,L:[
+["如有察未及者 直令說明 不可牽强文飾","여유찰미급자 직령설명 불가견강문식","가령 진찰이 미치지 못한 경우는(완전하지 못함), 곧바로 설명해야지 말을 그럴듯하게 꾸미고 억지로 끌어 붙여서는 안 되며"],
+["務宜從容擬議 不可急迫激切 以致恐嚇","무의종용의의 불가급박격절 이치공하","조용히 헤아리고 의논함을 힘써야 하고 매우 급박하고 격렬하게 위협해서는 안 된다."]
+],n:"牽强文飾: 말이나 글을 억지로 끌어다 붙이고 꾸밈. 從容: 침착하고 덤비지 않음. 擬議: 시비곡직을 헤아려 가부를 의논함. 急迫: 매우 급함. 激切: 격렬하고 엄격함. 恐嚇: 놀라게 하고 위협함.",pt:"진실되게 행동하라!"},
+
+{p:8,L:[
+["如診婦女 須託其至親","여진부녀 수탁기지친","만약 부녀를 진찰하면 반드시 그 부모에게 부탁을 해서"],
+["先問證色與舌 及所飮食 然後","선문증색여설 급소음식 연후","먼저 병증과 안색과 혀 그리고 음식을 먹는 바를 살핀다. 그런 뒤에"],
+["隨其所便 或證重而就床隔帳 診之","수기소편 혹증중이취상격장 진지","그 편리한 바를 따라서 혹시 병증이 위중하면 침상으로 가서 장막을 사이에 두고 진찰하고,"],
+["或證輕而就門 隔帷診之","혹증경이취문 격유진지","혹시 병증이 가벼우면 문(방문)에 가서 휘장을 치고 진찰하되"],
+["亦必以薄紗罩手","역필이박사조수","또한 반드시 얇은 헝겊으로 손을 가린다."]
+],n:"至親: 부모와 형제. 薄紗: 얇은 헝겊. 罩: 보쌈 조, 가리다·덮다.",pt:""},
+
+{p:9,L:[
+["(貧家 不便 醫者 自袖薄紗)","빈가 불편 의자 자수박사","가난한 사람은 여유롭지 않으니 의사가 스스로 얇은 헝겊을 소매에 넣고 다닌다."]
+],n:"",pt:""},
+
+{p:9,L:[
+["寡婦 室女 愈加敬謹 此非小節","과부 실녀 유가경근 차비소절","과부와 처녀는 더욱 조심하고 삼가야 하니 이는 하찮은 예절이 아니다."]
+],n:"室女: 처녀. 敬謹: 공경하고 삼감. 小節: 대수롭지 않은 예절.",pt:"여성을 대할 때 더욱 조심하라!"},
+
+{p:10,L:[
+["及其諭病 須明白開論辨折","급기유병 수명백개론변절","또한 그 병을 깨우침은 반드시 명백히 논거를 펼치고 구분하고 판단해서"],
+["斷其爲內傷外感 或屬雜病 或屬陰虛","단기위내상외감 혹속잡병 혹속음허","그것이(병증) 내상인지 외감인지, 혹은 잡병에 속하는지 혹은 음허에 속하는지"],
+["或內傷而兼外感幾分 或外感而兼內傷幾分","혹내상이겸외감기분 혹외감이겸내상기분","혹은 내상에 외감을 어느 정도 겸했는지 혹은 외감에 내상을 어느 정도 겸했는지를 판단한다."]
+],n:"開論: 이론을 펼치다. 辨折: 구분하고 판단함. 斷: 끊을 단, 판단하다.",pt:"질병을 명확히 분석 판단한다!"},
+
+{p:10,L:[
+["論方 據脈下所定 不可少有隱秘","논방 거맥하소정 불가소유은비","처방을 논함에 진맥을 해서 정한 바에 의거해서 조금이라도 숨기고 감추어서는 안 된다."]
+],n:"據: 의거할 거, 근거하다. 隱秘: 숨겨 비밀로 함.",pt:""},
+
+{p:11,L:[
+["依古成法 參酌時宜年紀 與所處順逆 及曾服某藥否","의고성법 참작시의년기 여소처순역 급증복모약부/비","옛날에 이루어진 방법에 의거해서 시기에 맞는지, 나이와 거처하는 곳의 순역과 일찍이 어떤 약을 복용했는지를 참작한다."],
+["(女人 經水胎産 男子 房室勞逸)","여인 경수태산 남자 방실노일","여인은 경수와 임신 및 출산을, 남자는 방실과 노일을 묻는다."]
+],n:"否: 아닐 부, ~하지 않았는가? 參酌: 참고하여 알맞게 헤아림. 時宜: 그 당시의 사정에 맞음. 年紀: 나이. 經水胎産: 경수는 월경, 태산은 임신과 출산. 房室勞逸: 방실은 성생활, 노일은 육체적 고됨과 편안함.",pt:""},
+
+{p:11,L:[
+["雖本於古而不泥於古 眞如見其臟腑","수본어고이불니어고 진여견기장부","비록 옛 것에 근본을 삼지만 옛 것에만 구애되지 않아서 진실로 그 장부를 본 것과 같은"],
+["然後 此心無疑 於人亦不枉誤","연후 차심무의 어인역불왕오","그러한 뒤에 이 마음에(의사의 진찰하는 마음) 의심이 없고 타인에 대하여 잘못됨이 없을 것이다."]
+],n:"泥: 진흙 니, 구애되다. 枉誤: 원통하고 잘못됨.",pt:"검증된 방법을 따른다!"},
+
+{p:12,L:[
+["用藥之際 尤宜仔細 某經病 以某藥爲君 某爲監制 某爲引使","용약지제 우의자세 모경병 이모약위군 모위감제 모위인사","약을 사용할 때에는 더욱 자세해야 한다. (어느 경병에는 어느 약을 군약으로 삼고 어느 것을 단속하고 억제하는 것으로 삼고, 어느 것을 인경과 사경으로 삼는다.)"]
+],n:"監: 살피다. 制: 억제하다. 使: 시키다. 君·監制·引使: 처방 약제의 역할, 군신좌사를 가리킴.",pt:""},
+
+{p:12,L:[
+["凡劑料 本當出自醫家 庶乎新陳炮灸 一一合則","범제료 본당출자의가 서호신진포자 일일합즉","무릇 약재들은 본래 당연히 의가로부터 나와야 신진과 포자를 하나하나 법칙에 거의 합당하거늘"],
+["況緊急丸散 豈病家所能卒辨","항긴급환산 기병가소능졸판","하물며 긴급하게 사용해야 할 환약과 산약을 어찌 환자가 갑자기 준비 할 수 있겠는가?"]
+],n:"劑: 조제한 약. 自: ~로부터. 庶乎: '거의 하다'의 뜻. 卒: 갑자기. 辨: 힘쓸 판.",pt:""},
+
+{p:13,L:[
+["但有病家必欲自製者 聽其意向","단유병가필욕자제자 청기의향","다만 환자 반드시 스스로 제조하고 싶어 하는 사람이 있으면 그 의향(생각)을 들어보고"],
+["須依本草註下古法 修合 不可逞巧 以傷藥力","수의본초주하고법 수합 불가령교 이상약력","반드시 신농본초경의 주석의 옛날 방식에 의거해서 수치법수에 합당해야지, 제멋대로 기이하게 해서 약력을 손상시켜서는 안 된다."]
+],n:"意向: 생각·의사·마음. 逞: 제멋대로 하다. 巧: 기이하다.",pt:""},
+
+{p:13,L:[
+["病機 稍有疑滯而藥不甚效者 姑待五鼓","병기 초유의체이약불심효자 고대오고","병기에 조금이라도 의심되고 막힘이 있어서 약이 효과가 크지 않은 경우는 잠시 새벽이 되기를 기다려"],
+["靜坐潛心 推究其源 再爲診察 改方 必無不愈","정좌잠심 추구기원 재위진찰 개방 필무불유","조용히 앉아서 마음을 가라앉히고서 병의 근원을 끝까지 연구하고, 다시 진찰을 해서 처방을 고치면 반드시 낫지 않음이 없다."]
+],n:"姑: 잠시·잠깐. 病機: 질병의 기전. 五鼓: 오경, 새벽 3~5시. 潛心: 마음을 가라앉힘. 推究: 끝까지 규명해 냄.",pt:""},
+
+{p:14,L:[
+["治病旣愈 亦醫家分內事也","치병기유 역의가분내사야","병을 치료하고서 낫는 것은 또한 의가의 직분으로서 당연히 해야 할 일이다."]
+],n:"分內事: '분수 안의 일', 맡은 직분으로서 당연히 해야 할 일.",pt:""},
+
+{p:14,L:[
+["縱守淸素 藉此治生 亦不可過取重索 但當聽其所酬","종수청소 자차치생 역불가과취중색 단당청기소수","비록 청렴하고 소박함을 지키면서 의업에 의지해서 생계를 꾸릴지라도 역시 지나치게 받고 요구해서는 안 되며 단지 그 보답하는 바를 받아야 마땅하다."]
+],n:"藉: 의지하다·빌리다. 索: 찾다·요구하다. 聽: 받아들이다. 酬: 보답. 治生: 생계를 꾸리다.",pt:""},
+
+{p:14,L:[
+["如病家赤貧 一毫不取 尤見其仁且廉也","여병가적빈 일호불취 우견기인차렴야","만약 환자의 집안이 매우 가난하면 아주 조금이라도 받지 않으니, 더욱 그의 (의사) 인자함과 청렴함이 드러날 것이다."]
+],n:"赤貧: 아주 가난하여 아무것도 없음. 一毫: 아주 작은 정도.",pt:""},
+
+{p:15,L:[
+["蓋人不能報 天必報之 如是而立心而術有不明不行者哉","개인불능보 천필보지 여시이립심이술유불명불행자재","대개 사람이 보답하지 않으면 반드시 하늘이 보답할 것이리니, 이와 같이 마음을 세운다면 의술이 밝지 않고 행해지지 않을 것이 있겠는가?"]
+],n:"哉: 어조사 재, 감탄·반문·의문 등을 나타냄.",pt:""},
+
+{p:15,L:[
+["明善又進而言 曰先生之敎悉矣 但不識某等 業可以成次否","명선우진이언 왈선생지교실의 단불식모등 업가이성차부","명선이 다시 나와서 말하기를, “선생님의 가르침을 알겠습니다. 다만 저희들이 의업을 단계적으로 성취할 수 있을지 모르겠습니다.”"]
+],n:"某等: 자신을 낮추어 지칭하는 말, 저희들. 可以: ~할 수 있다. 成次: 단계적으로 성취함. 矣: 어조사 의. 否: 의문의 뜻, ~는가?",pt:""},
+
+{p:15,L:[
+["曰子皆故家業儒 又多精明警敏 他日 大有所悟","왈자개고가업유 우다정명경민 타일 대유소오","대답하기를 “그대들 모두는 유학에 힘써온 오래된 가문이며 또한 많이 정신이 맑고 슬기로워서 훗날에 크게 깨달음이 있을 것이다."]
+],n:"故家業儒: 유학에 힘써온 오래된 집안. 精明: 깨끗하고 맑음. 警敏: 민첩함·슬기로움.",pt:""},
+
+{p:16,L:[
+["煩將素問本草 幷東垣十書 劉河間原病式 刪繁校正","번장소문본초 병동원십서 유하간원병식 산번교정","번거롭더라도 소문과 신농본초와 아울러 동원십서와 유하간의 원병식을 가져가서 번잡한 것은 깎아내고 (잘못된 것은) 대조해서 바로 잡고,"]
+],n:"東垣十書: 이동원이 지은 책들을 모은 것. 劉河間原病式: 유완소의 [소문현기원병식]. 刪繁: 번잡한 것을 깎아냄. 校正: 대조하여 바로 잡음. 煩: 번거롭다. 幷: 나란히·함께.",pt:""},
+
+{p:16,L:[
+["更賴四方賢哲 將前經書本草 合爲醫學大全","경뢰사방현철 장전경서본초 합위의학대전","다시 사방의 현명하고 이치에 밝은 사람들에게 의지해서 앞의 경전들과 본초서를 가지고 합쳐서 의학대전을 만들되,"]
+],n:"賢哲: 어질고 사리에 밝음. 大全: 어떤 분야의 내용을 빠짐없이 넣어 편찬한 책.",pt:""},
+
+{p:16,L:[
+["古今方論 悉皆附入 或作箋註 然後","고금방론 실개부입 혹작전주 연후","고금의 처방과 이론을 모두 다 붙여 넣고 주석을 지어라. 그러한 뒤에"]
+],n:"箋註: 본문의 뜻을 설명한 주해.",pt:""},
+
+{p:17,L:[
+["醫書儒籍 幷明於昭代 亦不負爲中土之人也","의서유적 병명어소대 역불부위중토지인야","의서와 유적이 나란히 태평한 세상에 빛나서 또한 중토지인이 된 것을 저버리지 않는다."]
+],n:"昭代: 태평한 세상. 中土之人: 중원의 사람, 중국인. 負: 저버리다·배반하다.",pt:""},
+
+{p:17,L:[
+["明善 曰有見而後 可以著書 小子 能知入門 足矣","명선 왈유견이후 가이저서 소자 능지입문 족의","명선이 말하였다. ”(자신만의) 견해가 있은 뒤에야 책을 저술할 수 있으니, 저희는 입문을 알 수 있으면 족합니다.“"]
+],n:"著書: 직접 써서 지은 책. 小子: 자기를 겸손하게 일컫는 말. 著: 저술하다. 足: 넉넉하다·충족하다.",pt:""},
+
+{p:18,L:[
+["曰入門 不過捷徑之類耳 況集書與著書 不同","왈인문 불과첩경지류이 항집서여저서 부동","내가 말하였다. 의학입문은 지름길의 종류에 지나지 않을 뿐이다. 하물며 집서는 저서와 같지 않으니,"]
+],n:"捷徑: 지름길·빠른 방법. 與: 더불 여. 耳: ~뿐이다.",pt:""},
+
+{p:18,L:[
+["如張劉李朱 發前人未發 乃獨得之見 眞可愛而可傳也","여장류리주 발전인미발 내독득지견 진가애이가전야","장자화, 유하간, 이동원, 주단계 같은 분들은 전인들이 밝히지 못한 것을 밝혔고, 곧 혼자만이 터득한 견해이니 진실로 아낄 만하고 전할만하다."]
+],n:"前人: 예전 사람. 乃: 바로·곧. 獨得: 자기 혼자 터득함. 發: 밝히다. 見: 견해.",pt:""},
+
+{p:19,L:[
+["若某所集 不過古人陳言而類次之耳","약모소집 불과고인진언이류차지이","모가 집성한 것과 같은 것은 고인들의 말을 열거하고 종류에 따라 순서를 매긴 것에 지나지 않을 뿐이다."]
+],n:"陳言: 낡고 케케묵은 말. 類次: 종류에 따라 차례를 매김. 次: 차례·순서.",pt:""},
+
+{p:19,L:[
+["放下筆墨 已不識其中意義者有之 若任爲己見 冒負虛名 深可慚懼","방하필묵 이불식기중의의자유지 약임위기견 모부허명 심가참구","필묵을 내려놓음에(저서를 마침에) 이미 그 안의 뜻을 알지 못하는 것이 있거늘, 만약 마음대로 자기의 소견으로 한다면 헛된 명성을 입게 되니 매우 부끄럽고 두렵다."]
+],n:"放下: 내려놓다. 己見: 자신의 소견. 冒負: 뒤집어쓰다. 虛名: 헛되게 난 이름. 慚懼: 부끄럽고 두려움. 任: 마음대로. 冒: 덮다.",pt:""},
+
+{p:20,L:[
+["況病骨稜層 未嘗見諸躬行","황병골릉층 미상견저궁행","하물며 몸이 허약하고 뼈가 드러나서 일찍이 견해를 모두 몸소 행하지 못했다."]
+],n:"病骨: 허약한 몸. 躬行: 몸소 행함. 嘗: 시험하다·일찍이.",pt:""},
+
+{p:20,L:[
+["惟一念好生 欲與同志 共守內外門戶 不至差謬太甚耳","유일념호생 욕여동지 공수내외문호 부치차류태심이","오직 살리기를 좋아하는 마음 하나로 동지들과 더불어 함께 내외의 문호를 지키고 어긋나고 잘못됨이 매우 심한데 이르지 않기를 바랄 뿐이다."]
+],n:"差謬: 어긋나고 잘못됨. 戶: 출입구.",pt:""},
+
+{p:20,L:[
+["若必欲知之眞而行之熟 惟子與盧友 尙其勉之","약필욕지지진이행지숙 유자여노우 상기면지","만약 반드시 진실을 알고 익숙하게 시행하고자 한다면 오직 자네(명선)와 노우는 더욱 진실로 힘써야 한다."]
+],n:"尙: 오히려·또한·더욱이.",pt:""},
+
+{p:21,L:[
+["盧子 又進而言曰 藹 質弱且鈍 敢丐一言爲約","노자 우진이언왈 애 질약차둔 감개일언위약","노정화가 다시 나와서 말하였다. 저는 자질이 약하고 또한 둔하니 감히 한마디로 요약하여 주시기를 바랍니다."]
+],n:"盧子·藹: 노정화를 가리킴. 質: 자질. 丐: 빌다·구하다. 約: 줄이다.",pt:""},
+
+{p:21,L:[
+["曰不欺而已矣 讀入門書而不從頭至尾 靈精熟得一方一論 而便謂能醫者 欺也","왈불기이이의 독입문서이부종두지미 영정숙득일방일론 이변위능의자 기야","내가 말하였다. 속이지 않을 뿐이다. 의학입문을 읽되 처음부터 끝까지 능통하지 못하고 한 가지 처방과 한 가지 이론에 숙달하고서 문득 능력 있는 의사라고 말하는 것은 속임이다."]
+],n:"靈精: 능통하다. 熟得: 익숙하다. 精: 정통하다. 便: 문득 변. 而已矣: 강조 허사.",pt:""},
+
+{p:22,L:[
+["熟讀而不思悟融會貫通者 欺也 診脈而不以實告者 欺也","숙독이불사오융회관통자 기야 진맥이불이실고자 기야","숙독하고서 생각하여 깨닫지 못하고 자세히 이해하지 못하고 통달하지 못하는 것은 속임이다. 진맥을 하고서 진실을 말하지 않는 것은 속임이다."]
+],n:"思悟: 생각하고 깨달음. 融會: 자세히 이해함. 貫通: 꿰뚫어 통함. 會: 이해하다.",pt:""},
+
+{p:22,L:[
+["論方用藥 潦草而不精詳者 欺也","논방용약 료초이부정상자 기야","처방을 논하고 약을 사용함에 초라하고 거칠며 정밀하고 상세하지 않은 것은 속임이다."]
+],n:"潦草: 초라하고 거침. 精詳: 정밀하고 상세함. 潦: 초라하다. 草: 거칠다.",pt:""},
+
+{p:22,L:[
+["病愈後而希望貪求 不脫市井風味者 欺也","병유후이희망탐구 불탈시정풍미자 기야","병이 치유된 뒤에 재물을 바라고 탐내서 추구해서 저자거리의 풍속을 벗어나지 못하는 것은 속임이다."]
+],n:"貪求: 탐내어 구함. 市井風味: 시장의 풍속, 여기서는 이윤만을 추구하는 것.",pt:""},
+
+{p:23,L:[
+["(蓋不患醫之無利 特患醫之不明耳)","개불환의지무리 특환의지불명이","대게 의사의 이익이 없음을 근심하지 말고, 특히 의사의 밝지 못함을 근심할 뿐이다."]
+],n:"利: 이로울 리, 이익. 蓋: 앞 문장에 이어서 설명.",pt:""},
+
+{p:23,L:[
+["屢用屢驗 而心有所得 不纂集以補報天地 公於人人者亦欺也","루용루험 이심유소득 불찬집이보보천지 공어인인자역기야","여러 번 사용하고 자주 시험해서 마음에 터득한 바를 책으로 엮어서 천하에 보태지 않고, 사람 사람에게 숨김없이 드러내 놓지 않는 것 또한 속임이다."]
+],n:"屢: 여러 번·자주. 驗: 검증하다·증험하다. 纂集: 모아 책을 엮음. 公: 숨김없이 드러내 놓다.",pt:""},
+
+{p:23,L:[
+["欺則良知 日以蔽塞而醫道終失 不欺則良知 日益發揚而醫道愈昌","기즉양지 일이폐색이의도종실 불기즉양지 일익발양이의도유창","속이면 양지가 날로 가리고 막혀서 의도를 마침내 잃을 것이고, 속이지 않으면 양지가 날로 (더욱) 펼쳐 일어나 의도가 더욱 창성할 것이다."]
+],n:"良知: 타고난 지혜. 蔽塞: 가리고 막힘. 發揚: 펼쳐 일으킴.",pt:""},
+
+{p:24,L:[
+["欺不欺之間 非人之所能與也","기불기지간 비인지소능여야","속이고 속이지 않는 사이는 타인이 (능히) 관여할 수 있는 것이 아니다."]
+],n:"與: 줄 여, 관여하다.",pt:""},
+
+{p:24,L:[
+["明善 乃相率而拜曰 敢不矢心立志 以承先生之德敎哉","명선 내상솔이배왈 감불시심입지 이승선생지덕교재","명선이 이에 서로를 이끌고 절을 하고 말하였다. 감히 선생님의 덕교를 계승하겠다고 맹세하여 뜻을 세우지 않겠습니까?"]
+],n:"德敎: 도덕으로 사람을 착한 길로 인도하여 가르침. 矢: 맹세하다.",pt:""},
+
+{p:25,L:[
+["於時 袖盧子錄稿之半 以歸于建寧 而託時思 繪寫校正","어시 수노자록고지반 이귀우건녕 이탁시사 회사교정","이때에 노정화가 원고의 절반을 가지고 건령 지방으로 돌아가서 시사에게 그림을 그리고 글을 쓰며 대조하여 바로 잡을 것을 부탁하고,"]
+],n:"錄稿: 기록한 원고·초고. 繪寫: 그림을 그리고 기록함. 校正: 바로잡아 고침. 袖: 소매에 넣다.",pt:""},
+
+{p:25,L:[
+["將以傳於通家 楊子幹 子柱 余子允龍 李子䀠 幷親友之相信者云","장이전어통가 양자간 자주 여자윤룡 이자구 병친유지상신자운","이를 가지고 친하게 지내는 양간과 양주와 여윤룡과 이구와 아울러 친한 친구들에게 서로 소식을 전하겠다고 말하였다."]
+],n:"通家: 선조 때부터 친하게 사귀어 온 집안. 子: 아랫사람에 대한 존칭(해석 X). 將: ~을 가지고.",pt:""},
+
+{p:25,L:[
+["時 己卯 仲春稿也 萬曆庚辰 仲春初吉 南豊 健齋 李梴 謹書","시 기묘 중춘고야 만력경진 중춘초길 남풍 건재 이천 근서","때는 기묘년(서기 1579 년), 중춘(음력 2 월)에 원고를 마친다. 만력(서기 1580 년), 중춘(음력 2 월) 초길(초하룻날)에 남풍 건재 이천이 씀."]
+],n:"己卯: 서기 1579년. 仲春: 음력 2월. 稿: 원고를 마침. 萬曆庚辰: 서기 1580년. 初吉: 매달 초하룻날.",pt:""}
+];
+
+/* ---- Hanja from RIGHT columns (all pages, deduped by char) ---- */
+const RAW_HANJA = [
+["蓋","덮을 개"],["方","모 방"],["藥","약 약"],["本","근본 본"],["草","풀 초"],["理","다스릴 리"],["趣","달릴 취"],["素","휠 소"],["難","어려울 난"],["張","베풀 장"],["劉","죽일 류"],["李","오얏 리"],["朱","붉을 주"],["縱","늘어질 종"],["捷","이길 첩"],["法","법 법"],["終","끝날 종"],["數","셀 수"],["愼","삼갈 신"],["可","옳을 가"],["爲","할 위"],["誣","무고할 무"],["惑","미혹할 혹"],
+["旣","이미 기"],["融","화할 융"],["會","모일 회"],["貫","꿸 관"],["通","통할 통"],["後","뒤 후"],["成","이룰 성"],["醫","의원 의"],["愈","나을 유/더욱 유"],["加","더할 가"],["靜","고요할 정"],["坐","앉을 좌"],["玩","희롱할 완"],["讀","읽을 독"],["儒","선비 유"],["書","글 서"],["稍","끝 초"],["消","사라질 소"],["長","길 장"],["驗","증험할 험"],["親","친할 친"],["疎","트일 소"],
+["料","헤아릴 료"],["作","지을 작"],["車","수레 차(거)"],["轍","바퀴 자국 철"],["然","그러할 연"],["應","응할 응"],["求","구할 구"],["行","갈 행"],["持","가질 지"],["尤","더욱 우"],["定","정할 정"],["規","법 규"],
+["每","매양 매"],["鼓","북 고"],["淸","맑을 청"],["早","이를 조"],["起","일어날 기"],["仍","인할 잉"],["雪","씻을 설"],["源","근원 원"],["時","때 시"],["失","잃을 실"],["平","평평할 평"],["旦","아침 단"],["氣","기운 기"],["妙","묘할 묘"],
+["診","볼 진"],["視","볼 시"],["證","증거 증"],["何","어찌 하"],["從","좇을 종"],["頭","머리 두"],["照","비출 조"],["依","의지할 의"],["傷","상처 상"],["寒","찰 한"],["初","처음 초"],["雜","섞일 잡"],["辨","분별할 변"],["逐","쫓을 축"],["詳","자세할 상"],["感","느낄 감"],["雖","비록 수"],["重","무거울 중"],["類","무리 류"],["須","모름지기 수"],["脈","맥 맥"],["亦","또 역"],["議","의논할 의"],
+["輕","가벼울 경"],["題","표제 제"],["未","아닐 미"],["仔","자세할 자"],["細","가늘 세"],["察","살필 찰"],["左","왼 좌"],["右","오른 우"],["順","순할 순"],["升","오를 승"],["降","내릴 강"],["單","홑 단"],["看","볼 간"],["各","각각 각"],["經","날 경"],["隱","숨길 은"],["曲","굽을 곡"],["次","버금 차"],["總","거느릴 총"],["決","결단할 결"],["虛","빌 허"],["實","열매 실"],["死","죽을 사"],
+["卽","곧 즉"],["對","대답할 대"],["或","혹 혹"],["治","다스릴 치"],["易","쉬울 이/바꿀 역"],["說","말씀 설"],["幾","기미 기/몇 기"],["候","살필 후"],["精","쓿은 쌀 정"],["神","귀신 신"],["如","같을 여"],["直","곧을 직"],["令","영 령"],["牽","끌 견"],["强","굳셀 강"],["飾","꾸밀 식"],["務","힘쓸 무"],["宜","마땅할 의"],["擬","헤아릴 의"],["急","급할 급"],["迫","다그칠 박"],["激","격할 격"],["切","끊을 절"],["致","이를 치"],["恐","두려울 공"],["嚇","위협할 하/성낼 혁"],
+["婦","며느리 부"],["託","부탁할 탁"],["與","줄 여"],["舌","혀 설"],["飮","마실 음"],["隨","따를 수"],["便","편할 편"],["就","나아갈 취"],["床","상 상"],["隔","사이뜰 격"],["帳","휘장 장"],["帷","휘장 유"],["薄","엷을 박"],["紗","깁 사"],["罩","보쌈 조"],
+["貧","가난할 빈"],["袖","소매 수"],["寡","적을 과"],["室","집 실"],["敬","공경할 경"],["謹","삼갈 근"],["此","이 차"],["節","마디 절"],
+["諭","깨우칠 유"],["論","말할 론"],["折","꺾을 절"],["斷","끊을 단"],["屬","무리 속"],["兼","겸할 겸"],["據","의거할 거"],["秘","숨길 비"],
+["參","간여할 참"],["酌","따를 작"],["紀","벼리 기"],["處","살 처"],["逆","거스를 역"],["曾","일찍 증"],["服","옷 복"],["某","아무 모"],["否","아닐 부/막힐 비"],["胎","아이밸 태"],["勞","일할 노"],["逸","달아날 일/편안할 일"],["泥","진흙 니"],["眞","참 진"],["臟","오장 장"],["腑","장부 부"],["疑","의심할 의"],["枉","굽을 왕"],["誤","그릇할 오"],
+["際","사이 제"],["君","임금 군"],["監","볼 감"],["制","마를 제"],["引","끌 인"],["使","하여금 사"],["凡","무릇 범"],["劑","벨 제/증서 자"],["當","당할 당"],["庶","여러 서"],["新","새 신"],["陳","베풀 진/묵을 진"],["炮","구울 포"],["灸","구울 자"],["況","하물며 황"],["緊","긴할 긴"],["丸","알 환"],["散","흩을 산"],["豈","어찌 기"],["能","능할 능"],["卒","군사 졸"],
+["但","다만 단"],["製","지을 제"],["聽","들을 청"],["意","뜻 의"],["向","향할 향"],["註","주낼 주"],["修","닦을 수"],["逞","쾌할 령"],["巧","공교할 교"],["機","틀 기"],["滯","막힐 체"],["甚","심할 심"],["效","본받을 효"],["姑","시어미 고"],["待","기다릴 대"],["潛","자맥질할 잠"],["推","밀 추"],["究","궁구할 구"],["再","두 재"],["改","고칠 개"],
+["事","일 사"],["守","지킬 수"],["藉","깔개 자"],["過","지날 과"],["取","취할 취"],["索","찾을 색"],["酬","갚을 수"],["赤","붉을 적"],["毫","가는털 호"],["仁","어질 인"],["廉","청렴할 렴"],
+["報","갚을 보"],["是","옳을 시"],["術","꾀 술"],["哉","어조사 재"],["進","나아갈 진"],["敎","가르칠 교"],["悉","다 실"],["矣","어조사 의"],["識","알 식"],["等","무리 등"],["業","업 업"],["皆","다 개"],["故","연고 고"],["警","경계할 경"],["敏","민첩할 민"],["他","다를 타"],["悟","깨달을 오"],
+["煩","번거로울 번"],["將","장수 장"],["幷","아우를 병"],["東","동녘 동"],["垣","담 원"],["河","물 하"],["原","언덕 원/근원 원"],["式","법 식"],["刪","깎을 산"],["繁","번성할 번"],["校","학교 교"],["更","고칠 경/다시 갱"],["賴","의뢰할 뢰"],["賢","어질 현"],["哲","밝을 철"],["全","온전할 전"],["今","이제 금"],["附","붙일 부"],["箋","찌지 전"],
+["籍","문서 적"],["昭","밝을 소/비출 소"],["代","대신할 대"],["負","질 부"],["著","나타날 저/붙을 착"],["足","발 족"],
+["徑","지름길 경"],["耳","귀 이"],["集","모을 집"],["發","필 발"],["獨","홀로 독"],["得","얻을 득"],["傳","전할 전"],
+["若","같을 약"],["放","놓을 방"],["筆","붓 필"],["墨","먹 묵"],["義","옳을 의"],["任","맡길 임"],["冒","무릅쓸 모"],["深","깊을 심"],["慚","부끄러워할 참"],["懼","두려워할 구"],
+["稜","모날 릉"],["層","층 층"],["嘗","맛볼 상"],["諸","모두 제"],["躬","몸 궁"],["惟","생각할 유"],["念","생각할 념"],["欲","하고자할 욕"],["志","뜻 지"],["共","함께 공"],["差","어긋날 차"],["謬","그릇될 류"],["熟","익을 숙"],["盧","성씨 로"],["友","벗 우"],["尙","오히려 상"],["勉","힘쓸 면"],
+["藹","우거질 애"],["質","바탕 질"],["弱","약할 약"],["鈍","둔할 둔"],["敢","감히 감"],["丐","빌 개"],["約","맺을 약"],["欺","속일 기"],["尾","꼬리 미"],["靈","신령 령"],["謂","이를 위"],
+["告","고할 고"],["潦","큰비 료"],["希","바랄 희"],["望","바랄 망"],["貪","탐할 탐"],["脫","벗을 탈"],["市","저자 시"],["井","우물 정"],["味","맛 미"],
+["利","이로울 리"],["特","특별할 특"],["屢","여러 루"],["纂","모을 찬"],["補","도울 보"],["公","공평할 공"],["良","좋을 량"],["蔽","덮을 폐"],["塞","박힐 색"],["益","더할 익"],["揚","오를 양"],["昌","창성할 창"],
+["相","서로 상"],["率","거느릴 솔"],["拜","절 배"],["矢","화살 시"],["承","받을 승"],["德","덕 덕"],
+["錄","기록할 록"],["稿","초고 고"],["半","반 반"],["歸","돌아갈 귀"],["于","어조사 우"],["建","세울 건"],["寧","편안할 령"],["繪","그림 회"],["寫","베낄 사"],["楊","버들 양"],["幹","줄기 간"],["柱","기둥 주"],["允","만 윤"],["龍","용 룡"],["䀠","두리번거릴 구"],["信","믿을 신"],["云","구름 운"],["卯","토끼 묘"],["仲","버금 중"],["萬","일만 만"],["曆","책력 력"],["庚","별 경"],["辰","별 진"],["吉","길할 길"],["豊","풍성할 풍"],["健","굳셀 건"],["齋","재계할 재"],["梴","긴 모양 연"]
+];
+
+/* ---- 1학기 데이터를 앱 엔진 형식으로 변환 ---- */
+// HANJA:[{c,h}], HUN:{c:h}
+const HANJA=[]; const HUN={};
+(function(){ const seen=new Set();
+  RAW_HANJA.forEach(([c,h])=>{ if(!seen.has(c)){ seen.add(c); HANJA.push({c,h}); HUN[c]=h; } });
+})();
+// BLOCKS의 n("a / b / c") → notes 배열로 변환 (주석 칸별 줄바꿈 기능용)
+BLOCKS.forEach(b=>{
+  if(Array.isArray(b.notes)) return;
+  const raw=(b.n||"").trim();
+  b.notes = raw ? raw.split(" / ").map(s=>s.trim()).filter(Boolean) : [];
+});
+
+const $=id=>document.getElementById(id);
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1300);}
+function norm(s){return (s||"").replace(/\s+/g,"").replace(/[()]/g,"").toLowerCase();}
+function matchHun(inp,cor){const ni=norm(inp); if(!ni) return false; return cor.split("/").some(p=>norm(p)===ni)||norm(cor)===ni;}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---- Storage : cloud (Claude) + localStorage fallback ---- */
+const store={
+  mode:(typeof window!=="undefined" && window.storage && typeof window.storage.get==="function")?"cloud":"local",
+  async get(k){try{ if(this.mode==="cloud"){const r=await window.storage.get(k);return r?r.value:null;} return localStorage.getItem(k);}catch(e){try{return localStorage.getItem(k);}catch(_){return null;}}},
+  async set(k,v){try{ if(this.mode==="cloud"){await window.storage.set(k,v);return;} localStorage.setItem(k,v);}catch(e){try{localStorage.setItem(k,v);}catch(_){}}}
+};
+const KEY="jeonghanmun_sem1_final_v1";
+let STATE={ s1:{order:[],pos:0,answers:{},ok:[],no:[]}, s2:{order:[],pos:0,ok:[],no:[],hist:[]}, s3:{order:[],pos:0,ok:[],no:[],hist:[]} };
+
+let dataChangeNote = ""; // 데이터 변경 감지 안내 (init에서 토스트로 표시)
+function ensureShape(){
+  // ----- 해석(s1) : BLOCKS 인덱스 기반 -----
+  if(!Array.isArray(STATE.s1.order) || STATE.s1.order.length!==BLOCKS.length
+     || !STATE.s1.order.every(i=>Number.isInteger(i) && i>=0 && i<BLOCKS.length)){
+    STATE.s1.order=BLOCKS.map((_,i)=>i);
+    STATE.s1.pos=0;
+  }
+  if(typeof STATE.s1.pos!=="number" || STATE.s1.pos<0 || STATE.s1.pos>=Math.max(1,BLOCKS.length)) STATE.s1.pos=0;
+  if(!STATE.s1.answers || typeof STATE.s1.answers!=="object") STATE.s1.answers={};
+  // s1 채점기록(ok/no): BLOCKS 범위를 벗어난 인덱스 제거
+  if(!Array.isArray(STATE.s1.ok)) STATE.s1.ok=[];
+  if(!Array.isArray(STATE.s1.no)) STATE.s1.no=[];
+  STATE.s1.ok=STATE.s1.ok.filter(i=>Number.isInteger(i)&&i>=0&&i<BLOCKS.length);
+  STATE.s1.no=STATE.s1.no.filter(i=>Number.isInteger(i)&&i>=0&&i<BLOCKS.length);
+
+  // ----- 한자(s2,s3) : 실제 존재하는 한자 글자 기준으로 동기화 -----
+  const validChars = HANJA.map(x=>x.c);
+  const validSet = new Set(validChars);
+  let removedCount=0, addedCount=0;
+  ["s2","s3"].forEach(k=>{
+    const o = STATE[k];
+    if(!Array.isArray(o.ok)) o.ok=[];
+    if(!Array.isArray(o.no)) o.no=[];
+    if(!Array.isArray(o.hist)) o.hist=[];
+    if(!Array.isArray(o.order)) o.order=[];
+
+    // 변경 감지 (s2 기준으로 한 번만 집계)
+    if(k==="s2" && o.order.length){
+      const before=new Set(o.order);
+      removedCount = o.order.filter(c=>!validSet.has(c)).length;
+      addedCount = validChars.filter(c=>!before.has(c)).length;
+    }
+
+    // 1) ok/no/hist 에서 현재 목록에 없는 한자 제거 (꼬임 방지)
+    o.ok   = o.ok.filter(c=>validSet.has(c));
+    o.no   = o.no.filter(c=>validSet.has(c));
+    o.hist = o.hist.filter(c=>validSet.has(c));
+
+    // 2) order 재정렬: 기존 순서 중 살아있는 것 유지 + 새로 생긴 한자는 뒤에 추가
+    const keep = o.order.filter(c=>validSet.has(c));
+    const keepSet = new Set(keep);
+    const added = validChars.filter(c=>!keepSet.has(c));
+    o.order = keep.concat(added);
+
+    // 3) order가 완전히 비었거나(첫 실행) 길이가 안 맞으면 기본 순서로
+    if(o.order.length!==validChars.length){ o.order = validChars.slice(); }
+
+    if(typeof o.pos!=="number" || o.pos<0) o.pos=0;
+  });
+
+  // 안내 문구 구성 (추가/삭제가 실제로 있었을 때만)
+  if(addedCount || removedCount){
+    const parts=[];
+    if(addedCount) parts.push("새 한자 "+addedCount+"자 추가");
+    if(removedCount) parts.push("빠진 한자 "+removedCount+"자 정리");
+    dataChangeNote = "시트가 바뀌었어요 · "+parts.join(" · ");
+  }
+}
+async function loadState(){ const raw=await store.get(KEY); if(raw){try{STATE=Object.assign(STATE,JSON.parse(raw));}catch(e){}} ensureShape(); }
+let saveTimer=null;
+function saveState(){ if(saveTimer)clearTimeout(saveTimer); saveTimer=setTimeout(async()=>{await store.set(KEY,JSON.stringify(STATE));flashSave();},250); }
+function flashSave(){const t=$("save-text");t.textContent="저장됨 ✓";setTimeout(()=>{t.textContent="자동 저장 중";},1400);}
+
+/* ---- nav ---- */
+let curView=1;
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    curView=parseInt(b.dataset.view);
+    document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));
+    document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    $("view"+curView).classList.add("active");
+    if(curView===5) renderHanjaGrid();
+    if(curView===2) setTimeout(()=>{try{$("s2-input").focus({preventScroll:true});}catch(e){}},0);
+    window.scrollTo(0,0);
+  });
+});
+
+/* ---- help ---- */
+$("help-open").addEventListener("click",()=>{ $("mode-now").textContent= store.mode==="cloud"?"지금: 클로드 앱에 자동 저장 중":"지금: 이 브라우저에 자동 저장 중"; $("help-bg").classList.add("show"); });
+$("help-close").addEventListener("click",()=>$("help-bg").classList.remove("show"));
+$("help-bg").addEventListener("click",e=>{if(e.target===$("help-bg"))$("help-bg").classList.remove("show");});
+
+/* =====================================================================
+   SHEET 1 : 해석 쓰기
+   ===================================================================== */
+function s1Block(){ return BLOCKS[STATE.s1.order[STATE.s1.pos]]; }
+function renderS1Stats(){
+  const done=new Set([...STATE.s1.ok, ...STATE.s1.no]);
+  const left=BLOCKS.length - done.size;
+  $("s1-left").textContent=Math.max(0,left);
+  $("s1-ok").textContent=STATE.s1.ok.length;
+  $("s1-no").textContent=STATE.s1.no.length;
+}
+function renderS1(){
+  if(!BLOCKS.length){
+    $("s1-total").textContent=0; $("s1-counter").textContent="0 / 0";
+    $("s1-hanja").innerHTML='<div class="ans-placeholder">해석 탭에 데이터가 없어요</div>';
+    if($("s1-grade-area")) $("s1-grade-area").style.display="none";
+    renderS1Stats();
+    return;
+  }
+  const b=s1Block(); const bi=STATE.s1.order[STATE.s1.pos];
+  $("s1-total").textContent=BLOCKS.length;
+  $("s1-counter").textContent=(STATE.s1.pos+1)+" / "+BLOCKS.length;
+  $("s1-hanja").innerHTML=b.L.map(l=>`<div class="hanja-line">${esc(l[0])}</div>`).join("");
+  $("s1-input").value=STATE.s1.answers[bi]||"";
+  $("s1-answer").innerHTML=`<div class="ans-placeholder">‘정답 확인’을 누르면<br>여기에 원문 해석과 출처가 표시됩니다</div>`;
+  $("s1-grade-area").style.display="none"; // 정답 확인 전엔 채점 버튼 숨김
+  renderS1Stats();
+}
+function notesHtml(b, cls){
+  const arr = (b.notes && b.notes.length) ? b.notes : (b.n?[b.n]:[]);
+  if(!arr.length) return "";
+  const items = arr.map(t=>`<div class="note-item">• ${esc(t)}</div>`).join("");
+  return `<div class="${cls}">📌<div class="note-list">${items}</div></div>`;
+}
+function showS1Answer(){
+  const b=s1Block();
+  let lines=b.L.map(l=>`<div class="ans-line"><div class="ah">${esc(l[0])}</div><div class="ai">${esc(l[2])}</div></div>`).join("");
+  let note=notesHtml(b,"note");
+  let point=b.pt?`<div class="point">▶︎ ${esc(b.pt)}</div>`:"";
+  $("s1-answer").innerHTML=lines+`<span class="src-badge">📖 출처 · ${esc(String(b.p))}페이지</span>`+note+point;
+  $("s1-grade-area").style.display="block"; // 정답 확인 후 맞음/틀림 버튼 노출
+}
+// 해석 채점: 현재 묶음을 맞음/틀림으로 기록하고 다음 문제로
+function gradeS1(isOk){
+  const bi=STATE.s1.order[STATE.s1.pos];
+  STATE.s1.ok=STATE.s1.ok.filter(i=>i!==bi);
+  STATE.s1.no=STATE.s1.no.filter(i=>i!==bi);
+  (isOk?STATE.s1.ok:STATE.s1.no).push(bi);
+  saveState();
+  // 다음 문제로 (마지막이면 그대로, 통계만 갱신)
+  if(STATE.s1.pos<BLOCKS.length-1){ STATE.s1.pos++; renderS1(); }
+  else { renderS1(); }
+  toast(isOk?"맞음으로 표시했어요":"틀림으로 표시했어요");
+}
+$("s1-check").addEventListener("click",showS1Answer);
+$("s1-input").addEventListener("input",e=>{ STATE.s1.answers[STATE.s1.order[STATE.s1.pos]]=e.target.value; saveState(); });
+$("s1-prev").addEventListener("click",()=>{ if(STATE.s1.pos>0){STATE.s1.pos--;saveState();renderS1();} });
+$("s1-next").addEventListener("click",()=>{ if(STATE.s1.pos<BLOCKS.length-1){STATE.s1.pos++;saveState();renderS1();} });
+$("s1-shuffle").addEventListener("click",()=>{ shuffle(STATE.s1.order); STATE.s1.pos=0; saveState(); renderS1(); toast("순서를 섞었어요"); });
+$("s1-right").addEventListener("click",()=>gradeS1(true));
+$("s1-wrong").addEventListener("click",()=>gradeS1(false));
+$("s1-retry").addEventListener("click",()=>{
+  if(!STATE.s1.no.length){ toast("틀린 문제가 없어요"); return; }
+  // 틀린 묶음만 순서로 만들어 처음부터
+  const wrong=STATE.s1.no.slice();
+  STATE.s1.order = wrong.concat(BLOCKS.map((_,i)=>i).filter(i=>!wrong.includes(i)));
+  STATE.s1.pos=0;
+  saveState(); renderS1(); toast("틀린 문제부터 다시 풀어요");
+});
+$("s1-reset").addEventListener("click",()=>{
+  if(confirm("작성한 해석과 채점 기록을 모두 지울까요?")){
+    STATE.s1.answers={}; STATE.s1.ok=[]; STATE.s1.no=[]; STATE.s1.pos=0;
+    saveState(); renderS1(); toast("초기화 완료");
+  }
+});
+
+/* =====================================================================
+   SHEETS 2 & 3 : generic engine
+   ===================================================================== */
+function st(s){ return s===2?STATE.s2:STATE.s3; }
+function rem(s){ const o=st(s); const done=new Set([...o.ok,...o.no]); return o.order.filter(c=>!done.has(c)); }
+function curChar(s){ const r=rem(s); const o=st(s); if(o.pos>=r.length)o.pos=0; return r[o.pos]; }
+
+function record(s,ok){
+  const r=rem(s); const o=st(s); if(!r.length) return;
+  const c=r[o.pos];
+  o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+  (ok?o.ok:o.no).push(c); o.hist.push(c);
+  saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+}
+function back(s){
+  const o=st(s); if(!o.hist.length){ toast("되돌릴 문제가 없어요"); return; }
+  const c=o.hist.pop();
+  o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+  const r=rem(s); o.pos=Math.max(0,r.indexOf(c));
+  saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+}
+function doShuffle(s){ const o=st(s); shuffle(o.order); o.pos=0; saveState(); (s===2?renderS2:renderS3)(); toast("문제를 섞었어요"); }
+
+/* ----- Sheet 2 render ----- */
+function renderS2(){
+  const o=STATE.s2;
+  $("s2-ok").textContent=o.ok.length; $("s2-no").textContent=o.no.length;
+  const r=rem(2); $("s2-left").textContent=r.length;
+  $("s2-back").disabled=o.hist.length===0;
+  if(!r.length){ $("s2-quiz").style.display="none"; $("s2-done").style.display="block"; }
+  else{
+    $("s2-quiz").style.display="block"; $("s2-done").style.display="none";
+    if(o.pos>=r.length)o.pos=0;
+    const c=r[o.pos];
+    $("s2-counter").textContent=(o.pos+1)+" / "+r.length+" 문제";
+    $("s2-hanja").textContent=c; $("s2-answer").textContent=HUN[c];
+    $("s2-flip").classList.remove("flipped");
+    $("s2-input").value=""; $("s2-input-area").style.display="block"; $("s2-next-area").style.display="none";
+    $("s2-verdict").className="verdict";
+  }
+  renderReview(2);
+}
+function s2Submit(){
+  const r=rem(2); if(!r.length) return;
+  const c=r[STATE.s2.pos]; const ok=matchHun($("s2-input").value,HUN[c]);
+  const v=$("s2-verdict");
+  if(ok){v.className="verdict ok";v.textContent="입력한 답이 정답과 일치해요 ✓";}
+  else{v.className="verdict no";v.textContent="입력한 답과 달라요 — 직접 채점하세요";}
+  $("s2-flip").classList.add("flipped");
+  $("s2-input-area").style.display="none"; $("s2-next-area").style.display="block";
+  try{$("s2-input").blur();}catch(e){}
+}
+$("s2-submit").addEventListener("click",s2Submit);
+$("s2-wrong").addEventListener("click",()=>record(2,false));
+$("s2-right").addEventListener("click",()=>record(2,true));
+$("s2-back").addEventListener("click",()=>back(2));
+$("s2-shuffle").addEventListener("click",()=>doShuffle(2));
+$("s2-reset").addEventListener("click",()=>{ if(confirm("시험지2의 채점 기록을 모두 초기화할까요?")){ STATE.s2.ok=[];STATE.s2.no=[];STATE.s2.hist=[];STATE.s2.pos=0; selS2.clear(); saveState(); renderS2(); if(curView===5)renderHanjaGrid(); toast("초기화 완료"); } });
+$("s2-retry").addEventListener("click",()=>{ if(!STATE.s2.no.length){toast("틀린 문제가 없어요");return;} if(confirm("틀린 문제 "+STATE.s2.no.length+"개를 다시 풀까요?")){ STATE.s2.no=[];STATE.s2.pos=0; selS2.clear(); saveState(); renderS2(); toast("틀린 문제 다시 풀기"); } });
+
+/* ----- Sheet 3 render ----- */
+function renderS3(){
+  const o=STATE.s3;
+  $("s3-ok").textContent=o.ok.length; $("s3-no").textContent=o.no.length;
+  const r=rem(3); $("s3-left").textContent=r.length;
+  $("s3-back").disabled=o.hist.length===0;
+  if(!r.length){ $("s3-quiz").style.display="none"; $("s3-done").style.display="block"; }
+  else{
+    $("s3-quiz").style.display="block"; $("s3-done").style.display="none";
+    if(o.pos>=r.length)o.pos=0;
+    const c=r[o.pos];
+    $("s3-counter").textContent=(o.pos+1)+" / "+r.length+" 문제";
+    $("s3-hun").textContent=HUN[c]; $("s3-hanja").textContent=c;
+    $("s3-hanja-wrap").style.display="none"; $("s3-hint").style.display="block";
+    $("s3-reveal-area").style.display="block"; $("s3-grade-area").style.display="none";
+  }
+  renderReview(3);
+}
+function s3Reveal(){ $("s3-hanja-wrap").style.display="block"; $("s3-hint").style.display="none"; $("s3-reveal-area").style.display="none"; $("s3-grade-area").style.display="block"; }
+$("s3-reveal").addEventListener("click",s3Reveal);
+$("s3-wrong").addEventListener("click",()=>record(3,false));
+$("s3-right").addEventListener("click",()=>record(3,true));
+$("s3-back").addEventListener("click",()=>back(3));
+$("s3-shuffle").addEventListener("click",()=>doShuffle(3));
+$("s3-reset").addEventListener("click",()=>{ if(confirm("시험지3의 채점 기록을 모두 초기화할까요?")){ STATE.s3.ok=[];STATE.s3.no=[];STATE.s3.hist=[];STATE.s3.pos=0; selS3.clear(); saveState(); renderS3(); if(curView===5)renderHanjaGrid(); toast("초기화 완료"); } });
+$("s3-retry").addEventListener("click",()=>{ if(!STATE.s3.no.length){toast("틀린 문제가 없어요");return;} if(confirm("틀린 문제 "+STATE.s3.no.length+"개를 다시 풀까요?")){ STATE.s3.no=[];STATE.s3.pos=0; selS3.clear(); saveState(); renderS3(); toast("틀린 문제 다시 풀기"); } });
+
+/* =====================================================================
+   REVIEW + SELECTION (move / reset)
+   ===================================================================== */
+const filterState={2:"all",3:"all"};
+const selS2=new Set(), selS3=new Set();
+function sel(s){return s===2?selS2:selS3;}
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click",()=>{
+    const s=parseInt(ch.dataset.sheet); filterState[s]=ch.dataset.f; sel(s).clear();
+    document.querySelectorAll('.chip[data-sheet="'+s+'"]').forEach(c=>c.classList.toggle("active",c===ch));
+    renderReview(s);
+  });
+});
+function renderReview(s){
+  const o=st(s); const box=$("s"+s+"-review"); const f=filterState[s];
+  let arr;
+  if(f==="all") arr=[...o.ok.map(c=>({c,ok:true})),...o.no.map(c=>({c,ok:false}))];
+  else if(f==="ok") arr=o.ok.map(c=>({c,ok:true}));
+  else arr=o.no.map(c=>({c,ok:false}));
+  if(!arr.length){ box.innerHTML='<div class="empty">아직 기록이 없어요</div>'; renderSelact(s); return; }
+  box.innerHTML=arr.map(it=>{
+    const selCls=sel(s).has(it.c)?" sel":"";
+    return `<div class="review-item${selCls}" data-c="${esc(it.c)}" data-sheet="${s}"><div class="h" style="color:${it.ok?'var(--green)':'var(--red)'}">${esc(it.c)}</div><div class="u">${esc(HUN[it.c]||"")}</div></div>`;
+  }).join("");
+  renderSelact(s);
+}
+document.addEventListener("click",e=>{
+  const item=e.target.closest(".review-item"); if(!item)return;
+  const s=parseInt(item.dataset.sheet), c=item.dataset.c, set=sel(s);
+  if(set.has(c))set.delete(c); else set.add(c);
+  renderReview(s);
+});
+function renderSelact(s){
+  const box=$("s"+s+"-selact"); const f=filterState[s]; const n=sel(s).size;
+  if(n===0){ box.innerHTML=""; return; }
+  let btns="";
+  if(f==="ok") btns=`<button class="btn red sm" data-act="toWrong" data-sheet="${s}">틀림으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else if(f==="no") btns=`<button class="btn green sm" data-act="toRight" data-sheet="${s}">맞음으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else btns=`<button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 미학습으로 리셋</button>`;
+  box.innerHTML=`<div class="selinfo">선택한 ${n}개</div><div class="btn-row">${btns}</div>`;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".selact button"); if(!b)return;
+  const s=parseInt(b.dataset.sheet), act=b.dataset.act, o=st(s), set=sel(s);
+  if(!set.size)return;
+  set.forEach(c=>{
+    o.ok=o.ok.filter(x=>x!==c); o.no=o.no.filter(x=>x!==c);
+    if(act==="toWrong")o.no.push(c); else if(act==="toRight")o.ok.push(c);
+  });
+  set.clear(); saveState(); (s===2?renderS2:renderS3)(); if(curView===5)renderHanjaGrid();
+  toast("적용했어요");
+});
+
+/* =====================================================================
+   KEYBOARD : 틀림=← , 맞음=→ / Space / Enter
+   ===================================================================== */
+document.addEventListener("keydown",e=>{
+  if($("help-bg").classList.contains("show")) return;
+  const tag=(e.target.tagName||"").toUpperCase();
+  if(curView===2){
+    if($("s2-input-area").style.display!=="none"){
+      if(e.key==="Enter"){ e.preventDefault(); s2Submit(); }
+      return;
+    }
+    if($("s2-next-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); record(2,false); }
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){ e.preventDefault(); record(2,true); }
+    }
+  } else if(curView===3){
+    if(tag==="INPUT"||tag==="TEXTAREA") return;
+    if($("s3-reveal-area").style.display!=="none"){
+      if(e.key===" "||e.key==="Enter"){ e.preventDefault(); s3Reveal(); }
+    } else if($("s3-grade-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){ e.preventDefault(); record(3,false); }
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){ e.preventDefault(); record(3,true); }
+    }
+  } else if(curView===1){
+    if(tag==="TEXTAREA"||tag==="INPUT") return;
+    if(e.key==="ArrowLeft"){ $("s1-prev").click(); }
+    else if(e.key==="ArrowRight"){ $("s1-next").click(); }
+    else if(e.key==="Enter"||e.key===" "){ e.preventDefault(); showS1Answer(); }
+  }
+});
+
+/* =====================================================================
+   VIEW 4 : 원문 보기
+   ===================================================================== */
+function renderOriginal(){
+  // 시트에 적힌 등장 순서를 그대로 유지 (page 값으로 그룹 헤더만 표시)
+  let html="";
+  let lastPage=null;
+  BLOCKS.forEach(b=>{
+    if(b.p!==lastPage){
+      if(lastPage!==null) html+=`</div>`;
+      html+=`<div class="orig-page"><div class="orig-head">정한문 · ${esc(String(b.p))}페이지</div>`;
+      lastPage=b.p;
+    }
+    html+=`<div class="orig-block">`;
+    b.L.forEach(l=>{
+      html+=`<div class="orig-h">${esc(l[0])}</div><div class="orig-e">${esc(l[1])}</div><div class="orig-i">${esc(l[2])}</div>`;
+    });
+    html+=notesHtml(b,"orig-n");
+    if(b.pt) html+=`<div class="orig-pt">▶︎ ${esc(b.pt)}</div>`;
+    html+=`</div>`;
+  });
+  if(lastPage!==null) html+=`</div>`;
+  $("orig-body").innerHTML=html;
+}
+
+/* =====================================================================
+   VIEW 5 : 한자 목록 (바둑판)
+   ===================================================================== */
+let hgTab=2;
+document.querySelectorAll(".tog").forEach(t=>{
+  t.addEventListener("click",()=>{ hgTab=parseInt(t.dataset.tg); document.querySelectorAll(".tog").forEach(x=>x.classList.toggle("active",x===t)); renderHanjaGrid(); });
+});
+function renderHanjaGrid(){
+  const o=st(hgTab); const okS=new Set(o.ok), noS=new Set(o.no);
+  let okc=0,noc=0;
+  const cells=HANJA.map(x=>{
+    let cls=""; if(okS.has(x.c)){cls=" ok";okc++;} else if(noS.has(x.c)){cls=" no";noc++;}
+    return `<div class="hcell${cls}" data-c="${esc(x.c)}" data-h="${esc(x.h)}"><div class="hc">${esc(x.c)}</div><div class="hu">${esc(x.h)}</div></div>`;
+  }).join("");
+  $("hanja-grid").innerHTML=cells;
+  $("hg-total").textContent=HANJA.length;
+  $("hg-ok").textContent=okc; $("hg-no").textContent=noc; $("hg-rest").textContent=HANJA.length-okc-noc;
+  applySearch();
+}
+/* ---- hanja list search ---- */
+function applySearch(){
+  const grid=$("hanja-grid"); if(!grid) return;
+  const q=($("hg-search").value||"").trim();
+  const cells=grid.querySelectorAll(".hcell");
+  if(!q){ grid.classList.remove("searching"); cells.forEach(c=>c.classList.remove("hit")); $("hg-result").textContent=""; return; }
+  const nq=q.replace(/\s+/g,"").toLowerCase();
+  let n=0, first=null;
+  cells.forEach(c=>{
+    const ch=c.dataset.c||"", hu=(c.dataset.h||"").toLowerCase();
+    const hit = ch===q || ch.includes(q) || hu.includes(q.toLowerCase()) || hu.replace(/\s+/g,"").includes(nq);
+    c.classList.toggle("hit",hit);
+    if(hit){ n++; if(!first)first=c; }
+  });
+  grid.classList.add("searching");
+  $("hg-result").textContent = n ? (n+"개 찾음") : "결과가 없어요";
+  if(first) first.scrollIntoView({behavior:"smooth",block:"center"});
+}
+$("hg-search").addEventListener("input",applySearch);
+$("hg-clear").addEventListener("click",()=>{ $("hg-search").value=""; applySearch(); $("hg-search").blur(); });
+
+/* ---- skip (mark nothing, move to next remaining) ---- */
+function skip(s){ const r=rem(s); const o=st(s); if(r.length<=1){ toast("건너뛸 다른 문제가 없어요"); return; } o.pos=(o.pos+1)%r.length; saveState(); (s===2?renderS2:renderS3)(); }
+$("s2-skip").addEventListener("click",()=>skip(2));
+$("s3-skip").addEventListener("click",()=>skip(3));
+
+/* ---- restore original order ---- */
+$("s1-restore").addEventListener("click",()=>{ STATE.s1.order=BLOCKS.map((_,i)=>i); STATE.s1.pos=0; saveState(); renderS1(); toast("원래 순서로 되돌렸어요"); });
+function restoreOrder(s){ const o=st(s); o.order=HANJA.map(x=>x.c); o.pos=0; saveState(); (s===2?renderS2:renderS3)(); toast("원래 순서로 되돌렸어요"); }
+$("s2-restore").addEventListener("click",()=>restoreOrder(2));
+$("s3-restore").addEventListener("click",()=>restoreOrder(3));
+
+/* ---- init : 코드 내장 데이터로 바로 렌더 ---- */
+(async function(){
+  // 1학기는 데이터가 코드에 내장돼 있어 시트 호출 없이 바로 시작
+  await loadState();
+  saveState();
+  renderS1(); renderS2(); renderS3(); renderOriginal(); renderHanjaGrid();
+})();
+</script>
+</body>
+</html>

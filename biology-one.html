@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>일반생물학 예1-1 기말 자습서</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --bg:#f2f4f6;
+    --card:#ffffff;
+    --ink:#191f28;
+    --sub:#4e5968;
+    --muted:#8b95a1;
+    --line:#e5e8eb;
+    --blue:#3182f6;
+    --blue-weak:#e8f3ff;
+    --blue-ink:#1b64da;
+    --red:#f04452;
+    --red-weak:#fdeced;
+    --green:#15803d;
+    --green-weak:#e7f6ec;
+    --amber:#f59e0b;
+    --amber-weak:#fff5e0;
+    --violet:#6d28d9;
+    --violet-weak:#f1ebfd;
+    --orange:#ea7a18;
+    --orange-weak:#fff6ed;
+    --radius:20px;
+    --radius-sm:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:-0.01em;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:32px 20px 120px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:linear-gradient(135deg,#3182f6 0%,#1b64da 100%);
+    border-radius:28px;
+    padding:40px 36px;
+    color:#fff;
+    margin-bottom:14px;
+    box-shadow:0 12px 30px rgba(49,130,246,0.22);
+  }
+  .hero .eyebrow{
+    font-size:14px;font-weight:600;opacity:0.85;letter-spacing:0.02em;margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:30px;font-weight:800;margin:0 0 14px;letter-spacing:-0.03em;line-height:1.3;
+  }
+  .hero p{margin:0;font-size:15px;opacity:0.92;font-weight:400;max-width:760px;}
+  .hero .chips{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;}
+  .hero .chip{
+    background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.25);
+    padding:6px 13px;border-radius:999px;font-size:13px;font-weight:600;backdrop-filter:blur(4px);
+  }
+
+  /* ---------- GUIDE / LEGEND ---------- */
+  .legend{
+    background:var(--card);border-radius:var(--radius);padding:18px 22px;margin-bottom:14px;
+    display:flex;flex-wrap:wrap;gap:18px;align-items:center;font-size:13.5px;color:var(--sub);
+    border:1px solid var(--line);
+  }
+  .legend b{color:var(--ink);}
+  .legend .lg{display:flex;align-items:center;gap:7px;}
+  .swatch{width:14px;height:14px;border-radius:5px;display:inline-block;}
+
+  /* ---------- TOC ---------- */
+  .toc{
+    background:var(--card);border-radius:var(--radius);padding:22px 24px;margin-bottom:26px;border:1px solid var(--line);
+  }
+  .toc h2{font-size:15px;font-weight:700;margin:0 0 14px;color:var(--muted);letter-spacing:0.02em;}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;}
+  .toc a{
+    display:block;text-decoration:none;color:var(--ink);background:var(--bg);
+    border-radius:var(--radius-sm);padding:13px 16px;font-size:14px;font-weight:600;
+    transition:all .15s;border:1px solid transparent;
+  }
+  .toc a:hover{background:var(--blue-weak);color:var(--blue-ink);border-color:#cfe3ff;}
+  .toc a .wk{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:2px;}
+  .toc a:hover .wk{color:var(--blue);}
+
+  /* ---------- WEEK SECTION ---------- */
+  .week{margin-bottom:14px;}
+  .week-head{
+    display:flex;align-items:center;gap:14px;margin:38px 4px 16px;
+  }
+  .week-badge{
+    background:var(--blue);color:#fff;font-size:13px;font-weight:700;
+    padding:7px 14px;border-radius:999px;white-space:nowrap;letter-spacing:0.01em;
+  }
+  .week-head h2{font-size:22px;font-weight:800;margin:0;letter-spacing:-0.03em;}
+  .week-head .date{font-size:13px;color:var(--muted);font-weight:500;margin-left:auto;white-space:nowrap;}
+
+  /* ---------- TWO COLUMN ROW ---------- */
+  .row{
+    display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-bottom:16px;align-items:start;
+  }
+  /* LEFT note card */
+  .note{
+    background:var(--card);border-radius:var(--radius);padding:26px 28px;border:1px solid var(--line);
+    box-shadow:0 1px 2px rgba(0,0,0,0.03);
+  }
+  .note h3{
+    font-size:18px;font-weight:800;margin:0 0 16px;color:var(--ink);letter-spacing:-0.02em;
+    display:flex;align-items:flex-start;gap:9px;line-height:1.4;
+  }
+  .note h3 .sec{
+    background:var(--blue-weak);color:var(--blue-ink);font-size:13px;font-weight:700;
+    padding:2px 9px;border-radius:8px;white-space:nowrap;margin-top:2px;
+  }
+  .note h4{
+    font-size:15px;font-weight:700;margin:22px 0 9px;color:var(--ink);
+    padding-left:11px;border-left:3px solid var(--blue);
+  }
+  .note h4:first-of-type{margin-top:4px;}
+  .note p{margin:8px 0;font-size:14.5px;color:var(--sub);}
+  .note ul{margin:8px 0;padding-left:4px;list-style:none;}
+  .note ul li{
+    position:relative;padding-left:18px;margin:6px 0;font-size:14.5px;color:var(--sub);
+  }
+  .note ul li::before{
+    content:"";position:absolute;left:3px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--blue);
+  }
+  .note ul ul{margin:4px 0;}
+  .note ul ul li::before{background:var(--muted);width:4px;height:4px;top:11px;}
+  .note .arrow{padding-left:20px;position:relative;}
+  .note .arrow::before{content:"→";position:absolute;left:2px;color:var(--blue);font-weight:700;}
+
+  b,strong{color:var(--ink);font-weight:700;}
+  .hl{color:var(--blue-ink);font-weight:700;}
+  .hl-r{color:var(--red);font-weight:700;}
+  .hl-g{color:var(--green);font-weight:700;}
+  mark{background:var(--amber-weak);color:#92590b;padding:1px 5px;border-radius:6px;font-weight:600;}
+  mark.b{background:var(--blue-weak);color:var(--blue-ink);}
+  code,.eq{
+    font-family:'SF Mono',ui-monospace,Menlo,monospace;background:#f1f3f5;color:#2b3138;
+    padding:2px 7px;border-radius:7px;font-size:13.5px;font-weight:600;letter-spacing:0;
+  }
+  .eqbox{
+    background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin:12px 0;
+    font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:14px;font-weight:600;color:var(--ink);
+    text-align:center;letter-spacing:0;line-height:1.9;
+  }
+  sup.fn{color:var(--violet);font-weight:800;font-size:11px;cursor:default;padding:0 1px;}
+
+  /* tables */
+  .ntable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;border-radius:12px;overflow:hidden;}
+  .ntable th{background:var(--blue-weak);color:var(--blue-ink);font-weight:700;padding:10px 12px;text-align:left;font-size:13px;}
+  .ntable td{padding:10px 12px;border-top:1px solid var(--line);color:var(--sub);vertical-align:top;}
+  .ntable tr:nth-child(even) td{background:#fafbfc;}
+
+  /* callout inside note */
+  .callout{
+    background:var(--blue-weak);border-radius:12px;padding:13px 16px;margin:14px 0;font-size:14px;color:var(--blue-ink);font-weight:600;
+  }
+  .callout.warn{background:var(--red-weak);color:#c5303c;}
+
+  /* ---------- RIGHT side column ---------- */
+  .aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:18px;}
+  .scard{
+    border-radius:var(--radius);padding:18px 20px;border:1px solid var(--line);background:var(--card);
+  }
+  .scard .tag{
+    display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+    padding:4px 11px;border-radius:999px;margin-bottom:11px;letter-spacing:0.01em;
+  }
+  .scard h5{font-size:15px;font-weight:800;margin:0 0 8px;color:var(--ink);letter-spacing:-0.02em;}
+  .scard p{margin:6px 0;font-size:13.5px;color:var(--sub);line-height:1.65;}
+  .scard ul{margin:6px 0;padding-left:2px;list-style:none;}
+  .scard ul li{position:relative;padding-left:15px;margin:5px 0;font-size:13.5px;color:var(--sub);line-height:1.6;}
+  .scard ul li::before{content:"";position:absolute;left:2px;top:9px;width:4px;height:4px;border-radius:50%;}
+
+  /* memorize card */
+  .mem{background:var(--red-weak);border-color:#f8d4d8;}
+  .mem .tag{background:#fff;color:var(--red);}
+  .mem ul li::before{background:var(--red);}
+  .mem h5{color:#c5303c;}
+  .mem .key{background:#fff;border-radius:10px;padding:9px 12px;margin:7px 0;font-size:13.5px;color:#7a1c24;font-weight:600;border:1px solid #f8d4d8;}
+
+  /* 생명과학 background card */
+  .bg{background:var(--violet-weak);border-color:#e3d6fb;}
+  .bg .tag{background:#fff;color:var(--violet);}
+  .bg ul li::before{background:var(--violet);}
+  .bg h5{color:var(--violet);}
+  .bg strong{color:#5b21b6;}
+
+  /* tip / 배경지식 card */
+  .tip{background:var(--green-weak);border-color:#cdeed8;}
+  .tip .tag{background:#fff;color:var(--green);}
+  .tip ul li::before{background:var(--green);}
+  .tip h5{color:var(--green);}
+  .tip strong{color:#166534;}
+
+  /* 쉽게 말하면 (beginner explainer) card */
+  .easy{background:#fff7ed;border-color:#fcd9b6;}
+  .easy .tag{background:#fff;color:#c2620c;}
+  .easy ul li::before{background:#ea7a18;}
+  .easy h5{color:#b5560a;}
+  .easy strong{color:#9a4708;}
+  .easy p{color:#7c4314;}
+  .easy .ex{background:#fff;border:1px solid #fcd9b6;border-radius:10px;padding:9px 12px;margin:8px 0;font-size:13px;color:#8a4a12;line-height:1.6;}
+  .easy .ex b{color:#9a4708;}
+
+  /* footnotes */
+  .fnbox{
+    background:var(--card);border:1px dashed #d4d9df;border-radius:var(--radius-sm);padding:14px 18px;margin-top:14px;
+  }
+  .fnbox .fttl{font-size:12px;font-weight:700;color:var(--violet);margin-bottom:6px;letter-spacing:0.02em;}
+  .fnbox p{margin:5px 0;font-size:13px;color:var(--sub);line-height:1.6;padding-left:18px;position:relative;}
+  .fnbox p .n{position:absolute;left:0;color:var(--violet);font-weight:800;}
+
+  /* footer */
+  .footer{text-align:center;margin-top:50px;color:var(--muted);font-size:13px;}
+  .footer .cheer{font-size:15px;color:var(--blue);font-weight:700;margin-bottom:6px;}
+
+  /* =================================================================
+     11주차 보충 — 토픽 카드 컴포넌트 (단일 개념 카드형)
+     ================================================================= */
+  .topics{margin-top:2px;}
+  .topic{
+    background:var(--card);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;
+    border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,0.03);break-inside:avoid;
+  }
+  .topic > h3{
+    font-size:18px;font-weight:800;margin:0 0 4px;color:var(--ink);letter-spacing:-0.02em;line-height:1.4;
+    display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;
+  }
+  .topic > h3 .sec{
+    background:var(--blue-weak);color:var(--blue-ink);font-size:12px;font-weight:700;
+    padding:2px 8px;border-radius:7px;white-space:nowrap;
+  }
+  .lead{font-size:14px;color:var(--muted);margin:0 0 16px;font-weight:500;}
+
+  /* 🍊 explainer block */
+  .explain{
+    background:var(--orange-weak);border:1px solid #fbddb9;border-radius:14px;padding:16px 17px;margin:16px 0;
+  }
+  .explain .xh{font-size:14px;font-weight:800;color:#b5560a;margin:0 0 7px;display:flex;align-items:center;gap:7px;}
+  .explain .xh:not(:first-child){margin-top:15px;}
+  .explain p{margin:7px 0;font-size:14.5px;color:#6b3d12;line-height:1.72;}
+  .explain p strong{color:#9a4708;font-weight:700;}
+  .explain .anal{
+    background:#fff;border:1px solid #fbddb9;border-radius:11px;padding:11px 13px;margin:10px 0;
+    font-size:14px;color:#7c4a1c;line-height:1.7;
+  }
+  .explain .anal b{color:#9a4708;}
+
+  /* 본문(필기) */
+  .body h4{
+    font-size:15px;font-weight:700;margin:20px 0 8px;color:var(--ink);
+    padding-left:11px;border-left:3px solid var(--blue);line-height:1.5;
+  }
+  .body h4:first-child{margin-top:4px;}
+  .body p{margin:9px 0;font-size:14.5px;color:var(--sub);}
+  .body ul{margin:9px 0;padding-left:2px;list-style:none;}
+  .body ul li{position:relative;padding-left:17px;margin:7px 0;font-size:14.5px;color:var(--sub);line-height:1.68;}
+  .body ul li::before{content:"";position:absolute;left:3px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--blue);}
+  .body ul ul{margin:5px 0;}
+  .body ul ul li::before{background:var(--muted);width:4px;height:4px;}
+
+  /* 🔴 꼭 암기 */
+  .memo{background:var(--red-weak);border:1px solid #f8d0d4;border-radius:14px;padding:15px 17px;margin:16px 0;}
+  .memo .mh{font-size:13.5px;font-weight:800;color:#c5303c;margin:0 0 9px;display:flex;align-items:center;gap:7px;}
+  .memo .k{background:#fff;border:1px solid #f8d0d4;border-radius:10px;padding:9px 12px;margin:7px 0;font-size:14px;color:#7a1c24;font-weight:600;line-height:1.6;}
+  .memo p{margin:8px 0 0;font-size:13.5px;color:#7a1c24;line-height:1.65;}
+
+  /* 🟣 한 걸음 더 */
+  .more{background:var(--violet-weak);border:1px solid #e5d8fb;border-radius:14px;padding:15px 17px;margin:16px 0;}
+  .more .mh{font-size:13.5px;font-weight:800;color:var(--violet);margin:0 0 8px;display:flex;align-items:center;gap:7px;}
+  .more p{margin:7px 0;font-size:14px;color:#4a366b;line-height:1.72;}
+  .more strong{color:#5b21b6;}
+  .more ul{margin:7px 0;padding-left:2px;list-style:none;}
+  .more ul li{position:relative;padding-left:16px;margin:6px 0;font-size:14px;color:#4a366b;line-height:1.65;}
+  .more ul li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--violet);}
+
+  /* 🟢 재미있는 상식 */
+  .tipb{background:var(--green-weak);border:1px solid #cfeed9;border-radius:14px;padding:15px 17px;margin:16px 0;}
+  .tipb .mh{font-size:13.5px;font-weight:800;color:var(--green);margin:0 0 8px;display:flex;align-items:center;gap:7px;}
+  .tipb p{margin:7px 0;font-size:14px;color:#1c4a30;line-height:1.72;}
+  .tipb strong{color:#166534;}
+
+  /* back-to-top */
+  .totop{
+    position:fixed;right:18px;bottom:18px;width:48px;height:48px;border-radius:50%;
+    background:var(--blue);color:#fff;border:none;font-size:21px;font-weight:700;
+    box-shadow:0 4px 14px rgba(49,130,246,0.4);cursor:pointer;z-index:50;
+    display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;
+  }
+  .totop.show{opacity:1;pointer-events:auto;}
+
+  /* =================================================================
+     반응형 — 세로(좁은 화면)=1단 / 가로(넓은 화면)=2단, 여백 최소화
+     ================================================================= */
+  /* 넓은 화면(가로/태블릿/데스크탑, ≥760px): 11주차 토픽 카드도 2단 배치 */
+  @media (min-width:760px){
+    .topics{column-count:2;column-gap:16px;}
+  }
+  /* 좁은 화면(세로 모드 폰, ≤759px): 모든 것을 1단으로 */
+  @media (max-width:759px){
+    .row{grid-template-columns:1fr;}
+    .aside{position:static;}
+    .hero h1{font-size:24px;}
+    .hero{padding:30px 24px;}
+    .week-head{flex-wrap:wrap;}
+    .week-head .date{margin-left:0;width:100%;}
+    .note{padding:22px 20px;}
+    .topic{padding:22px 20px;}
+  }
+  /* 아주 좁은 화면(소형 폰): 좌우 여백 더 줄이기 */
+  @media (max-width:430px){
+    .wrap{padding:18px 14px 110px;}
+  }
+  /* anchor offset */
+  .week{scroll-margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">일반생물학 예1-1 · 기말 자습서 (9~14주차)</div>
+    <h1>일반생물학 예1-1<br>기말 자습서</h1>
+    <p>왼쪽 단은 필기 내용을 빠짐없이 옮겨 가독성만 높인 본문이고, 오른쪽 단은 꼭 외워야 할 핵심·생명과학Ⅰ/Ⅱ 배경 개념·추가 지식을 따로 모았습니다. 고등학교에서 생명과학을 안 배운 상태를 가정해, 어려운 개념은 <b>🍊 쉽게 말하면</b> 카드에서 중·고등학생이 처음 배우듯 풀어 설명하고, 처음 나오는 용어는 각주(<sup class="fn">①</sup>)로 풀어 두었어요.</p>
+    <div class="chips">
+      <span class="chip">막의 구조와 기능</span>
+      <span class="chip">물질 수송</span>
+      <span class="chip">에너지 · 효소</span>
+      <span class="chip">세포호흡 · 발효</span>
+      <span class="chip">광합성</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="lg"><span class="swatch" style="background:var(--blue)"></span><b>본문</b> — 필기 그대로 정리</div>
+    <div class="lg"><span class="swatch" style="background:var(--red)"></span><b>꼭 암기</b></div>
+    <div class="lg"><span class="swatch" style="background:var(--violet)"></span><b>생명과학Ⅰ/Ⅱ 배경</b></div>
+    <div class="lg"><span class="swatch" style="background:#ea7a18"></span><b>🍊 쉽게 말하면</b> — 처음 배우는 학생용</div>
+    <div class="lg"><span class="swatch" style="background:var(--green)"></span><b>알아두면 좋은 지식</b></div>
+    <div class="lg" style="margin-left:auto;color:var(--muted)"><sup class="fn" style="font-size:13px">①</sup> = 용어 각주</div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h2>목차</h2>
+    <div class="toc-grid">
+      <a href="#w9"><span class="wk">9주차 · 1-5</span>막의 구조와 물질 수송</a>
+      <a href="#w10"><span class="wk">10주차 · 1-5</span>에너지 전환과 효소</a>
+      <a href="#w11"><span class="wk">11주차 · 1-6</span>세포호흡 자세히 · 산화환원~산화적 인산화</a>
+      <a href="#w12"><span class="wk">12주차 · 1-6</span>세포의 화학에너지 생성</a>
+      <a href="#w13"><span class="wk">13주차 · 1-7</span>광합성 · 명반응</a>
+      <a href="#w14"><span class="wk">14주차 · 1-7</span>캘빈회로 · C3/C4/CAM</a>
+    </div>
+  </nav>
+
+  <!-- ============ WEEK 9 ============ -->
+  <section class="week" id="w9">
+    <div class="week-head">
+      <span class="week-badge">9주차 · 1-5</span>
+      <h2>일하는 세포 — 막의 구조와 물질 수송</h2>
+      <span class="date">2026.05.01</span>
+    </div>
+
+    <!-- 9-1 막의 구조와 기능 개요 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">개요</span>막의 구조와 기능 · 전체 지도</h3>
+        <div class="explain">
+        <div class="xh">🍊 왜 '세포막'부터 배울까?</div>
+        <p>세포는 생명의 가장 작은 단위예요. 그런데 세포가 살아있으려면 안과 밖이 구분돼야 해요. 그 경계선이 바로 <strong>세포막</strong>이에요.</p>
+        <p>세포를 하나의 <strong>'집'</strong>이라고 생각해 보세요. 세포막은 그 집을 둘러싼 <strong>벽이자 현관문</strong>이에요. 그냥 꽉 막힌 벽이 아니라, 필요한 건 들여보내고 위험한 건 막아내는 <strong>똑똑한 문</strong>이죠.</p>
+        <div class="anal">그래서 이 단원의 질문은 딱 두 개예요.<br><b>① 이 문(막)은 어떻게 생겼나? (구조)</b><br><b>② 물질이 이 문을 어떻게 드나드나? (수송)</b><br>이 두 가지를 머리에 걸어두고 읽으면 길을 안 잃어요.</p>
+      </div>
+      <div class="body">
+        <h4>이 단원의 세 갈래</h4>
+        <ul>
+          <li><b>① 막의 구조와 기능</b> — 세포막이 무엇으로, 어떻게 생겼나</li>
+          <li><b>② 에너지와 세포</b> — (10주차에서 자세히)</li>
+          <li><b>③ 효소의 작용 방식</b> — (10주차에서 자세히)</li>
+        </ul>
+        <h4>수송(물질 이동)의 3가지 방법</h4>
+        <ul>
+          <li><b>수동 수송</b>: 확산 · 촉진 확산 · 삼투</li>
+          <li><b>능동 수송</b>: 1차·2차 능동 수송</li>
+          <li><b>거대분자의 수송</b>: 내포작용(밖→안) · 외포작용(안→밖)</li>
+        </ul>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 — 수송 3분류</div>
+        <div class="k">수동 = 에너지 X · 고농도→저농도 (자연스러운 흐름)</div>
+        <div class="k">능동 = 에너지 O · 저농도→고농도 (억지로 거꾸로)</div>
+        <div class="k">거대분자 = 통째로 삼키거나(내포) 뱉기(외포) · ATP 필요</div>
+      </div>
+    </div>
+        <div class="explain">
+        <div class="xh">🍊 인지질이 뭐고, 왜 '이중층'일까?</div>
+        <p>세포막의 가장 기본 재료가 <strong>인지질</strong>이라는 분자예요. 이 분자는 성격이 특이해요. 한쪽 끝(머리)은 <strong>물을 좋아하고(친수성)</strong>, 반대쪽 끝(꼬리)은 <strong>물을 싫어해요(소수성).</strong></p>
+        <div class="anal">성냥개비를 떠올려 보세요. <b>머리는 물과 친한 부분, 꼬리(나무 막대)는 기름과 친한 부분</b>이에요. 이런 분자를 물속에 잔뜩 풀어놓으면, 물 싫어하는 꼬리끼리 안쪽으로 숨고, 물 좋아하는 머리는 바깥(물 쪽)을 향해요.</p>
+        <p>그 결과 꼬리는 안쪽, 머리는 양쪽 바깥을 향하는 <strong>두 겹의 층</strong>이 저절로 만들어져요. 이게 바로 <strong>인지질 이중층</strong>이고, 세포막의 뼈대예요. 누가 시켜서가 아니라 물과 기름의 성질 때문에 <strong>저절로</strong> 이 모양이 된다는 게 핵심이에요.</p>
+      </div>
+      <div class="body">
+        <h4>인지질 한 분자의 구조</h4>
+        <p>글리세롤<sup>(글리세롤=탄소 3개짜리 알코올, 지질의 뼈대)</sup> + 인산기 + 추가적 극성 R기 + 지방산 2개로 이루어짐.</p>
+        <ul>
+          <li><b>머리</b>(인산·글리세롤) = 친수성 (물과 친함)</li>
+          <li><b>꼬리</b>(지방산 2개) = 소수성 (물과 안 친함, 기름과 친함)</li>
+        </ul>
+        <p>→ 물속에서 꼬리를 안쪽으로 모아 <b>이중층</b>을 이룸.</p>
+      </div>
+    </div>
+        <p>이 단원은 크게 세 갈래로 나뉩니다: <b>① 막의 구조와 기능, ② 에너지와 세포, ③ 효소의 작용 방식.</b></p>
+        <h4>막의 구조와 기능</h4>
+        <ul>
+          <li><b>세포막과 수송</b>
+            <ul>
+              <li><b>세포막</b> — 구조(구병요뇨<sup class="fn">①</sup>), 유동성 <span class="arrow"></span> <mark class="b">유동 모자이크 모델</mark></li>
+              <li><b>수송</b>
+                <ul>
+                  <li>수동 수송: 확산 · 촉진 확산 · 삼투</li>
+                  <li>능동 수송: 1차·2차 능동 수송</li>
+                  <li>거대분자의 수송: 내포작용(外→內) · 외포작용(內→外)</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <h4>인지질 이중층 &amp; 세포막의 구조와 물질 이동</h4>
+        <p class="arrow"><b>인지질 한 분자의 구조:</b> 글리세롤<sup class="fn">②</sup> + 인산기 + 추가적 극성 R기 + 지방산 2개</p>
+        <div class="callout">머리(인산·글리세롤)는 <b>친수성</b>, 꼬리(지방산 2개)는 <b>소수성</b> → 물 속에서 꼬리를 안쪽으로 모아 <b>이중층</b>을 이룸.</div>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>수송 3분류 한눈에</h5>
+          <div class="key">수동 = 에너지 X (고→저)</div>
+          <div class="key">능동 = 에너지 O (저→고, 역행)</div>
+          <div class="key">거대분자 = 내포·외포 (ATP 필요)</div>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> "구병요뇨"는 필기 약어로 보입니다. 세포막의 4대 구성요소 <b>인지질·단백질·탄수화물·콜레스테롤</b>을 묶어 외우려는 표시예요.</p>
+          <p><span class="n">②</span> <b>글리세롤</b>: 탄소 3개짜리 알코올. 지방·인지질의 뼈대가 되는 분자입니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-2 유동 모자이크 모델 / 유동성 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">막 구조</span>유동 모자이크 모델과 유동성</h3>
+        <div class="explain">
+        <div class="xh">🍊 '유동 모자이크'라는 어려운 말의 뜻</div>
+        <p>세포막을 딱딱한 벽돌담이라고 오해하기 쉬운데, 사실은 그렇지 않아요. 이름을 두 부분으로 쪼개보면 뜻이 바로 보여요.</p>
+        <p><strong>유동(流動)</strong> = '흐르고 움직인다'는 뜻. 막을 이루는 인지질과 단백질이 제자리에 꽉 박혀 있는 게 아니라, <strong>물 위의 얼음 조각처럼 둥둥 떠서 움직여요.</strong></p>
+        <p><strong>모자이크</strong> = 여러 조각이 알록달록 박힌 그림. 인지질이라는 '바다' 위에 단백질이라는 '섬'들이 <strong>여기저기 박혀 있는 모습</strong>이 모자이크 같다는 거예요.</p>
+        <div class="anal">합치면: 세포막은 <b>"단백질 섬들이 둥둥 떠 있는, 출렁이는 인지질 바다"</b>예요. 살아있는 것처럼 끊임없이 움직인다는 게 가장 중요한 포인트!</div>
+        <div class="xh">🍊 왜 실험까지 하면서 이걸 증명했을까?</div>
+        <p>"막이 정말 움직이는가?"를 눈으로 확인하고 싶었기 때문이에요. 그래서 두 세포의 단백질에 서로 다른 색 표시를 하고 합쳤더니, 시간이 지나자 두 색이 <strong>섞여버렸어요.</strong> 막이 고정돼 있었다면 안 섞였겠죠. 이게 '막은 움직인다'는 증거예요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 '유동성'은 왜 중요할까?</div>
+        <p>막이 너무 딱딱하면 단백질이 일을 못 하고, 너무 흐물거리면 형태가 무너져요. 그래서 세포는 막의 <strong>'적당한 무름 정도'(유동성)</strong>를 잘 조절해야 해요. 그럼 무엇이 이 유동성을 바꿀까요?</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 왜 불포화지방산이 많으면 더 물렁할까?</div>
+        <p>지방산 꼬리에는 두 종류가 있어요. <strong>포화지방산</strong>은 곧게 뻗은 막대라 옆 꼬리와 빈틈없이 착 달라붙어요(→ 빽빽하고 딱딱함). <strong>불포화지방산</strong>은 중간이 <strong>꺾여 있어서</strong> 서로 딱 붙지 못하고 헐겁게 쌓여요(→ 무르고 잘 움직임).</p>
+        <div class="anal"><b>버터 vs 식용유</b>를 떠올려 보세요. 버터(포화지방 많음)는 상온에서 굳고, 식용유(불포화지방 많음)는 액체죠. 막도 똑같아요 — 불포화가 많을수록 더 액체처럼 물렁(유동성 ↑).</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 콜레스테롤 = 온도 완충재</div>
+        <p>콜레스테롤은 인지질 사이에 끼어 있는 분자예요. 이게 특이한 건, <strong>유동성을 무조건 올리거나 내리는 게 아니라 '너무 한쪽으로 치우치지 않게' 잡아준다</strong>는 거예요.</p>
+        <div class="anal">자동차의 <b>완충장치(서스펜션)</b>처럼 생각하면 돼요. 길이 울퉁불퉁해도 차가 너무 튀지 않게 잡아주죠.<br>• <b>더울 때</b>: 막이 너무 흐물거리지 않게 → 유동성 ↓<br>• <b>추울 때</b>: 막이 너무 굳지 않게 → 유동성 ↑<br>결과적으로 온도가 변해도 막을 <b>안정적으로</b> 유지해요.</div>
+      </div>
+        <h4>실험: 막단백질은 이동하는가?</h4>
+        <p>존스홉킨스대학교의 프라이(Larry Frye)와 에디딘(Michael Edidin)은 생쥐세포와 인체세포의 세포막 단백질을 각각 두 가지로 다르게 표지하고 두 세포를 융합시켰다. 현미경으로 표지자들을 관찰하였다.</p>
+        <div class="callout"><b>결과:</b> 세포막의 단백질은 <mark>움직여</mark> 다닌다. 막단백질뿐 아니라, <b>인지질</b>도 움직여 다닌다.</div>
+
+        <h4>막의 유동성에 영향을 주는 요인</h4>
+        <ul>
+          <li><b>불포화지방산 함량 &gt; 포화지방산<sup class="fn">①</sup> 함량</b> <span class="arrow"></span> 유동성 ↑<br><span style="font-size:13px;color:var(--muted)">(불포화 꼬리의 '꺾임'이 빽빽하게 채워지는 것을 막아 유동성 ↑)</span></li>
+          <li><b>지방산 길이 ↓</b> → 유동성 ↑</li>
+          <li><b>온도 ↑</b> → 유동성 ↑</li>
+        </ul>
+
+        <h4>콜레스테롤<sup class="fn">②</sup>의 역할</h4>
+        <p>지질의 한 종류로, 인지질 사이에 끼어서 <mark class="b">유동성의 범위를 조절</mark>하는 역할.</p>
+        <ul>
+          <li>온도가 <b>높을 때</b>: 인지질의 이동을 감소시켜 유동성 ↓ (너무 흐물거리지 않게)</li>
+          <li>온도가 <b>낮을 때</b>: 빽빽하게 굳는 것을 방해해 유동성 ↑ (너무 굳지 않게)</li>
+        </ul>
+        <p class="arrow">결과적으로 세포막을 <b>안정화</b>시킴.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>유동 모자이크 모델이란</h5>
+          <p>1972년 싱어·니콜슨이 제안. 인지질 이중층이라는 '바다' 위에 단백질이라는 '섬'이 군데군데 박혀 떠다니는(=모자이크) 그림입니다. 막은 고정된 벽이 아니라 <strong>끊임없이 움직이는 액체</strong>에 가깝다는 게 핵심.</p>
+        </div>
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>유동성 ↑ 조건 3가지</h5>
+          <div class="key">① 불포화지방산 ↑</div>
+          <div class="key">② 지방산 길이 ↓ (짧을수록)</div>
+          <div class="key">③ 온도 ↑</div>
+          <p style="margin-top:8px">콜레스테롤은 <b>방향이 아니라 '범위 조절'</b> — 높은 온도엔 ↓, 낮은 온도엔 ↑.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>포화/불포화지방산</b>: 탄소 사슬에 이중결합이 없으면 포화(곧게 뻗어 빽빽이 쌓임·고체 경향), 이중결합이 있으면 불포화(꺾여서 헐겁게 쌓임·액체 경향). 버터=포화, 식용유=불포화를 떠올리면 쉬워요.</p>
+          <p><span class="n">②</span> <b>콜레스테롤</b>: 동물 세포막에만 들어있는 지질. 온도 완충재(buffer) 역할을 한다고 기억하세요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-3 동물세포 세포막 4구성 + 막단백질 기능 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">막 구성</span>동물 세포막의 4가지 구성과 막단백질 기능</h3>
+        <div class="explain">
+        <div class="xh">🍊 막은 인지질만 있는 게 아니에요</div>
+        <p>지금까지 인지질 얘기를 했지만, 실제 세포막에는 네 가지가 섞여 있어요. 각자 맡은 일이 달라요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 막단백질이 하는 5가지 일</div>
+        <p>막에 박힌 단백질은 단순한 부품이 아니라 세포의 <strong>'일꾼'</strong>이에요. 크게 다섯 가지 일을 해요. 비유로 보면:</p>
+        <div class="anal"><b>수송</b> = 출입문/통로 역할 (물질 통과시키기)<br><b>효소</b> = 막에서 화학반응 처리하는 작업대<br><b>신호전달</b> = 바깥 소식을 안으로 전하는 안테나<br><b>구조</b> = 세포 모양을 잡아주는 기둥<br><b>인식</b> = 내 편/적을 구별하는 이름표 인식기</div>
+      </div>
+        <h4>세포막의 4가지 구성성분</h4>
+        <ul>
+          <li><b>1) 인지질</b> — 유동성(끼어있는 단백질도 함께 움직임), 선택적 투과성<sup class="fn">①</sup>(소수성 통과 O / 친수성 통과 X)</li>
+          <li><b>2) 단백질</b></li>
+          <li><b>3) 탄수화물(당)</b></li>
+          <li><b>4) 콜레스테롤</b></li>
+        </ul>
+
+        <h4>1. 인지질</h4>
+        <ul>
+          <li>유동적: 좌 ↔ 우로 자유롭게 이동</li>
+          <li>유동성 ↑ 조건: 지방산 길이 ↓ / 불포화지방산 함량 ↑ / 온도 ↑</li>
+        </ul>
+
+        <h4>2. 단백질</h4>
+        <p>유동적 (∵ 인지질 사이에 끼어 있음) → 유동 모자이크 설.</p>
+        <p><b>기능: 수송 · 효소 · 신호전달 · 구조 · 인식</b><sup class="fn">②</sup></p>
+        <ul>
+          <li><b>α-나선</b> 구조의 막관통 단백질은 친수성 머리·소수성 꼬리 환경에 맞게 박혀 있음</li>
+        </ul>
+
+        <h4>3. 콜레스테롤</h4>
+        <p><mark class="b">유동성을 조절</mark>하여 세포막을 <mark class="b">안정화</mark>시킨다. (인지질만 있을 때보다 온도 변화에 덜 민감)</p>
+
+        <h4>4. 탄수화물(당)</h4>
+        <ul>
+          <li>세포막 <b>바깥면</b>에 존재</li>
+          <li><b>당단백질·당지질</b>의 형태로 존재</li>
+          <li>기능: 세포 간의 <b>인식</b> → 면역계와 연결</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>막단백질 5대 기능</h5>
+          <div class="key">수송 · 효소 · 신호전달 · 구조 · 인식</div>
+          <p style="margin-top:8px">"<b>수·효·신·구·인</b>"으로 묶어서!</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>당이 왜 바깥에만 있나</h5>
+          <p>세포 표면의 당(=당질층, glycocalyx)은 세포가 자기/남을 구별하는 <strong>'이름표'</strong>입니다. 혈액형(A·B·O)도 적혈구 표면 당의 종류 차이예요. 면역세포가 이 이름표를 읽어 내 세포와 외부 침입자를 구별합니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>선택적 투과성</b>: 막이 아무거나 통과시키지 않고 골라서 통과시키는 성질. 작고 기름에 잘 녹는(소수성) 분자는 잘 통과, 크거나 전하를 띤(친수성) 분자는 통과를 막음.</p>
+          <p><span class="n">②</span> <b>인식(recognition)</b>: 세포 표면 단백질·당이 다른 세포나 신호물질을 알아보는 기능.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-4 막단백질 기능 상세 + HIV -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">막단백질</span>막단백질의 여러 기능 · HIV 저항성</h3>
+        <div class="explain">
+        <div class="xh">🍊 HIV 얘기가 왜 갑자기 나올까?</div>
+        <p>'막단백질이 그냥 부품이 아니라 진짜 중요하다'는 걸 보여주는 충격적인 실제 사례이기 때문이에요.</p>
+        <p>HIV(에이즈 바이러스)는 우리 면역세포 안으로 들어올 때, 세포 표면의 막단백질 <strong>CD4와 CCR5</strong>를 <strong>'문 손잡이'처럼 붙잡고</strong> 들어와요.</p>
+        <div class="anal">그런데 어떤 사람들은 태어날 때부터 <b>CCR5라는 문 손잡이가 아예 없어요.</b> 그러면 HIV가 붙잡을 곳이 없어서 <b>감염 자체가 안 돼요.</b> 손잡이가 없으니 도둑이 문을 못 여는 셈이죠. 다행히 CCR5는 없어도 사는 데 큰 지장이 없어서, 이 사람들은 HIV에 저항성을 가져요.</div>
+      </div>
+        <h4>막단백질의 기능</h4>
+        <ul>
+          <li><b>(a) 수송</b>: 막을 관통해 친수성 통로 역할, 모양을 바꿔 능동수송(ATP)으로 펌프질</li>
+          <li><b>(b) 효소활성</b>: 막에 박힌 효소가 대사 과정을 수행</li>
+          <li><b>(c) 신호전달</b>: 호르몬·신호전달물질(<b>호르몬·신호전달 물질</b>) 모양에 맞는 수용체로 작동</li>
+          <li><b>(d) 세포–세포 인식</b>: 당단백질이 인식표 역할</li>
+          <li><b>(e) 세포간 결합</b>: 이웃 세포끼리 접합</li>
+          <li><b>(f) 세포골격·세포외기질(ECM)에 부착</b>: 세포 모양 유지·고정</li>
+        </ul>
+        <p class="arrow">단백질들이 서로 <mark class="b">연결</mark>되어 세포의 내·외측을 연결 → 세포막을 <b>안정화</b>, 외부신호전달, 세포외기질–세포골격 연결.</p>
+
+        <h4>HIV 저항성의 유전적 근거</h4>
+        <ul>
+          <li>대부분의 경우 HIV는 세포 표면의 <b>CCR5</b><sup class="fn">①</sup>(공동 수용체)와 <b>CD4</b>(수용체)를 통해 감염시킴</li>
+          <li>저항성인 사람들은 표면에 <b>기능성 CCR5가 없어서</b> HIV가 세포를 감염시킬 수 없음</li>
+          <li>CD4 수용체는 면역계에 매우 중요하지만, CCR5 공동 수용체는 비교적 덜 중요 → CCR5가 없어도 살아가는 데 치명적 지장이 없음</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>왜 HIV 사례가 중요할까</h5>
+          <p>막단백질(수용체)이 단순한 부품이 아니라, <strong>바이러스의 '문 손잡이'</strong> 역할도 한다는 걸 보여주는 예입니다. CCR5 유전자가 결손된(Δ32) 사람은 그 문 손잡이 자체가 없어 HIV가 들어올 수 없어요. 실제로 이 원리를 응용한 골수이식으로 HIV가 완치된 '베를린 환자' 사례가 있습니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>CCR5 / CD4</b>: 면역세포(특히 보조 T세포) 표면에 있는 막단백질. HIV가 세포 안으로 들어올 때 둘 다 붙잡아야 감염이 됩니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-5 수동/능동 비교 + 촉진확산 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.6</span>세포막을 통한 수송 · 수동 vs 능동</h3>
+        <div class="explain">
+        <div class="xh">🍊 물질은 어떻게 막을 통과할까?</div>
+        <p>막 구조를 다 배웠으니, 이제 핵심 질문으로 와요: <strong>"물질이 이 막을 어떻게 드나드는가?"</strong></p>
+        <p>방법은 크게 두 가지인데, 구별 기준은 딱 하나예요 — <strong>"에너지(ATP)가 드느냐, 안 드느냐."</strong></p>
+        <div class="anal"><b>수동 수송</b> = 비탈길에서 공이 저절로 굴러내려가는 것. 힘 안 듦. (물질이 많은 곳 → 적은 곳으로 자연스럽게)<br><b>능동 수송</b> = 공을 비탈 위로 밀어 올리는 것. 힘(ATP) 필요. (적은 곳 → 많은 곳으로 억지로)</div>
+      </div>
+        <table class="ntable">
+          <tr><th>구분</th><th>수동 수송</th><th>능동 수송</th></tr>
+          <tr><td><b>에너지</b></td><td>소모 <b>없이</b> 일어남</td><td>소모 <b>있어야</b> 일어남</td></tr>
+          <tr><td><b>방향</b></td><td>고농도 → 저농도 (순이동)</td><td>한 방향으로만, 농도/전기화학적 기울기에 <span class="hl-r">역행 가능</span></td></tr>
+          <tr><td><b>세포막</b></td><td><mark class="b">양방향</mark>으로 자유로이 이동</td><td>한 방향</td></tr>
+          <tr><td><b>예</b></td><td>확산 · 촉진확산 · 삼투</td><td>1차·2차 능동수송, 내포·외포</td></tr>
+        </table>
+
+        <h4>5.6 수송 단백질은 확산을 촉진한다</h4>
+        <ul>
+          <li><mark class="b">소수성 물질</mark>들은 쉽게 막을 가로질러 확산한다</li>
+          <li>그러나 극성이나 전하를 띤 물질들은 쉽게 막을 이동할 수 없다</li>
+          <li><mark class="b">촉진확산</mark>(facilitated diffusion): 특별한 수송단백질의 도움으로 막을 가로질러 이동할 수 있는 수송과정
+            <ul>
+              <li>에너지를 필요로 하지 않음</li>
+              <li>원동력: <b>농도 기울기</b></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>핵심 구분선</h5>
+          <div class="key">수동 = ATP X · 고→저 · 양방향</div>
+          <div class="key">능동 = ATP O · 저→고 · 역행</div>
+          <p style="margin-top:8px">촉진확산은 단백질을 쓰지만 <b>여전히 수동</b>(에너지 X)이라는 게 함정 포인트!</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>'기울기(gradient)'란</h5>
+          <p>농도가 높은 곳과 낮은 곳의 차이를 뜻합니다. 물질은 가만 두면 기울기를 따라 저절로(고→저) 퍼지려 하죠. 이 자연스러운 흐름을 거스르려면(저→고) 반드시 <strong>에너지(ATP)</strong>가 듭니다 — 이게 능동수송.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-6 확산 상세 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">수동 1</span>확산 (Diffusion)</h3>
+        <div class="explain">
+        <div class="xh">🍊 확산이 무슨 뜻?</div>
+        <p>물질이 <strong>많은 곳에서 적은 곳으로 저절로 퍼지는 것</strong>이 확산이에요. 막이 있든 없든, 분자들이 가만 있지 않고 마구 움직이다 보면 결국 골고루 퍼지게 돼요.</p>
+        <div class="anal">교실 한쪽에서 <b>향수 뚜껑을 열면</b>, 가까운 사람부터 냄새를 맡고, 시간이 지나면 교실 전체에 퍼지죠? 누가 부채질 안 해도요. 이게 확산이에요.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 왜 소수성(기름 친화) 물질만 잘 통과해?</div>
+        <p>세포막 속(인지질 꼬리 부분)이 <strong>기름 같은 환경</strong>이기 때문이에요. 기름과 친한 분자는 이 속을 쑥 통과하지만, 물과 친한 분자(친수성·전하)는 기름 벽에 막혀버려요. <strong>"기름은 기름끼리 통한다"</strong>고 기억하세요.</p>
+      </div>
+        <ul>
+          <li>에너지(ATP) 소모 없이 이동</li>
+          <li><mark class="b">고농도</mark>에서 <mark class="b">저농도</mark>로 물질이 이동하는 현상</li>
+          <li>(세포막이 없는 것처럼) <mark class="b">자유로이</mark> 투과할 수 있음</li>
+          <li>크기가 작으면서 소수성인 분자의 수송 방식 (스테로이드, O₂, CO₂, 지방산)</li>
+          <li><b>분배계수<sup class="fn">①</sup></b> = (지용액에서의 용해도) ÷ (수용액에서의 용해도)<br>→ 분배계수 ↑ → 소수성 ↑</li>
+          <li>일반적으로 수송 속도 <b>느림</b></li>
+        </ul>
+        <p style="font-size:13px;color:var(--muted)">예) 향수 뚜껑을 열면 근처에 가까운 사람부터 향기를 맡음.</p>
+        <div class="callout">크기가 작고 소수성인 분자들은 세포막을 자유롭게 이동 → 결국 <b>동적 평형<sup class="fn">②</sup></b> 상태에 도달.</div>
+      </div>
+
+      <aside class="aside">
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>왜 소수성만 자유 통과?</h5>
+          <p>세포막 속(인지질 꼬리)은 기름 같은 소수성 환경입니다. 기름과 친한 분자(소수성·지용성)는 이 속을 쑥 통과하지만, 물과 친한 분자(친수성·전하)는 막혀버려요. "기름은 기름끼리"를 떠올리세요.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>분배계수</b>: 어떤 물질이 기름층과 물층 중 어디를 더 좋아하는지 나타내는 숫자. 클수록 기름(소수성)을 좋아함 → 막을 잘 통과.</p>
+          <p><span class="n">②</span> <b>동적 평형</b>: 양쪽 농도가 같아져 겉보기엔 이동이 멈춘 듯 보이지만, 실제론 양방향으로 똑같이 계속 오가는 상태.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-7 촉진확산 상세 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">수동 2</span>촉진확산 (채널·운반체)</h3>
+        <div class="explain">
+        <div class="xh">🍊 그럼 물 같은 친수성 물질은 어떻게 들어가?</div>
+        <p>방금 친수성 물질은 막을 못 통과한다고 했죠? 그런데 세포는 물이나 이온도 들여야 해요. 그래서 <strong>전용 통로(문)를 따로 만들어 둬요.</strong> 이 통로를 통해 통과시키는 게 촉진확산이에요.</p>
+        <div class="anal">확산이 '벽을 그냥 스며 지나가는 것'이라면, 촉진확산은 <b>'전용 출입문으로 통과하는 것'</b>이에요. 문을 쓰니까 더 빠르지만, 문 개수가 정해져 있어서 한꺼번에 너무 많이 오면 줄을 서야 해요(포화).</p>
+        <p>중요한 건, 문을 쓰더라도 <strong>여전히 많은 쪽 → 적은 쪽으로 자연스럽게</strong> 가는 거라 에너지는 안 들어요.</p>
+      </div>
+      <div class="body">
+        <ul>
+          <li>자극에 의해 <mark class="b">채널(통로단백질)</mark>을 열어, 특정물질이 고농도→저농도로 이동</li>
+          <li>혹은 <b>운반체</b>를 통해 특정물질이 이동</li>
+          <li>확산보다 속도가 <span class="hl-r">빠름</span></li>
+          <li>예) Na⁺ 채널, K⁺ 채널</li>
+        </ul>
+        <h4>확산 vs 촉진확산 속도</h4>
+        <div class="eqbox">확산 속도 &lt; 촉진확산 속도</div>
+        <ul>
+          <li><b>확산</b>: 농도차 클수록, 막 넓이 넓을수록 빠름</li>
+          <li><b>촉진확산</b>: 농도차 클수록, 통로 밀도 높을수록 빠름 → 단, 통로 수가 한정돼 <b>최댓값에서 포화</b></li>
+        </ul>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 — 그래프 함정</div>
+        <p>농도차를 계속 키우면: <b>단순확산</b>은 직선으로 끝없이 증가하지만, <b>촉진확산</b>은 통로가 다 차서 <b>최댓값에서 평평</b>해져요. 그래프 비교가 단골 문제!</p>
+      </div>
+    </div>
+        <ul>
+          <li>(농도의 기울기가 형성된 후) 자극에 의해 <mark class="b">채널(통로단백질)</mark>을 열어, 특정물질이 (순이동) 고농도 → 저농도로 이동</li>
+          <li>혹은 <b>운반체</b>를 통해 특정물질이 이동</li>
+          <li>일반적으로 확산에 비해 속도가 <span class="hl-r">빠름</span> (생체 내)</li>
+          <li>예) <code>Na⁺ 채널</code>, <code>K⁺ 채널</code></li>
+        </ul>
+        <p><b>채널의 종류:</b></p>
+        <ul>
+          <li>작은 분자들 (ligand)</li>
+          <li>의존성 (리간드 의존성)</li>
+          <li>전압 의존성</li>
+        </ul>
+
+        <h4>확산 속도 비교</h4>
+        <div class="eqbox">확산 속도 &lt; 촉진확산 속도</div>
+        <ul>
+          <li><b>확산</b>: 농도차가 클수록, 막의 넓이가 넓을수록 빠름</li>
+          <li><b>촉진확산</b>: 농도차가 클수록, 통로의 밀도가 높을수록 빠름 → 단, 통로 수가 한정돼 <b>밀도의 제한</b>(포화)이 걸림</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>채널 vs 운반체</h5>
+          <ul>
+            <li><strong>채널 단백질</strong>: 늘 뚫려있거나 자극 시 열리는 '터널'. 빠름.</li>
+            <li><strong>운반체 단백질</strong>: 물질을 안고 모양을 바꿔 옮기는 '회전문'. 상대적으로 느리고 포화됨.</li>
+          </ul>
+        </div>
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>그래프 모양</h5>
+          <p>촉진확산은 농도차가 커져도 결국 <b>최댓값에서 평평</b>해짐(통로 포화). 단순확산은 농도차에 <b>비례해 계속 직선</b>으로 증가. 그래프 비교 문제 단골!</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-8 삼투 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">수동 3</span>삼투 현상 (Osmosis)</h3>
+        <div class="explain">
+        <div class="xh">🍊 삼투는 '물의 이동'이에요 — 방향이 헷갈리는 이유</div>
+        <p>확산은 '물질(용질)'이 움직이는 거였죠. 삼투는 반대로 <strong>'물(용매)'이 움직이는 것</strong>이에요. 그런데 방향이 거꾸로처럼 느껴져서 다들 헷갈려요.</p>
+        <div class="anal">방 두 칸 사이에 <b>물만 통과하는 그물망</b>이 있다고 해봐요. 한쪽은 소금물(진함), 한쪽은 맹물(연함)이에요.<br>소금은 그물을 못 넘어가요. 그러니 농도를 맞추는 유일한 방법은 — <b>물이 맹물 쪽에서 소금물 쪽으로 넘어가는 것!</b><br>즉 물은 <b>연한 쪽(저농도) → 진한 쪽(고농도)</b>으로 이동해요.</div>
+        <p>외우는 법: <strong>"소금물이 물을 끌어당긴다"</strong>고 생각하면 방향이 안 헷갈려요. 물질 기준으로 보면 '저→고'라 거꾸로처럼 보이지만, <strong>물 입장에서는 물이 많은 곳(맹물) → 적은 곳(소금물)</strong>으로 가는 거라 사실 자연스러운 확산이에요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 왜 동물세포는 터지고 식물세포는 안 터질까?</div>
+        <p>맹물에 넣으면 둘 다 물이 안으로 밀려 들어와 부풀어요. 그런데 <strong>식물세포는 바깥에 단단한 '세포벽'이라는 갑옷</strong>이 있어서 일정 이상 못 부풀고 버텨요. 동물세포는 갑옷이 없어서 계속 부풀다가 <strong>펑 터져요(용혈).</strong></p>
+      </div>
+        <ul>
+          <li>에너지(ATP) 소모 없이 이동</li>
+          <li>농도가 <mark class="b">낮은 곳에서 높은 곳으로</mark> 선택적 투과막을 통한 <mark class="b">물(용매)의 이동</mark> 현상</li>
+          <li>저농도 용액 → 고농도 용액으로 용매인 물이 이동 ⇒ <b>U자관 실험</b></li>
+          <li>자유 물 분자의 <b>확산</b> (물 입장에선 고→저)</li>
+          <li>삼투압이 낮은 곳에서 삼투압이 높은 곳으로 물이 이동<br>(용매인 물이 저농도 용액에서 고농도 용액으로 흘러간다)</li>
+        </ul>
+        <div class="eqbox">P = C(용질농도) × R(기체상수) × T(절대온도)<br>π = C × R × T  — 비전해질 기준<sup class="fn">①</sup></div>
+
+        <h4>적혈구(동물세포)와 식물세포에서</h4>
+        <table class="ntable">
+          <tr><th></th><th>저장액<sup class="fn">②</sup></th><th>등장액</th><th>고장액</th></tr>
+          <tr><td><b>동물(적혈구)</b></td><td>팽창 → 용혈</td><td>정상</td><td>쭈그러듦</td></tr>
+          <tr><td><b>식물세포</b></td><td>팽윤(정상·터질팽압)</td><td>시듦</td><td>원형질 분리</td></tr>
+        </table>
+
+        <h4>수축포</h4>
+        <p>세포 내로 과도하게 들어온 물을 모아서 밖으로 배출하는 역할 (예: 짚신벌레 <i>Paramecium</i>).</p>
+        <p style="font-size:13px;color:var(--muted)">예) 김장–배추 절이기, 식물의 수분 흡수, 비료 너무 많이 주면 죽음, 소금에 파묻는 사형 방법.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>물은 어디로 가나</h5>
+          <div class="key">물 = 저농도 → 고농도 (용질 많은 쪽으로)</div>
+          <p style="margin-top:8px">헷갈림 방지: <b>용질</b>은 고→저로 가고 싶어 하지만, 막이 막으면 대신 <b>물(용매)</b>이 저→고로 이동! 삼투는 항상 '물 기준'으로 말합니다.</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>용혈 vs 원형질 분리</h5>
+          <ul>
+            <li><strong>용혈(溶血)</strong>: 동물세포가 저장액에서 물을 너무 먹어 <strong>터지는</strong> 것. 세포벽이 없어서 못 버팀.</li>
+            <li><strong>원형질 분리</strong>: 식물세포가 고장액에서 물을 잃어 세포막이 세포벽에서 <strong>떨어지는</strong> 것. 세포벽이 있어 터지진 않음.</li>
+          </ul>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>삼투압 식 π=CRT</b>: 용질 농도(C)가 높고 온도(T)가 높을수록 삼투압이 큽니다. '비전해질 기준'은 소금처럼 이온으로 쪼개지지 않는 물질(예: 설탕) 기준이라는 뜻.</p>
+          <p><span class="n">②</span> <b>저·등·고장액</b>: 세포 바깥 용액이 세포 안보다 용질이 적으면 저장액, 같으면 등장액, 많으면 고장액.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-9 능동수송 1차 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">능동 1</span>1차 능동수송 · Na⁺-K⁺ 펌프</h3>
+        <div class="explain">
+        <div class="xh">🍊 왜 굳이 에너지를 써가며 거꾸로 보낼까?</div>
+        <p>지금까지는 다 '자연스러운 흐름(고→저)'이었어요. 그런데 세포는 일부러 <strong>물질을 적은 쪽에서 많은 쪽으로(저→고) 거꾸로</strong> 보내야 할 때가 있어요. 왜냐하면 그렇게 <strong>'농도 차이'를 만들어 두면 나중에 유용하게 써먹을 수 있기 때문</strong>이에요.</p>
+        <div class="anal">물은 가만 두면 높→낮으로 흘러요. 거꾸로 <b>낮은 곳에서 높은 곳으로 퍼올리려면 펌프(전기=ATP)</b>가 필요하죠. 능동수송이 바로 이 '펌프질'이에요.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 Na⁺-K⁺ 펌프, 가장 유명한 펌프</div>
+        <p>우리 몸 거의 모든 세포가 쉬지 않고 돌리는 펌프예요. ATP 하나를 쓸 때마다 <strong>나트륨(Na⁺) 3개를 밖으로 밀어내고, 칼륨(K⁺) 2개를 안으로 끌어들여요.</strong></p>
+        <p>이렇게 만든 '안팎 농도 차이'가 나중에 <strong>신경 신호를 전달하거나, 영양분(포도당)을 흡수하는 데</strong> 쓰여요. 미리 댐에 물을 채워두는 셈이죠.</p>
+      </div>
+        <h4>능동수송이란</h4>
+        <ul>
+          <li>농도가 <mark class="b">낮은 곳에서 높은 곳으로</mark> 물질이 이동하는 현상</li>
+          <li>확산의 반대 작용 (= 농도/전기화학적 기울기에 역행) → <span class="hl-r">억지로</span> → <span class="hl-r">에너지 필요</span></li>
+          <li>용질의 기울기에 역행하여 용질을 세포 밖으로 배출</li>
+          <li>세포 내부: K⁺ 多 / 세포 외부: Na⁺ 多</li>
+          <li>K⁺: 외부 → 내부로 이동 / Na⁺: 내부 → 외부로 이동 → <span class="hl-r">ATP 필요!!</span></li>
+        </ul>
+
+        <h4>1. 1차 능동수송</h4>
+        <p>직접 ATP(화학에너지)를 소모하여 특정 분자를 한 방향으로 수송.</p>
+        <div class="eqbox">ATP → ADP + Pᵢ + 7.3 kcal/mol  (발에너지 반응<sup class="fn">①</sup>)</div>
+        <ul>
+          <li>ATP는 인산기 하나를 잃고 ADP가 되며, 그 과정에서 에너지 방출 (자유에너지 방출 반응 = 발에르곤 반응)</li>
+          <li>예) <b>Na⁺-K⁺ 펌프</b>, <b>Ca²⁺ 펌프</b>(근육–골격근·심장근에서)</li>
+        </ul>
+
+        <h4>동물 Na⁺-K⁺ 펌프</h4>
+        <p>Na⁺ 이온은 세포의 <b>밖</b>에 두려 하고 K⁺ 이온은 세포의 <b>내부</b>에 두려 한다 → 세포 내부에 K⁺이 많아지고, 세포 외부에 Na⁺이 많아짐.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★중요</span>
+          <h5>Na⁺-K⁺ 펌프 방향</h5>
+          <div class="key">Na⁺ : 안(內) → 밖(外) 으로 3개</div>
+          <div class="key">K⁺ : 밖(外) → 안(內) 으로 2개</div>
+          <p style="margin-top:8px">ATP 1개로 Na⁺ 3개 내보내고 K⁺ 2개 들여옴. "<b>나가는 나트륨 3, 들어오는 칼륨 2</b>" 비율 꼭!</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> "발에너지 반응"은 <b>발에르곤 반응(exergonic)</b>의 필기 표현. 에너지를 <b>방출</b>하며 저절로 일어나는 반응(ΔG&lt;0)을 뜻합니다. 10주차에서 자세히 다뤄요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-10 2차 능동수송 + 내포/외포 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">능동 2</span>2차 능동수송 · 내포 · 외포작용</h3>
+        <div class="explain">
+        <div class="xh">🍊 2차 능동수송 = 앞서 만든 기울기를 '빌려 쓰기'</div>
+        <p>1차 능동수송이 ATP를 직접 써서 농도 차이를 만들었죠? <strong>2차 능동수송</strong>은 그렇게 <strong>이미 만들어진 농도 차이를 빌려서</strong> 다른 물질을 옮겨요. 자기는 ATP를 직접 안 써요.</p>
+        <div class="anal">1차 펌프가 강물을 댐 위로 퍼올리면(ATP 사용), 그 물이 <b>떨어지는 힘으로 물레방아(포도당 운반)</b>를 돌리는 식이에요. 포도당은 직접 전기를 안 쓰고, 앞서 만든 Na⁺ 기울기에 업혀 가는 거죠.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 거대분자는 어떻게 드나들까? (내포·외포)</div>
+        <p>지금까지는 작은 분자 얘기였어요. 그런데 세균이나 큰 단백질처럼 <strong>너무 큰 덩어리</strong>는 통로로 못 지나가요. 그래서 세포는 <strong>막으로 통째로 감싸서</strong> 들이거나 내보내요.</p>
+        <div class="anal"><b>내포작용</b> = 막이 안으로 옴폭 들어가 덩어리를 <b>주머니에 싸서 삼키는 것</b> (밖→안)<br><b>외포작용</b> = 주머니가 막과 합쳐지며 내용물을 <b>밖으로 뱉는 것</b> (안→밖)<br>둘 다 막을 움직여야 해서 ATP가 필요해요.</div>
+      </div>
+        <h4>2. 2차 능동수송</h4>
+        <p>1차 능동수송과 연계된 수송: 1차 능동수송으로 인해 <mark class="b">농도차이</mark>가 생기면, 그 농도차이를 이용하여 다른 분자의 이동에 사용.</p>
+        <ul>
+          <li>1차 능동수송으로 외부 <b>Na⁺ 농도</b>가 높아져 → <b>포도당 수송</b></li>
+          <li>1차 능동수송으로 내부 Na⁺/K⁺ 펌프와 K⁺ 누출통로 → <b>신경계–막전위<sup class="fn">①</sup> 형성</b>에 기여</li>
+          <li><b>Na⁺-포도당 공동수송</b>(동물), <b>H⁺-포도당(설탕) 공동수송</b>(식물·원핵세포)</li>
+        </ul>
+
+        <h4>3. 내포작용 (Endocytosis)</h4>
+        <p>거대분자를 <b>세포 안으로 유입</b>할 때 → <span class="hl-r">ATP 사용</span></p>
+        <ul>
+          <li><b>음세포작용</b>: 용액을 세포 내로 빨아들임</li>
+          <li><b>식세포작용</b>: (고체) 덩어리를 세포 내로 유입 (위족–미세섬유) → 백혈구 식균작용</li>
+          <li><b>수용체 매개 내포작용</b>: 특정분자를 수용체를 이용하여 세포 내로 유입<br>→ LDL<sup class="fn">②</sup> 흡수 (외부 존재 시 동맥경화 위험) / Fe 흡수</li>
+        </ul>
+
+        <h4>4. 외포작용 (Exocytosis)</h4>
+        <p>거대분자를 <b>세포 밖으로 방출(분비)</b>할 때. 분비소낭이 세포막과 융합되어 내용물이 방출됨.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>내포 3종 + 외포</h5>
+          <div class="key">음세포 = 액체(용액) 마시기</div>
+          <div class="key">식세포 = 고체 덩어리 삼키기</div>
+          <div class="key">수용체매개 = 특정분자만 (LDL·Fe)</div>
+          <p style="margin-top:8px">거대분자 수송은 전부 <b>ATP 필요</b>(능동성).</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>2차 능동수송 비유</h5>
+          <p>1차 펌프가 강물을 높은 댐 위로 퍼올리면(에너지 사용), 그 물이 떨어지는 힘으로 물레방아(포도당 운반)를 돌리는 식입니다. 포도당은 직접 ATP를 안 쓰지만, <strong>앞서 만들어둔 Na⁺ 기울기</strong>를 빌려 쓰는 거예요.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>막전위</b>: 세포막 안팎의 전하 차이로 생기는 전압. 신경·근육이 신호를 전달하는 바탕이 됩니다.</p>
+          <p><span class="n">②</span> <b>LDL</b>: 저밀도 지단백질('나쁜 콜레스테롤'). 혈관에 쌓이면 동맥경화를 일으킵니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 9-11 식세포작용 상세 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.9</span>큰 분자의 막 통과 수송 · 식세포작용</h3>
+        <p>큰 분자는 <b>세포외배출작용(외포)</b>과 <b>세포내섭취작용(내포)</b>에 의해 막을 가로질러 수송된다.</p>
+        <h4>대표적 세포내 섭취</h4>
+        <p>식세포작용 · 음세포작용 · 수용체 매개 내포작용</p>
+        <h4>식세포작용 (Phagocytosis)</h4>
+        <ul>
+          <li>식세포가 몸 안에 있는 다른 세포나 입자들을 섭취하는 과정</li>
+          <li>입자를 둘러싼 후 <b>막으로 된 주머니(식포)</b> 속에 담아 흡수</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>식세포 = 우리 몸의 청소부</h5>
+          <p>대식세포·호중구 같은 백혈구가 세균·죽은 세포를 <strong>통째로 삼켜</strong> 식포에 가두고, 거기에 리소좀(소화 효소 주머니)을 붙여 분해합니다. '먹어서 없앤다'가 핵심.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ WEEK 10 ============ -->
+  <section class="week" id="w10">
+    <div class="week-head">
+      <span class="week-badge">10주차 · 1-5</span>
+      <h2>에너지 전환과 효소</h2>
+      <span class="date">2026.05.08</span>
+    </div>
+
+    <!-- 10-1 에너지 흐름 + 열역학 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.10</span>세포는 일을 할 때 물질과 에너지를 전환한다</h3>
+        <div class="explain">
+        <div class="xh">🍊 왜 갑자기 '에너지' 얘기가 나올까?</div>
+        <p>세포가 살아가려면(물질을 옮기고, 만들고, 움직이고) 전부 <strong>에너지</strong>가 필요해요. 그래서 "에너지가 무엇이고 어떻게 움직이는가"를 먼저 알아야 세포가 일하는 원리를 이해할 수 있어요.</p>
+        <div class="anal">핵심 한 줄: <b>에너지는 높은 곳에서 낮은 곳으로 흐른다.</b><br>물이 폭포에서 아래로 떨어지듯, 에너지도 '준위(높이)'가 높은 데서 낮은 데로 흘러요. 그리고 물질은 에너지가 <b>낮은(편안한) 상태</b>가 되려는 경향이 있어요.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 엔트로피? 겁먹지 마세요, 그냥 '어질러짐'이에요</div>
+        <p>엔트로피라는 말이 어렵게 들리지만, 뜻은 아주 단순해요 — <strong>'무질서한 정도', '흩어진 정도'</strong>예요.</p>
+        <div class="anal">방을 안 치우면 저절로 어질러지죠? 거꾸로 방이 저절로 깨끗해지는 일은 절대 없고요. 세상은 가만 두면 <b>점점 더 무질서해지는 쪽</b>으로 흘러가요. 이게 엔트로피 증가예요.</div>
+        <div class="xh">🍊 두 법칙을 한 문장씩으로</div>
+        <p><strong>열역학 1법칙</strong> = 에너지는 새로 생기거나 사라지지 않고, <strong>형태만 바뀐다</strong> (총량은 항상 보존).</p>
+        <p><strong>열역학 2법칙</strong> = 에너지를 쓸 때마다 일부는 <strong>열로 흩어져 버려서</strong>, 전체 무질서(엔트로피)는 <strong>항상 늘어난다.</strong></p>
+        <p>뜨거운 커피가 식고, 향수가 방에 퍼지고, 각설탕이 물에 녹아 흩어지는 게 전부 이 법칙 때문이에요. 자발적인 변화는 늘 <strong>에너지 ↓ + 무질서 ↑</strong> 방향이에요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 그럼 생명체는 법칙을 어기는 거 아냐?</div>
+        <p>좋은 질문이에요! 생명은 엄청 질서정연(세포·기관 등)한데, 어떻게 '무질서 증가 법칙'을 따를까요?</p>
+        <p>비밀은 <strong>'세포 혼자만 보면 안 된다'</strong>는 거예요. 세포는 자기 내부를 질서있게 만드는 대신, <strong>주변(우주)에 열과 무질서를 더 많이 내뱉어요.</strong> 그래서 <strong>'생명체 + 주변'을 통째로 합치면</strong> 무질서는 결국 증가해요. 법칙을 어기는 게 아니라 주변에 떠넘기는 거죠.</p>
+      </div>
+        <h4>에너지의 흐름</h4>
+        <ul>
+          <li><b>高(높고) → 低(낮춰)</b> : 에너지 준위<sup class="fn">①</sup></li>
+          <li>물질은 에너지가 낮은 상태를 선호</li>
+        </ul>
+        <p><b>역학적 에너지의 보존 법칙:</b> 운동에너지와 위치에너지의 합은 같다 → (마찰 등 손실이 없을 때) 역학적 에너지는 보존된다.</p>
+
+        <h4>열역학 제1법칙</h4>
+        <p>에너지는 형태를 바꿀 수는 있지만 생성되거나 소멸되지 않는다.</p>
+        <div class="eqbox">계(system)에 들어온 에너지 = 계 내부 에너지의 변화량 + 외부로 나간 일과 열</div>
+
+        <h4>열역학 제2법칙 (엔트로피<sup class="fn">②</sup> 증가 법칙)</h4>
+        <ul>
+          <li>고립계에서 자발적인 모든 과정은 전체 엔트로피(entropy)를 증가시키는 방향으로 진행</li>
+          <li>→ 자연계의 변화는 무질서도가 증가하는 방향으로</li>
+          <li>S(엔트로피) = 무질서의 정도. 높을수록 무질서, 낮을수록 질서정연</li>
+          <li>에너지 준위 ↑ → 엔트로피 ↓ (반대 경향)</li>
+        </ul>
+        <div class="callout"><b>빅뱅:</b> 무질서도 증가 → 에너지 준위 낮아짐 (열역학 제2법칙을 따름)</div>
+
+        <h4>자발적 변화의 예</h4>
+        <ul>
+          <li>큰 분자는 잘 쪼개지는 쪽으로</li>
+          <li>모여 있기보다는 퍼져있는 쪽으로</li>
+          <li>먹은 것은 소화되어 작아지는 쪽으로</li>
+        </ul>
+        <p class="arrow">에너지 준위 높은 곳에서 낮은 쪽으로 흐르는 것이 자연스럽고 자발적임.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>열역학 2법칙 핵심</h5>
+          <div class="key">1법칙 = 에너지 총량 보존 (불생불멸)</div>
+          <div class="key">2법칙 = 엔트로피(무질서)는 증가</div>
+          <p style="margin-top:8px">자발적 변화 = 에너지 ↓ + 무질서 ↑ 방향.</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>그럼 생명체는 2법칙 위반?</h5>
+          <p>생명은 질서정연한데 어떻게 무질서 증가 법칙을 따를까요? 비밀은 <strong>'고립계가 아님'</strong>. 세포는 자기 내부 질서를 높이는 대신, 주변(우주 전체)에 열·무질서를 더 많이 내보냅니다. <strong>생명체 + 주변</strong>을 합치면 엔트로피는 결국 증가해요.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>에너지 준위</b>: 물질이 가진 에너지의 높낮이. 높은 곳의 물이 아래로 흐르듯, 에너지도 높→낮으로 흐릅니다.</p>
+          <p><span class="n">②</span> <b>엔트로피</b>: 무질서·흩어짐의 정도를 나타내는 양. 방을 안 치우면 저절로 어질러지는 것과 같은 자연의 경향.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 10-2 자유에너지 + 자동차 비유 + ATP -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">에너지</span>자유에너지(ΔG)와 에너지 효율</h3>
+        <div class="explain">
+        <div class="xh">🍊 ΔG가 뭐길래 자꾸 나올까?</div>
+        <p>ΔG(델타 지)는 한마디로 <strong>"이 반응이 저절로 일어날까, 아닐까?"</strong>를 알려주는 신호등이에요. 화학반응을 볼 때마다 이걸로 판단해요.</p>
+        <div class="anal"><b>ΔG &lt; 0 (마이너스)</b> = 🟢 내리막길. 에너지를 뱉으며 <b>저절로</b> 굴러감.<br>(예: 공이 아래로 떨어짐, 포도당이 분해됨)<br><br><b>ΔG &gt; 0 (플러스)</b> = 🔴 오르막길. 에너지를 넣어줘야 <b>억지로</b> 올라감.<br>(예: 공을 위로 던짐, 광합성으로 당 만들기)</div>
+        <p>그래서 세포는 오르막 반응(힘든 일)을 할 때, 내리막 반응(ATP 분해)을 <strong>옆에 묶어서</strong> 그 힘으로 끌고 올라가요. 이걸 '짝지음(coupling)'이라고 해요.</p>
+      </div>
+        <table class="ntable">
+          <tr><th>ΔG</th><th>의미</th><th>방향</th></tr>
+          <tr><td><b>ΔG &lt; 0</b></td><td>에너지 高→低 방출</td><td>자발적 (발에르곤)</td></tr>
+          <tr><td><b>ΔG &gt; 0</b></td><td>에너지 低→高 흡수</td><td>비자발적 (흡에르곤)</td></tr>
+        </table>
+
+        <h4>에너지 효율 — "어떤 자동차를 살 것인가?"</h4>
+        <ul>
+          <li><b>내연기관</b>: 25% 정도만 자동차를 움직이는 운동에너지로 전환, 나머지는 열에너지로 손실 → 엔트로피 약 75%</li>
+          <li><b>세포호흡</b>: 34% 정도가 세포가 일하는 데 사용, 66%는 열에너지로 방출 → 엔트로피 약 66%</li>
+        </ul>
+        <div class="callout">에너지를 한 번에 방출하면 대부분 열로 손실되고, <mark class="b">여러 단계로 나누어 방출하면 ATP로 회수할 수 있는 비율이 높아진다.</mark></div>
+
+        <h4>ATP의 구조 — ATP(Tri) · ADP(Di) · AMP(Mono)</h4>
+        <ul>
+          <li>구성: <b>인산기(P) + 리보스(당) + 아데닌(염기)</b></li>
+          <li>아데노신 1인산 = AMP / 2인산 = ADP / 3인산 = ATP</li>
+          <li>인산기 사이의 결합 = <b>고에너지 인산 결합</b> (음전하끼리 밀치고 있어 에너지가 큼)</li>
+        </ul>
+        <div class="eqbox">ATP + H₂O → ADP + Pᵢ + 에너지 (7.3 kcal/mol)</div>
+        <p class="arrow">방출된 에너지는 <b>일·반응(비자발적 반응)</b>에 사용 (성장·생식·세포유지·합성 등)</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>ATP 가수분해</h5>
+          <div class="key">ATP + H₂O → ADP + Pᵢ + 7.3 kcal/mol</div>
+          <p style="margin-top:8px">ATP 구성 = <b>아데닌 + 리보스 + 인산기 3개</b>. AMP→ADP→ATP 순서로 인산이 늘어남.</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>ATP = 세포의 '현금'</h5>
+          <p>포도당이 큰 '예금'이라면, ATP는 바로 쓸 수 있는 <strong>'소액 현금'</strong>입니다. 세포는 포도당을 한꺼번에 태우지 않고 야금야금 쪼개 ATP로 바꿔 저장했다가, 필요할 때마다 인산기 하나씩 떼어 쓰며 일합니다.</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>세포호흡이 엔진보다 효율 좋다</h5>
+          <p>자동차 엔진(약 25%)보다 세포호흡(약 34%)이 에너지를 더 알뜰하게 씁니다. 비결은 포도당을 <strong>여러 작은 단계</strong>로 나눠 태워 그때그때 ATP로 챙기기 때문이에요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 10-3 ATP 회로 + 이화/동화 + 발열/흡열 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.12</span>ATP는 발열·흡열 반응을 짝지어 세포가 일하게 한다</h3>
+        <div class="explain">
+        <div class="xh">🍊 ATP가 왜 그렇게 중요할까?</div>
+        <p>세포가 일할 때 쓰는 <strong>'에너지 화폐'</strong>가 바로 ATP예요. 포도당이 큰 <strong>'예금통장'</strong>이라면, ATP는 바로 꺼내 쓸 수 있는 <strong>'지갑 속 현금'</strong>이에요.</p>
+        <div class="anal">세포는 포도당을 한꺼번에 태우지 않아요. 야금야금 쪼개서 ATP라는 <b>잔돈</b>으로 바꿔 저장해 뒀다가, 필요할 때마다 ATP에서 <b>인산기 하나를 똑 떼어내며</b> 그 힘으로 일을 해요.</p>
+      </div>
+      <div class="body">
+        <h4>ATP의 구조</h4>
+        <ul>
+          <li>구성: <b>아데닌(염기) + 리보스(당) + 인산기 3개</b></li>
+          <li>인산기 사이 결합 = <b>고에너지 인산 결합</b> (음전하끼리 밀쳐서 에너지가 큼)</li>
+          <li>인산기 개수에 따라: 1개=AMP, 2개=ADP, 3개=ATP</li>
+        </ul>
+        <div class="eqbox">ATP + H₂O → ADP + Pᵢ + 7.3 kcal/mol</div>
+        <p>→ 방출된 에너지를 <b>일(성장·생식·세포유지·합성 등)</b>에 사용.</p>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 왜 '여러 단계로 나눠' 태울까?</div>
+        <p>포도당을 한 번에 확 태우면(연소) 에너지가 대부분 <strong>열로 날아가</strong> 버려요. 그래서 세포는 포도당을 <strong>여러 작은 단계로 나눠 천천히</strong> 태우고, 단계마다 ATP로 조금씩 챙겨요. 그래야 손실이 적거든요.</p>
+        <div class="anal">실제로 <b>자동차 엔진은 약 25%</b>만 운동에너지로 쓰고 나머진 열로 버리는데, <b>세포호흡은 약 34%</b>를 챙겨요. 세포가 엔진보다 알뜰한 거죠!</div>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★</div>
+        <div class="k">ATP + H₂O → ADP + Pᵢ + 7.3 kcal/mol</div>
+        <div class="k">ATP 구성 = 아데닌 + 리보스 + 인산기 3개</div>
+        <p>AMP(1개) → ADP(2개) → ATP(3개) 순으로 인산이 늘어남.</p>
+      </div>
+    </div>
+        <div class="explain">
+        <div class="xh">🍊 왜 '여러 단계로 나눠' 태울까?</div>
+        <p>포도당을 한 번에 확 태우면(연소) 에너지가 대부분 <strong>열로 날아가</strong> 버려요. 그래서 세포는 포도당을 <strong>여러 작은 단계로 나눠 천천히</strong> 태우고, 단계마다 ATP로 조금씩 챙겨요. 그래야 손실이 적거든요.</p>
+        <div class="anal">실제로 <b>자동차 엔진은 약 25%</b>만 운동에너지로 쓰고 나머진 열로 버리는데, <b>세포호흡은 약 34%</b>를 챙겨요. 세포가 엔진보다 알뜰한 거죠!</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 두 단어, 반대말로 외우면 끝</div>
+        <p>생물 화학반응은 크게 두 종류뿐이에요. 하나는 <strong>부수는 것</strong>, 하나는 <strong>만드는 것</strong>.</p>
+        <div class="anal"><b>이화작용 = 부수기.</b> 복잡한 큰 분자를 작게 쪼갬. 부수면서 에너지가 <b>나옴(발열).</b><br>(예: 밥을 소화시켜 에너지 얻기, 세포호흡)<br><br><b>동화작용 = 만들기.</b> 작은 분자를 모아 복잡한 걸 만듦. 만들려면 에너지가 <b>들어감(흡열).</b><br>(예: 아미노산을 모아 단백질 만들기, 광합성)</div>
+        <p>그리고 ATP가 이 둘을 <strong>이어주는 다리</strong> 역할을 해요. 이화작용으로 나온 에너지로 ATP를 만들고, 그 ATP를 써서 동화작용을 돌려요. 이 순환을 <strong>'ATP 회로'</strong>라고 불러요.</p>
+      </div>
+        <p>이화작용으로 방출된 에너지(발열)가 ADP+Pᵢ로부터 ATP 합성에 쓰이고, ATP가 가수분해되며 나온 에너지가 세포 작업(흡열)을 가동시킨다 → <b>ATP 회로</b>.</p>
+
+        <h4>이화작용 vs 동화작용</h4>
+        <table class="ntable">
+          <tr><th>구분</th><th>이화작용</th><th>동화작용</th></tr>
+          <tr><td><b>정의</b></td><td>분해 (복잡한 분자 → 작은 분자)</td><td>합성 (작은 분자 → 복잡한 분자)</td></tr>
+          <tr><td><b>에너지</b></td><td>발열반응 (= 발에르곤<sup class="fn">①</sup>)</td><td>흡열반응 (= 흡에르곤)</td></tr>
+          <tr><td><b>ΔG</b></td><td>ΔG &lt; 0 (음수) · 자발적</td><td>ΔG &gt; 0 (양수) · 비자발적</td></tr>
+          <tr><td><b>예시</b></td><td>세포호흡<br>(포도당 → CO₂+H₂O+ATP)</td><td>광합성(CO₂+H₂O+빛E→포도당)<br>아미노산 → 단백질</td></tr>
+        </table>
+
+        <h4>5.11 화학반응은 에너지를 방출하거나 저장한다</h4>
+        <ul>
+          <li><b>발에르곤(발열반응)</b>: 에너지 방출 — 연소, 세포호흡 (반응물&gt;생성물)</li>
+          <li><b>흡에르곤(흡열반응)</b>: 에너지 흡수 — 광합성 (생성물&gt;반응물)</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>이화 vs 동화 표</h5>
+          <div class="key">이화 = 분해 · 발열 · ΔG&lt;0 · 자발 (호흡)</div>
+          <div class="key">동화 = 합성 · 흡열 · ΔG&gt;0 · 비자발 (광합성)</div>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>'짝지음(coupling)'이 핵심</h5>
+          <p>비자발적인 일(ΔG&gt;0)은 혼자선 안 일어나요. 그래서 세포는 ATP 가수분해(ΔG&lt;0, 자발적)와 <strong>나란히 묶어</strong> 진행시킵니다. 손해 보는 반응을 이득 보는 반응에 업어가게 하는 셈.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>발에르곤/흡에르곤(exergonic/endergonic)</b>: '에르곤'은 일·에너지를 뜻하는 그리스어. 발에르곤=에너지를 밖으로 내보냄, 흡에르곤=에너지를 빨아들임. '발열/흡열'과 같은 의미로 쓰입니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 10-4 효소 개념 + 작용방식 특징 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.13</span>효소는 에너지 장벽을 낮춰 화학반응을 촉진한다</h3>
+        <div class="explain">
+        <div class="xh">🍊 효소가 왜 필요할까?</div>
+        <p>화학반응이 일어나려면 먼저 <strong>'시동 에너지'</strong>를 부어줘야 해요. 이걸 <strong>활성화에너지</strong>라고 해요. 그런데 이게 너무 높으면, 우리 체온(37℃) 정도로는 반응이 거의 안 일어나요. 너무 느려서요.</p>
+        <div class="anal">산 너머 마을에 가려면 높은 <b>고개</b>를 넘어야 한다고 해봐요. 이 고개 높이가 활성화에너지예요. 너무 높으면 아무도 못 넘어가죠(=반응 안 일어남).<br><br><b>효소는 이 고개에 터널을 뚫어주는 가이드</b>예요! 고개 자체를 낮춰주니까 사람들이 쉽게(=빠르게) 넘어가요.</div>
+        <p>그래서 효소가 있으면 체온 정도의 낮은 온도에서도 반응이 팍팍 일어나요. 생명체가 살아갈 수 있는 비결이에요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 효소가 '바꾸지 않는 것'이 시험 포인트</div>
+        <p>효소는 고개(활성화에너지)만 낮출 뿐, <strong>출발 마을과 도착 마을(=반응물·생성물)이나 최종 목적지(=화학평형)는 절대 안 바꿔요.</strong> 그냥 도달을 <strong>빠르게</strong> 할 뿐이에요. 그리고 가이드는 닳지 않아서 <strong>계속 재사용</strong>돼요.</p>
+      </div>
+        <ul>
+          <li><b>활성화에너지<sup class="fn">①</sup></b>: 반응물을 활성화시키는 에너지 (화학반응이 일어나기 위해 반드시 넘어야 할 에너지 장벽)</li>
+          <li>활성화에너지 장벽은 세포에 있는 매우 정돈된 분자들이 자발적으로 분해되는 것을 방지한다</li>
+          <li><b>효소(Enzymes)</b>: 반응을 일으키는 데 필요한 활성화에너지를 감소시키는 촉매 (주로 단백질). 생체 내 화학반응을 빨리 일어나도록 하는 단백질 → <span class="hl-r">반응속도 증가</span></li>
+        </ul>
+
+        <h4>효소의 작용 방식 — 특징 5가지</h4>
+        <ul>
+          <li><b>1) 기질(Substrate<sup class="fn">②</sup>) 특이성</b>을 가짐 → 단백질 효소는 독특한 구조를 가져 특정한 분자와만 결합/반응
+            <ul><li>특이성이 반드시 한 가지인 건 아님. 예) 루비스코 효소: CO₂ → 캘빈회로, O₂ → 광호흡</li></ul>
+          </li>
+          <li><b>2) 반응속도 증가</b> → 정반응과 역반응의 활성화에너지(Eₐ)를 둘 다 낮춤</li>
+          <li><b>3) 반응 전후의 화학평형이 바뀌지 않는다</b> → 화학평형은 유지</li>
+          <li><b>4) 효소는 새로운 물질을 만들어내지 않는다</b></li>
+          <li><b>5) 자유변화에너지(ΔG)는 유지</b></li>
+        </ul>
+
+        <h4>효소가 작용하는 방식</h4>
+        <ul>
+          <li>효소가 작용하는 특정 반응물을 효소의 <b>기질</b>이라 함</li>
+          <li>기질은 효소의 한 부분인 <b>활성부위<sup class="fn">③</sup></b>와 결합</li>
+          <li>효소가 특이성을 보이는 이유: 특정 기질의 분자만 활성부위에 잘 들어맞기 때문 (기질 특이성)</li>
+          <li>효소의 <b>기질 친화도가 클수록 반응속도 증가</b></li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>효소가 '바꾸는 것'과 '안 바꾸는 것'</h5>
+          <div class="key">바꿈: 활성화에너지 ↓ → 반응속도 ↑</div>
+          <div class="key">안 바꿈: 화학평형 · ΔG · 새 물질 X</div>
+          <p style="margin-top:8px">효소는 정반응·역반응 Eₐ를 <b>둘 다</b> 낮춘다는 점 주의! (평형 도달을 빠르게 할 뿐)</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>활성화에너지 = '언덕'</h5>
+          <p>반응물이 생성물로 가려면 먼저 에너지 언덕을 넘어야 합니다. 효소는 이 <strong>언덕을 깎아 낮춰주는 도구</strong>. 그래서 체온(37℃)처럼 낮은 온도에서도 반응이 빨리 일어나요. 도구라서 자신은 닳지 않고 재사용됩니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>활성화에너지(Eₐ)</b>: 반응을 시작하려고 처음에 부어줘야 하는 '시동 에너지'.</p>
+          <p><span class="n">②</span> <b>기질</b>: 효소가 작용하는 상대 물질(반응물). 효소의 '재료'.</p>
+          <p><span class="n">③</span> <b>활성부위(active site)</b>: 효소에서 기질이 쏙 들어가 결합하는 홈. 열쇠–자물쇠처럼 맞아야 함.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 10-5 효소 활성도 + 억제제 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">효소 활성</span>효소의 활성도 · 활성자 / 억제자</h3>
+        <div class="explain">
+        <div class="xh">🍊 효소도 '컨디션'을 타요</div>
+        <p>효소는 단백질이라서 환경에 민감해요. <strong>온도·pH(산성도)가 딱 맞아야</strong> 일을 제일 잘하고, 너무 뜨겁거나 산성/염기성이 강하면 모양이 망가져서 일을 못 해요.</p>
+        <div class="anal">또 <b>재료(기질)가 많을수록</b> 빨라지지만, 일꾼(효소) 수가 정해져 있어서 <b>어느 순간 최대 속도(Vmax)에서 멈춰요.</b> 식당에 손님이 아무리 많아도 요리사 수가 정해져 있으면 처리 속도에 한계가 있는 것과 같아요.</p>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>① 적절한 온도·pH</b>에서 활성 최고 (예: 펩신 pH2, 트립신 pH8)</li>
+          <li><b>② 기질 농도 ↑ → 반응속도 ↑</b>, 그러다 <b>최댓값(Vmax)에서 포화</b> (모든 활성부위가 꽉 참)</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 억제제 = 효소의 일을 방해하는 것</div>
+        <p>억제제는 효소가 일을 못 하게 막는 물질이에요. 어디에 달라붙느냐로 종류가 나뉘어요.</p>
+        <div class="anal"><b>경쟁적 억제제</b> = 기질이 앉을 의자(활성부위)를 <b>대신 차지</b>. 기질을 잔뜩 넣으면 밀어내고 이길 수 있어요.<br><b>비경쟁적 억제제</b> = <b>다른 자리(조절부위)</b>에 앉아 효소 모양을 비틀어버림. 기질 늘려도 못 이겨요.<br><b>무경쟁적 억제제</b> = 효소-기질이 붙은 상태(ES)에만 달라붙음.</div>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>가역적 억제제</b><sup>(떨어질 수 있음, 약하게 결합)</sup>: 경쟁적 / 비경쟁적 / 무경쟁적</li>
+          <li><b>비가역적 억제제</b>: 효소와 <b>강하게</b> 결합해 반영구적으로 억제</li>
+        </ul>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 — 억제제 결합 위치</div>
+        <div class="k">경쟁적 = 활성부위 (기질과 자리 경쟁)</div>
+        <div class="k">비경쟁적 = 조절부위 (E 또는 ES에)</div>
+        <div class="k">무경쟁적 = ES 복합체에만</div>
+      </div>
+    </div>
+        <div class="explain">
+        <div class="xh">🍊 억제제 = 효소의 일을 방해하는 것</div>
+        <p>억제제는 효소가 일을 못 하게 막는 물질이에요. 어디에 달라붙느냐로 종류가 나뉘어요.</p>
+        <div class="anal"><b>경쟁적 억제제</b> = 기질이 앉을 의자(활성부위)를 <b>대신 차지</b>. 기질을 잔뜩 넣으면 밀어내고 이길 수 있어요.<br><b>비경쟁적 억제제</b> = <b>다른 자리(조절부위)</b>에 앉아 효소 모양을 비틀어버림. 기질 늘려도 못 이겨요.<br><b>무경쟁적 억제제</b> = 효소-기질이 붙은 상태(ES)에만 달라붙음.</div>
+      </div>
+        <h4>E+S, ES 단계</h4>
+        <ul>
+          <li><b>E + S 단계</b>: 활성부위·조절부위 존재 → 활성자·억제자 결합 가능</li>
+          <li><b>ES 단계</b>가 잘 일어나야 반응이 잘 일어남</li>
+        </ul>
+
+        <h4>효소의 활성도에 영향을 주는 요인</h4>
+        <ul>
+          <li><b>1) 적절한 온도·pH·(염농도)</b>에서 활성도(반응속도)가 높다
+            <ul><li>예: 펩신 pH2 / 트립신 pH8 — 효소마다 최적 pH가 다름</li></ul>
+          </li>
+          <li><b>2) 기질의 농도가 증가할수록 반응속도는 빨라진다</b> → 효소와 기질이 만날 확률 증가
+            <ul>
+              <li>기질 농도가 충분히 높아지면 반응속도의 <b>최댓값(Vmax)</b>에 도달</li>
+              <li>이유: 모든 효소의 활성부위가 기질로 포화되기 때문</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h4>효소의 활성자 / 억제자</h4>
+        <ul>
+          <li><b>가역적 억제제</b><sup class="fn">①</sup>: 효소를 억제하거나 떨어질 수 있다 → 억제제는 효소와 <b>약하게</b> 결합
+            <ul>
+              <li><b>경쟁적 억제제</b>: 활성부위에 결합</li>
+              <li><b>비경쟁적 억제제</b>(non-): 조절부위에 결합</li>
+              <li><b>무경쟁적 억제제</b>(un-): 조절부위에 결합 → <b>ES에만 결합</b></li>
+            </ul>
+          </li>
+          <li><b>비가역적 억제제</b>: 효소가 억제제에 의해 <mark class="b">반영구적</mark>으로 억제 → 억제제는 효소와 <b>강하게</b> 결합</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>억제제 3종 결합 위치</h5>
+          <div class="key">경쟁적 = 활성부위 (기질과 경쟁)</div>
+          <div class="key">비경쟁적 = 조절부위 (E 또는 ES)</div>
+          <div class="key">무경쟁적 = ES 복합체에만</div>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>경쟁 vs 비경쟁 구별법</h5>
+          <ul>
+            <li><strong>경쟁적</strong>: 기질이 앉을 의자(활성부위)를 억제제가 대신 차지. 기질을 잔뜩 넣으면 이길 수 있음.</li>
+            <li><strong>비경쟁적</strong>: 다른 자리(조절부위)에 앉아 효소 모양을 비틀어버림. 기질을 늘려도 못 이김.</li>
+          </ul>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>가역적/비가역적</b>: 가역적=억제제가 떨어질 수 있어 회복 가능(약한 결합), 비가역적=꽉 붙어 안 떨어짐(강한 결합, 사실상 영구 손상).</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 10-6 효소억제제 조절 + 약 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">5.15 · 5.16</span>효소억제제의 조절 작용 · 약과 효소</h3>
+        <div class="explain">
+        <div class="xh">🍊 음성피드백 = 자동 온도조절기</div>
+        <p>세포는 필요한 만큼만 만들고 멈출 줄 알아야 해요. 어떻게 알아서 멈출까요?</p>
+        <div class="anal"><b>보일러가 방이 충분히 따뜻해지면 스스로 꺼지듯</b>, 최종 산물(완성품)이 충분히 쌓이면 그 산물이 <b>맨 앞 효소를 꺼버려요.</b> 그러면 더 안 만들죠. 결과물이 원인을 억누르는 이 방식이 음성피드백(되먹임 억제)이에요. 낭비를 막는 똑똑한 장치!</p>
+      </div>
+      <div class="body">
+        <ul>
+          <li>다단계 효소 반응에서 <b>첫 번째 반응</b>에 핵심 조절 효소가 있음</li>
+          <li><b>음성피드백</b>: 최종 산물이 핵심 조절 효소를 억제 (예: 이소루신 합성)</li>
+        </ul>
+        <h4>5.16 많은 약·독은 효소억제제로 작용</h4>
+        <ul>
+          <li><b>아스피린·이부프로펜</b>: COX 효소 억제 (통증·염증 줄임)</li>
+          <li><b>페니실린</b>: 세균 세포벽 합성 효소 억제</li>
+        </ul>
+        <p>→ 효소를 억제 = 특정 반응을 차단 → 치료 효과 또는 독성.</p>
+      </div>
+      <div class="tipb">
+        <div class="mh">🟢 재미있는 상식</div>
+        <p>우리가 먹는 <strong>진통제(아스피린·이부프로펜)</strong>가 바로 효소억제제예요! 통증·염증을 일으키는 효소(COX)를 막아서 아픔을 줄여줘요. 항생제 페니실린은 세균의 세포벽 만드는 효소를 막아 세균을 죽이고요.</p>
+      </div>
+    </div>
+        <h4>5.15 효소억제제는 세포의 효소활성을 조절한다</h4>
+        <ul>
+          <li>대체로 <mark class="b">첫 번째 반응</mark>에 핵심 조절 효소(<b>4차 구조 효소</b><sup class="fn">①</sup>)가 존재</li>
+          <li><b>음성피드백<sup class="fn">②</sup></b>: 최종 산물이 다단계 효소 반응의 핵심 조절 반응(효소)을 억제</li>
+        </ul>
+        <p>예) 이소루신 합성에서의 되먹임 억제 — 최종 생성물(이소루신)이 첫 효소를 억제해 과잉 생산을 막음.</p>
+
+        <h4>5.16 많은 약·살충제·독은 효소억제자로 작용한다 (연관성)</h4>
+        <ul>
+          <li>유용한 많은 약들은 효소억제제로 작용한다</li>
+          <li><b>이부프로펜 / 아스피린</b>: COX(사이클로옥시게나제) 효소 억제</li>
+          <li><b>페니실린</b>: 세균 세포벽 합성 효소 억제</li>
+        </ul>
+        <p class="arrow">효소 억제 → 특정 생화학 반응 차단 → 치료효과 또는 독성 발생</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>음성피드백 = 자동 온도조절기</h5>
+          <p>보일러가 방이 따뜻해지면 스스로 꺼지듯, 최종 산물이 많아지면 그 산물이 <strong>맨 앞 효소를 꺼버려</strong> 더 만들지 않게 합니다. 세포가 낭비 없이 양을 조절하는 똑똑한 장치예요.</p>
+        </div>
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>약 = 효소억제제 예시</h5>
+          <div class="key">아스피린·이부프로펜 → COX 억제</div>
+          <div class="key">페니실린 → 세균 세포벽 합성 억제</div>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>4차 구조 효소</b>: 여러 개의 단백질 사슬이 모여 만들어진 효소. 조절부위를 가져 활성을 켜고 끌 수 있는 경우가 많습니다.</p>
+          <p><span class="n">②</span> <b>음성피드백(되먹임 억제)</b>: 결과물이 원인을 억눌러 전체를 일정하게 유지하는 조절 방식.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+
+  <!-- ============ WEEK 11 ============ -->
+  <section class="week" id="w11">
+    <div class="week-head">
+      <span class="week-badge">11주차 · 1-6</span>
+      <h2>세포의 화학에너지 생성 — 자세히 보기</h2>
+      <span class="date">2026.05.15</span>
+    </div>
+    <p style="margin:0 4px 14px;font-size:14px;color:var(--muted);font-weight:500;">12주차에서 세포호흡의 큰 그림을 봤다면, 이 11주차는 그 <b style="color:var(--sub)">속을 자세히</b> 들여다보는 편이에요. 산화·환원부터 해당과정·시트르산 회로·산화적 인산화까지 처음 배우는 사람도 알 수 있게 풀었어요. <b style="color:#b5560a">🍊 주황 박스</b>부터 읽으면 쉬워요.</p>
+    <div class="topics">
+    <!-- 1. 큰 그림 + 산화환원 -->
+    <div class="topic" id="t1">
+      <h3>큰 그림 먼저 · 산화와 환원</h3>
+      <p class="lead">세포호흡의 자세한 단계로 들어가기 전에, 꼭 알아야 할 '산화·환원'부터 짚고 가요.</p>
+      <div class="explain">
+        <div class="xh">🍊 이 단원이 다루는 것</div>
+        <p>이 단원의 주제는 네 가지예요.</p>
+        <div class="anal"><b>① 세포호흡</b> = 산소를 이용해 에너지를 수확하는 과정<br><b>② 세포호흡의 단계</b> (해당→TCA→산화적 인산화)<br><b>③ 발효</b> = 산소 없이 에너지를 수확하는 방법<br><b>④ 물질대사 간의 연관성</b></div>
+        <p>그리고 큰 틀: 물질대사는 <strong>부수기(이화·발열)</strong>와 <strong>만들기(동화·흡열)</strong>로 나뉘어요. 세포호흡은 부수기(발열), 광합성은 만들기(흡열)예요.</p>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 산화·환원이 왜 자꾸 나올까?</div>
+        <p>세포호흡은 한마디로 <strong>"포도당에서 전자를 빼앗아 산소에게 넘겨주는 과정"</strong>이에요. 그 '전자를 주고받는 일'을 부르는 말이 바로 산화·환원이라서, 이걸 모르면 세포호흡을 이해할 수 없어요.</p>
+        <div class="anal">간단히 기억하는 법 — <b>전자(e⁻)를 기준으로!</b><br><b>산화</b> = 전자를 <b>잃음</b> (또는 산소와 결합, 수소를 잃음)<br><b>환원</b> = 전자를 <b>얻음</b> (또는 산소를 잃음, 수소를 얻음)<br><br>누가 전자를 잃으면(산화) 누군가는 그걸 얻어요(환원). 항상 짝으로 일어나요.</div>
+      </div>
+      <div class="body">
+        <h4>산화 (Oxidation) / 환원 (Reduction)</h4>
+        <ul>
+          <li><b>산화</b>: 전자(e⁻)를 잃거나 · 산소(O)와 결합 · 수소(H)를 잃는 것</li>
+          <li><b>환원</b>: 전자(e⁻)를 얻거나 · 산소(O)를 잃거나 · 수소(H)를 얻는 것</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 NADH·FADH₂는 '전자 배달 트럭'</div>
+        <p>포도당에서 빼앗은 전자를 그냥 둘 순 없어요. 누군가 실어 날라야죠. 그 <strong>전자 배달 트럭</strong>이 NAD⁺와 FAD예요.</p>
+        <div class="anal">빈 트럭 <b>NAD⁺</b>가 전자(와 수소)를 실으면 → <b>NADH</b>가 돼요 (이게 '환원').<br>짐을 부리면 다시 빈 트럭 <b>NAD⁺</b>로 돌아와요 (이게 '산화').<br>FAD ↔ FADH₂도 똑같은 원리예요.</div>
+      </div>
+      <div class="body">
+        <div class="eqbox">NAD⁺ + H⁺ + 2e⁻ → NADH  (환원, 트럭에 싣기)<br>NADH − H⁺ − 2e⁻ → NAD⁺  (산화, 짐 내리기)</div>
+        <p>같은 방식으로:</p>
+        <div class="eqbox">FADH₂ ⇄ FAD + 2H⁺ + 2e⁻<br>NADPH ⇄ NADP⁺ + H⁺ + 2e⁻</div>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★ 알아두기</div>
+        <div class="k">산화 = 전자 잃음 / 환원 = 전자 얻음</div>
+        <div class="k">NAD⁺ + H⁺ + 2e⁻ → NADH (환원)</div>
+        <div class="k">NADH가 전자를 실어 나르는 '배달부'</div>
+      </div>
+    </div>
+
+    <!-- 2. 폭발 비유 + 전자전달 -->
+    <div class="topic" id="t2">
+      <h3>에너지를 단계적으로 빼내기</h3>
+      <div class="explain">
+        <div class="xh">🍊 왜 한꺼번에 안 태우고 나눠서 태울까?</div>
+        <p>포도당에는 에너지가 잔뜩 들어있어요. 이걸 <strong>한 번에 확 터뜨리면(폭발)</strong> 에너지가 대부분 <strong>열로 날아가</strong> 버려서 ATP로 못 챙겨요.</p>
+        <div class="anal">장작을 한꺼번에 활활 태우면 화르륵 타고 끝나죠? 하지만 <b>조금씩 천천히 태우면</b> 열을 오래, 알뜰하게 쓸 수 있어요. 세포도 똑같이 전자를 <b>여러 단계로 조금씩</b> 흘려보내며 에너지를 야금야금 챙겨요.</div>
+        <p>이 '여러 단계로 전자를 흘려보내는 길'이 바로 <strong>전자전달계</strong>예요.</p>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>폭발</b>: 높은 에너지 준위의 분자가 낮은 준위로 되면서 큰 에너지를 <b>한꺼번에 방출</b> → 대부분 열 손실</li>
+          <li><b>전자전달계</b>: <code>NADH → NAD⁺ + e⁻</code>로 되는 과정에서 전자를 단계적으로 전달
+            <ul>
+              <li>→ 그 과정에서 에너지(ATP)를 얻음</li>
+              <li>→ 에너지를 <b>효율적으로</b> 얻을 수 있음</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. ATP 생성법 2가지 -->
+    <div class="topic" id="t3">
+      <h3>ATP 만드는 2가지 방법</h3>
+      <div class="explain">
+        <div class="xh">🍊 ATP를 만드는 길은 딱 두 가지</div>
+        <p>세포호흡 전체에서 ATP가 만들어지는 방식은 두 가지뿐이에요. 이름이 어렵지만 뜻은 단순해요.</p>
+        <div class="anal"><b>① 기질수준 인산화</b> = 효소가 어떤 분자(기질)에 붙어있던 인산기(P)를 <b>직접 떼어 ADP에 붙여주는</b> 방식. 손으로 직접 건네주는 느낌. (해당과정·TCA에서 조금 생김)<br><br><b>② 화학삼투적 인산화</b> = 앞에서 배운 <b>'수력발전소' 방식!</b> H⁺ 농도 차이를 만들어, 그게 쏟아지는 힘으로 ATP를 대량 생산. (산화적 인산화에서 대부분 생김)</div>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>1. 기질수준의 인산화</b>: 효소가 기질의 인산기를 ADP에 직접 옮겨 ATP 생성 (기질 + Pi + ADP → 기질 + ATP)</li>
+          <li><b>2. 화학 삼투적 인산화</b>: H⁺ 농도 기울기를 이용해 ATP 합성 (미토콘드리아·엽록체·세균에서)</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 세포호흡의 3중심단계 미리보기</div>
+        <p>세포호흡은 세 개의 중심단계로 이어져요. 각 단계가 어디서 일어나는지를 같이 외우는 게 핵심이에요.</p>
+        <div class="anal"><b>중심단계 1 — 해당과정</b> (세포질): 포도당 → 피루브산<br><b>중심단계 2 — 시트르산 회로</b> (미토콘드리아): 아세틸 CoA → 완전 분해<br><b>중심단계 3 — 산화적 인산화</b> (미토콘드리아 내막): 전자전달+화학삼투로 ATP 대량 생산 (H⁺)</div>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★ 단계별 위치</div>
+        <div class="k">중심단계1 해당과정 = 세포질</div>
+        <div class="k">중심단계2 시트르산 회로 = 미토콘드리아 기질</div>
+        <div class="k">중심단계3 산화적 인산화 = 미토콘드리아 내막</div>
+        <p>세포호흡은 <b>각 단계별 위치 · 전체 반응 · 조절 조건</b>을 알아두기!</p>
+      </div>
+    </div>
+
+    <!-- 4. 호기성 vs 혐기성 -->
+    <div class="topic" id="t4">
+      <h3>호기성 vs 혐기성 호흡</h3>
+      <div class="explain">
+        <div class="xh">🍊 '산소를 쓰냐 안 쓰냐'로 나뉘어요</div>
+        <p>세포호흡은 탄수화물·단백질·지방 같은 에너지원을 써서 ATP를 만드는 과정이에요. 이걸 산소 사용 여부로 둘로 나눠요.</p>
+        <div class="anal"><b>호기성('호'=좋아할 호, 산소를 좋아함)</b> = 산소 <b>사용</b>. 해당과정 + 시트르산 회로 + 산화적 인산화까지 풀코스. ATP 많이 생산.<br><br><b>혐기성('혐'=싫어할 혐, 산소를 싫어함)</b> = 산소 <b>안 씀</b>. 해당과정 + 발효만. ATP 조금.</div>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>1. 호기성 호흡</b>: 산소를 <mark>소모하는</mark> 호흡 → 해당과정 · 시트르산 회로 · 산화적 인산화</li>
+          <li><b>2. 혐기성 호흡</b>: 산소를 소모하지 <span class="hl-r">않는</span> 호흡 → 해당과정 · 발효</li>
+        </ul>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기</div>
+        <div class="k">호기성 = 산소 O · 풀코스(해당+TCA+산화적 인산화)</div>
+        <div class="k">혐기성 = 산소 X · 해당과정+발효만</div>
+      </div>
+    </div>
+
+    <!-- 5. 해당과정 상세 -->
+    <div class="topic" id="t5">
+      <h3>① 해당과정 자세히 <span class="sec">세포질</span></h3>
+      <div class="explain">
+        <div class="xh">🍊 해당과정은 '투자 → 회수' 게임</div>
+        <p>해당과정은 포도당(탄소 6개)을 둘로 쪼개 피루브산(탄소 3개) 2개로 만드는 과정인데, 재미있는 건 <strong>처음엔 ATP를 써야(투자)</strong> 한다는 거예요.</p>
+        <div class="anal"><b>에너지 투자기:</b> 먼저 ATP <b>2개를 써서</b> 포도당을 '충전(활성화)'해요. 사업 초기에 돈을 먼저 넣는 셈.<br><b>에너지 회수기:</b> 그 다음 ATP <b>4개를 벌어요.</b><br><br>그래서 결산하면: 4개 벌고 2개 썼으니 <b>순이익 ATP 2개</b> + NADH 2개 + 피루브산 2개!</div>
+      </div>
+      <div class="body">
+        <div class="eqbox">포도당(C₆) → 2 피루브산(C₃) + 2NADH + 2ATP<br>(4ATP 생성, 2ATP 소모 → 순 2ATP)</div>
+        <ul>
+          <li>장소: <b>세포질</b></li>
+          <li>1~4 단계(투자기)에서 에너지를 소모, 5~9 단계(회수기)에서 에너지를 생산</li>
+          <li>중간 산물: 포도당 6인산 → 과당 6인산 → 과당 1,6인산 → ... → G3P → 피루브산</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 포도당이 들어오면 왜 바로 '6인산'으로 바꿀까?</div>
+        <p>포도당이 세포 안에 들어오자마자 인산기(P)를 붙여 <strong>'포도당 6인산'</strong>으로 만들어요. 이유는 <strong>밖으로 도로 새어나가지 못하게 '가두기' 위해서</strong>예요. 인산기가 붙으면(전하를 띠면) 막을 못 빠져나가거든요.</p>
+        <div class="anal">예약금을 걸어두면 도망 못 가는 것처럼, 인산기를 붙여 포도당을 세포 안에 묶어두는 거예요. 이때 쓰는 효소가 '인산화효소', 그 다음 과당 6인산을 과당 1,6인산으로 바꾸는 핵심 효소가 <b>PFK(인산과당인산화효소)</b>예요.</div>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 PFK — 해당과정의 '속도 조절 밸브'</div>
+        <p>해당과정 전체의 속도를 조절하는 핵심 일꾼이 <strong>PFK(인산과당인산화효소)</strong>라는 4차 구조 효소예요. 이게 빠르냐 느리냐로 해당과정 전체 속도가 정해져요.</p>
+        <div class="anal">똑똑한 점은 <b>세포의 에너지 상태를 보고 알아서 조절</b>한다는 거예요.<br>• ATP가 <b>적으면</b>(에너지 부족) → AMP가 PFK를 <b>켜서</b> 해당과정 속도 ↑ (더 만들어!)<br>• ATP가 <b>많으면</b>(에너지 충분) → ATP가 PFK를 <b>꺼서</b> 해당과정 속도 ↓ (그만 만들어!)<br>음성피드백의 한 예시예요.</div>
+      </div>
+      <div class="body">
+        <h4>PFK(인산과당인산화효소) — 핵심 조절 효소</h4>
+        <ul>
+          <li><b>4차 구조 효소</b> (핵심 조절 효소)</li>
+          <li><b>활성자(켜는 것)</b>: AMP</li>
+          <li><b>억제자(끄는 것)</b>: ATP, 시트르산</li>
+        </ul>
+        <h4>해당과정의 속도 조절</h4>
+        <ul>
+          <li><b>ATP 적음</b>: 해당과정 속도 ↑ (AMP가 PFK를 활성화)</li>
+          <li><b>ATP 많음</b>: 해당과정 속도 ↓ (ATP가 PFK를 억제)</li>
+        </ul>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★★</div>
+        <div class="k">포도당 → 2피루브산 + 2NADH + 2ATP (세포질)</div>
+        <div class="k">PFK = 핵심 조절 효소 (4차 구조)</div>
+        <div class="k">활성자 AMP / 억제자 ATP·시트르산</div>
+        <div class="k">ATP 적으면 ↑, 많으면 ↓ (에너지 상태로 자동 조절)</div>
+      </div>
+      <div class="tipb">
+        <div class="mh">🟢 재미있는 상식</div>
+        <p>근육이 운동할 때, 저장해둔 <strong>글리코겐</strong>(포도당 덩어리)을 쪼개 포도당 6인산으로 바로 넣어 해당과정을 돌려요. 그래서 격한 운동 초반에 빠르게 에너지를 낼 수 있는 거예요.</p>
+      </div>
+    </div>
+
+    <!-- 6. TCA -->
+    <div class="topic" id="t6">
+      <h3>② 시트르산 회로 (TCA) <span class="sec">미토콘드리아</span></h3>
+      <div class="explain">
+        <div class="xh">🍊 여기서 포도당을 '완전히' 분해해요</div>
+        <p>해당과정에서 만든 피루브산은 아직 에너지가 남아있어요. 이걸 <strong>미토콘드리아 안에서 끝까지(CO₂가 될 때까지) 완전히 분해</strong>하면서 전자 배달부(NADH·FADH₂)를 잔뜩 모으는 게 시트르산 회로예요.</p>
+        <div class="anal">이름이 여러 개예요(다 같은 것!): <b>시트르산 회로 = TCA 회로 = 크렙스 회로 = 구연산 회로.</b><br>'회로(cycle)'인 이유는 마지막 물질이 다시 처음 물질로 돌아와 <b>빙글빙글 돌기</b> 때문이에요.</div>
+      </div>
+      <div class="body">
+        <ul>
+          <li>장소: 진핵세포는 <b>미토콘드리아 기질(내강)</b>, 원핵세포는 세포질</li>
+          <li>피루브산을 <b>완전히 CO₂로 분해</b>하는 과정</li>
+          <li>회로 순서 암기: <b>피 → 아 → 시 → 이 → 알 → 숙 → 숙 → 푸 → 말 → 옥</b><br>(피루브산→아세틸CoA→시트르산→이소시트르산→알파케토글루타르산→숙시닐CoA→숙신산→푸마르산→말산→옥살초산)</li>
+        </ul>
+        <h4>피루브산 1개당 생성물</h4>
+        <div class="eqbox">피루브산(C₃) → 3CO₂ + 4NADH + 1FADH₂ + 1ATP</div>
+        <ul>
+          <li>NADH·FADH₂ → 다음 단계(산화적 인산화)로 보내져 ATP 생산에 쓰임</li>
+          <li>ATP 1개는 에너지로 직접 사용</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 외우기 팁 + 한 가지 주의점</div>
+        <p>외우기 팁: <strong>"CO₂가 빠져나갈 때 대체로 NADH(+H⁺)도 함께 빠져나간다"</strong>고 묶어서 기억하면 회로 따라가기가 쉬워요.</p>
+        <div class="anal">⚠️ 헷갈리기 쉬운 점: <b>TCA 회로 자체는 산소(O₂)를 직접 쓰지 않아요.</b> 그런데도 <b>무산소 조건에선 멈춰요.</b> 왜냐하면 다음 단계(산화적 인산화)가 산소를 써야 하고, TCA가 거기에 연동돼 있어서, 뒷단계가 막히면 TCA도 같이 멈추거든요.</div>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★</div>
+        <div class="k">피루브산 → 3CO₂ + 4NADH + 1FADH₂ + 1ATP</div>
+        <div class="k">위치 = 미토콘드리아 기질</div>
+        <div class="k">TCA는 O₂를 직접 안 쓰지만, 무산소에선 멈춤</div>
+        <p>※ 필기의 '3CO₃'는 <b>3CO₂</b>가 맞아요 (탄소가 산소 2개와 결합).</p>
+      </div>
+    </div>
+
+    <!-- 7. 산화적 인산화 -->
+    <div class="topic" id="t7">
+      <h3>③ 산화적 인산화 <span class="sec">미토콘드리아 내막</span></h3>
+      <div class="explain">
+        <div class="xh">🍊 여기서 ATP가 '대량으로' 만들어져요</div>
+        <p>지금까지 모은 배달부(NADH·FADH₂)들이 실어온 전자를 여기서 <strong>전자전달계</strong>라는 미끄럼틀에 흘려보내요. 그 힘으로 H⁺를 한쪽에 모았다가, 쏟아내는 힘으로 ATP를 <strong>왕창</strong> 만들어요.</p>
+        <div class="anal">전자가 미끄럼틀(복합체 I→II→III→IV)을 타고 <b>에너지 준위가 높은 곳 → 낮은 곳</b>으로 내려가요. 그리고 맨 끝에서 <b>산소(O₂)가 전자를 최종적으로 받아</b> 물(H₂O)이 돼요. 산소가 '마지막 받는 사람'이라 산소가 없으면 전체가 꽉 막혀요!</div>
+      </div>
+      <div class="body">
+        <h4>전자전달계의 작동</h4>
+        <ul>
+          <li><b>NADH</b>가 전자를 전달, <b>O₂</b>가 최종적으로 전자를 받음 (O₂는 에너지 준위가 가장 낮음)</li>
+          <li>전자가 흐르며 <b>H⁺를 복합체 I·III·IV의 펌프</b>로 퍼 올림 (II는 거치지 않음)</li>
+          <li>전달 경로: I → Q → III → Cyt c → IV</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 왜 NADH가 FADH₂보다 ATP를 더 많이 만들까?</div>
+        <p>둘 다 전자를 나르지만, <strong>출발하는 위치가 달라요.</strong></p>
+        <div class="anal"><b>NADH</b>는 미끄럼틀 <b>맨 위(복합체 I)부터</b> 출발해서 길게 내려와요 → H⁺를 <b>3곳(I·III·IV)</b>에서 퍼 올림 → ATP 많이.<br><br><b>FADH₂</b>는 <b>중간(복합체 II 근처)부터</b> 출발해서 짧게 내려와요 → I을 건너뛰어 H⁺를 <b>2곳(III·IV)</b>에서만 퍼 올림 → ATP 적게.<br><br>그래서 NADH가 FADH₂보다 더 많은 ATP를 만들어요!</div>
+      </div>
+      <div class="body">
+        <ul>
+          <li><b>NADH</b>: I부터 출발 → H⁺를 <span class="hl">3개</span> 올릴 수 있음 (ATP 많음)</li>
+          <li><b>FADH₂</b>: I 건너뜀, II부터 출발 → H⁺를 <span class="hl">2개</span> 올릴 수 있음 (ATP 적음)</li>
+        </ul>
+        <h4>화학삼투적 인산화 — ATP 합성</h4>
+        <table class="ntable">
+          <tr><th>배달부</th><th>이론상</th><th>실제</th></tr>
+          <tr><td><b>NADH</b></td><td>3 ATP</td><td><span class="hl">2.5 ATP</span></td></tr>
+          <tr><td><b>FADH₂</b></td><td>2 ATP</td><td><span class="hl">1.5 ATP</span></td></tr>
+        </table>
+        <ul>
+          <li><b>전자 공여체</b>: NADH, FADH₂ (← 숙신산 등)</li>
+          <li><b>전자 수용체</b>: O₂</li>
+          <li><b>전자 전달계</b>: 에너지 준위가 높은 곳 → 낮은 곳으로</li>
+        </ul>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 ATP 합성효소 = 수문(터빈)</div>
+        <p>전자전달계가 H⁺를 막 사이 공간(막간공간)에 잔뜩 모아두면, 그 H⁺가 <strong>ATP 합성효소(ATP ase)</strong>라는 통로로 콸콸 쏟아져 나와요. 이 흐름의 힘으로 ATP가 만들어져요. 앞에서 본 '수력발전소'와 똑같죠!</p>
+      </div>
+      <div class="body">
+        <h4>ATP 합성효소 (ATP ase)</h4>
+        <ul>
+          <li>H⁺ 채널: H⁺(양성자)의 농도 기울기에 따라 양성자가 이동</li>
+          <li>막간공간(H⁺ 많음) → 기질(H⁺ 적음)로 <b>내려가며</b> → ATP 생성 가능</li>
+        </ul>
+        <div class="eqbox">전체 전자 흐름: NADH → I → III → Cyt c → IV → O₂ → H₂O</div>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기 ★</div>
+        <div class="k">NADH = 2.5 ATP / FADH₂ = 1.5 ATP (실제)</div>
+        <div class="k">NADH는 H⁺ 3개, FADH₂는 H⁺ 2개 (출발점 차이!)</div>
+        <div class="k">O₂ = 최종 전자수용체 → 없으면 전체 멈춤</div>
+        <div class="k">ATP 합성효소 = H⁺가 쏟아지는 힘으로 ATP 생성</div>
+      </div>
+      <div class="more">
+        <div class="mh">🟣 한 걸음 더</div>
+        <p>이 '화학삼투' 방식은 <strong>광합성의 명반응(13주차)과 완전히 똑같은 원리</strong>예요. 광합성은 틸라코이드 막에서, 세포호흡은 미토콘드리아 내막에서 일어날 뿐, 둘 다 <strong>H⁺ 농도 차이로 ATP를 만든다</strong>는 점이 같아요. 묶어서 이해하면 외울 게 절반으로 줄어요!</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ WEEK 12 ============ -->
+  <section class="week" id="w12">
+    <div class="week-head">
+      <span class="week-badge">12주차 · 1-6</span>
+      <h2>세포의 화학에너지 생성</h2>
+      <span class="date">2026.05.22</span>
+    </div>
+
+    <!-- 12-1 세포호흡 3단계 + ATP 수율 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">세포호흡</span>세포호흡의 3단계 &amp; 전체 과정</h3>
+        <div class="explain">
+        <div class="xh">🍊 '세포호흡'은 우리가 아는 숨쉬기랑 달라요</div>
+        <p>세포호흡은 코로 숨 쉬는 게 아니라, <strong>세포가 포도당이라는 '장작'을 태워서 ATP라는 '에너지 화폐'를 만드는 과정</strong>이에요. (숨 쉴 때 들이마신 산소를 여기서 쓰긴 해요.)</p>
+        <div class="anal">한 번에 확 태우면 열로 다 날아가니까, 세포는 포도당을 <b>3단계로 나눠 천천히</b> 태워서 ATP를 야금야금 챙겨요. 장작을 한꺼번에 활활 태우는 대신, 조금씩 태우며 열을 알뜰히 쓰는 거죠.</p>
+        <div class="xh">🍊 'NADH·FADH₂'는 에너지 배달부</div>
+        <p>중간중간 등장하는 <strong>NADH·FADH₂</strong>는 이름이 어렵지만, <strong>에너지를 실어 나르는 배달 트럭</strong>이라고 생각하면 돼요. 1·2단계에서 이 배달부들이 에너지를 잔뜩 싣고, <strong>마지막 3단계에서 이걸 ATP로 바꿔요.</strong></p>
+      </div>
+      <div class="body">
+        <h4>세포호흡의 3단계</h4>
+        <ul>
+          <li><b>① 해당과정</b><sup>(포도당을 반으로 쪼갬)</sup> — 장소: <b>세포질</b></li>
+          <li><b>② TCA 회로</b><sup>(쪼갠 걸 완전 분해)</sup> — 장소: <b>미토콘드리아 기질</b></li>
+          <li><b>③ 산화적 인산화</b><sup>(배달부로 ATP 대량 생산)</sup> — 장소: <b>미토콘드리아 내막</b>, <b>O₂ 필요</b></li>
+        </ul>
+      </div>
+    </div>
+        <div class="explain">
+        <div class="xh">🍊 왜 '이론'과 '실제' ATP 수가 다를까?</div>
+        <p>이론대로면 포도당 1개에서 ATP 38개가 나와야 하는데, 실제로는 30~32개만 나와요. 왜냐하면 배달부(NADH 등)가 막을 통과하고 운반되는 <strong>'통행료'로 일부 에너지를 떼이기</strong> 때문이에요. 그래서 실제 수확량이 조금 줄어요.</p>
+      </div>
+        <p style="color:var(--red);font-weight:600">※ 위치·결과·물질을 묶어 외우기!</p>
+
+        <h4>① 해당과정<sup class="fn">①</sup> (Glycolysis)</h4>
+        <div class="eqbox">포도당(C₆) → 2 피루브산(C₃) + 2NADH + 2ATP<br>(4ATP 생성, 2ATP 소모 → 순 2ATP)</div>
+        <ul>
+          <li>이론상 38ATP / <b>실제 30ATP</b></li>
+          <li>NADH 2분자: 2×2.5ATP = 5ATP (이론 2×15=30 → 실제 보정)</li>
+        </ul>
+
+        <h4>② TCA 회로<sup class="fn">②</sup> (시트르산 회로)</h4>
+        <div class="eqbox">피루브산(C₃) → 3CO₂ + 4NADH + 1FADH₂ + 1ATP</div>
+        <ul>
+          <li>이론 15ATP</li>
+          <li>NADH: 4×2.5 = 10ATP / FADH₂: 1×1.5 = 1.5ATP / ATP: 1×2 = 2ATP (직접)</li>
+        </ul>
+
+        <h4>③ 산화적 인산화<sup class="fn">③</sup> (전자전달계)</h4>
+        <table class="ntable">
+          <tr><th>전자운반체</th><th>이론</th><th>실제</th></tr>
+          <tr><td><b>NADH</b></td><td>3ATP</td><td><span class="hl">2.5 ATP</span></td></tr>
+          <tr><td><b>FADH₂</b></td><td>2ATP</td><td><span class="hl">1.5 ATP</span></td></tr>
+        </table>
+        <p>양성자(H⁺)의 농도 기울기가 일부 2차 능동수송에 사용됨 (예: 피루브산 운반).</p>
+        <div class="callout">포도당 1분자가 소모될 때 <b>간</b>에서 최대 <b>38 ATP</b>, <b>근육</b>에서 <b>36 ATP</b> 생성 가능. 그러나, 실제로는 <mark class="b">30~32 ATP</mark> 생성.</div>
+
+        <h4>전체 과정</h4>
+        <p>해당 → TCA 회로 → 산화적 인산화 / <b>O₂ 필요</b>. 간은 NADH가 2×3=6ATP, 근육은 NADH가 FADH₂ 수준(2×2=4ATP)으로 반영됨.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★ 반드시!</span>
+          <h5>3단계 한 줄 요약</h5>
+          <div class="key">해당: 포도당→2피루브산 +2ATP+2NADH (세포질)</div>
+          <div class="key">TCA: 피루브산→CO₂+NADH+FADH₂+ATP (미토 기질)</div>
+          <div class="key">산화적인산화: NADH=2.5 / FADH₂=1.5 (내막)</div>
+        </div>
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>총 ATP 수율</h5>
+          <div class="key">이론: 간 38 / 근육 36</div>
+          <div class="key">실제: 30 ~ 32 ATP</div>
+          <p style="margin-top:8px">실제값이 더 작은 이유: 막을 통과·운반하는 데 기울기 일부를 쓰기 때문.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>해당과정</b>: 포도당을 둘로 쪼개 피루브산을 만드는 단계. 산소 없이도 진행, 장소는 <b>세포질</b>.</p>
+          <p><span class="n">②</span> <b>TCA 회로</b>: 피루브산을 완전히 분해하며 NADH·FADH₂를 모으는 회전 반응. 미토콘드리아 기질에서 일어남.</p>
+          <p><span class="n">③</span> <b>산화적 인산화</b>: NADH·FADH₂가 모은 전자를 흘려보내며 만든 H⁺ 기울기로 ATP를 대량 합성. 미토콘드리아 내막에서, O₂가 최종 전자수용체.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 12-2 미토콘드리아 중요성 + 발효 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">미토콘드리아</span>미토콘드리아의 중요성 · 발효</h3>
+        <div class="explain">
+        <div class="xh">🍊 미토콘드리아 = 세포의 발전소</div>
+        <p>3단계 중 2·3단계(TCA·산화적 인산화)는 <strong>미토콘드리아 안에서</strong> 일어나요. 만약 미토콘드리아가 없다면? <strong>1단계(해당과정)만 가능해서 포도당 1개에 ATP 딱 2개</strong>밖에 못 만들어요.</p>
+        <div class="anal">미토콘드리아가 있으면 나머지를 끝까지 태워 <b>15배 이상</b> 효율이 나와요. 그래서 에너지를 많이 쓰는 세포(근육·심장)에는 미토콘드리아가 <b>빽빽하게</b> 들어차 있어요.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 발효 — 산소가 없을 때의 비상수단</div>
+        <p>3단계 중 3단계(산화적 인산화)는 <strong>산소(O₂)가 꼭 필요</strong>해요. 그런데 산소가 없으면? 3단계가 막혀버려요. 더 큰 문제는, 1단계(해당과정)도 <strong>NAD⁺라는 재료가 다 떨어져서</strong> 멈춰버린다는 거예요.</p>
+        <div class="anal">그래서 세포는 비상수단을 써요. 다 쓴 NADH를 억지로 <b>NAD⁺로 되돌려놓는</b> 거예요. 그러면 1단계라도 계속 돌릴 수 있죠. 이게 <b>발효</b>예요.<br><br>즉 발효의 진짜 목적은 ATP를 더 만드는 게 아니라, <b>"NAD⁺를 재활용해서 해당과정을 멈추지 않게 하는 것"</b>이에요!</div>
+      </div>
+        <h4>미토콘드리아가 없었다면?</h4>
+        <ul>
+          <li>세포호흡의 3단계(해당·TCA·전자전달계) 중 <mark class="b">해당과정만 존재</mark></li>
+          <li>하나의 포도당으로 <b>2개의 ATP</b>만 생성</li>
+          <li>→ 미토콘드리아가 있음으로 해서 에너지 효율이 좋아짐</li>
+        </ul>
+
+        <h4>발효<sup class="fn">①</sup> (Fermentation)</h4>
+        <p><mark>무산소 조건에서 해당과정</mark>이라도 원활히 작동하기 위해 필요.</p>
+        <div class="eqbox">포도당(C₆) → 2 피루브산(C₃) + 2NADH + 2ATP</div>
+        <p><b>술 만드는 기본 조건:</b> 1. 효모 2. 당 3. 혐기조건</p>
+        <p><b>술 담그기 — 에탄올 발효:</b> 효모(Yeast) + 당(효모의 먹이) → 밀봉(O₂ 제거)</p>
+
+        <h4>발효의 종류</h4>
+        <ul>
+          <li><b>젖산 발효</b>: 동물 근육에서 일어나는 발효
+            <ul><li>피루브산염이 젖산염으로 환원 → NAD⁺ 재생</li></ul>
+          </li>
+          <li><b>에탄올 발효(알코올 발효)</b>: (효모) 무산소일 때 일어나는 발효
+            <ul><li>피루브산염이 CO₂를 방출하여 아세트알데하이드가 된 뒤, 에탄올로 변화 → NAD⁺ 재생</li></ul>
+          </li>
+        </ul>
+
+        <h4>6.14 발효로 무산소에서도 ATP 생산</h4>
+        <ul>
+          <li>산소가 없어도 화학에너지를 수확할 수 있는 방법</li>
+          <li>근육세포·효모·특정 세균은 산소 없는 조건에서도 해당작용으로 ATP를 합성</li>
+          <li>피루브산염이 젖산염으로 환원(젖산 발효), 혹은 아세트알데하이드를 거쳐 에탄올로 환원(알코올 발효)되며 <b>NADH를 사용해 NAD⁺를 재생</b></li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>발효의 진짜 목적</h5>
+          <div class="key">NADH → NAD⁺ 재생 (해당과정 계속 돌리려고!)</div>
+          <p style="margin-top:8px">발효는 ATP를 더 만들려는 게 아니라, 해당과정이 멈추지 않게 <b>NAD⁺를 되살리는</b> 게 핵심.</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>젖산 vs 알코올 발효</h5>
+          <ul>
+            <li><strong>젖산 발효</strong>: 동물 근육·젖산균. 격한 운동 후 근육이 뻐근한 게 젖산 때문.</li>
+            <li><strong>알코올 발효</strong>: 효모. CO₂(빵 부풀림)와 에탄올(술)을 냄. 빵·맥주·막걸리의 원리.</li>
+          </ul>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>"미토콘드리아 = 발전소"</h5>
+          <p>해당과정만 있으면 포도당 1개에 ATP 2개뿐. 미토콘드리아가 나머지를 끝까지 태워 <strong>15배 이상</strong> 효율을 냅니다. 그래서 에너지를 많이 쓰는 세포(근육·심장)에 미토콘드리아가 빽빽해요.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>발효</b>: 산소 없이 해당과정만으로 ATP를 얻는 방식. '혐기(嫌氣)'='산소를 싫어함'.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ WEEK 13 ============ -->
+  <section class="week" id="w13">
+    <div class="week-head">
+      <span class="week-badge">13주차 · 1-7</span>
+      <h2>광합성 — 빛을 이용하여 식량을 만드는 과정</h2>
+      <span class="date">2026.05.29</span>
+    </div>
+
+    <!-- 13-1 광합성 개요 + 생산자/소비자 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">개요</span>광합성 단원 지도 · 생산자와 소비자</h3>
+        <div class="explain">
+        <div class="xh">🍊 앞에서 배운 것과 연결해서 이해하기</div>
+        <p>세포호흡이 '포도당을 태워 에너지를 얻는' 것이었죠? <strong>광합성은 정반대</strong>예요. 식물이 <strong>빛 에너지를 받아서 포도당(양분)을 만드는</strong> 과정이에요. 식물이 스스로 밥을 짓는 셈이죠.</p>
+        <div class="anal"><b>세포호흡:</b> 포도당 + O₂ → CO₂ + H₂O + 에너지 (태움)<br><b>광합성:</b> CO₂ + H₂O + 빛 → 포도당 + O₂ (만듦)<br>딱 거꾸로죠? 그래서 세포호흡=이화(분해), 광합성=동화(합성)예요.</div>
+        <div class="xh">🍊 가장 놀라운 사실: 산소는 '물'에서 나온다</div>
+        <p>광합성으로 나오는 산소(O₂)가 이산화탄소(CO₂)에서 나올 것 같지만, 사실은 <strong>물(H₂O)을 쪼개서</strong> 나와요! 과학자들이 산소에 표시를 달아 추적해서(¹⁸O 실험) 증명했어요. 우리가 숨 쉬는 산소의 근원이 바로 이거예요.</p>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 광합성이 일어나는 곳 — 엽록체 안의 '공장'</div>
+        <p>광합성은 식물 세포 안의 <strong>엽록체</strong>라는 기관에서 일어나요. 엽록체 안은 공장처럼 방이 나뉘어 있어요.</p>
+        <div class="anal"><b>틸라코이드</b> = 빛 받는 <b>발전실</b> (빛 → ATP·NADPH 만듦)<br><b>스트로마</b> = 당 만드는 <b>조립실</b> (CO₂ → 포도당 조립)<br><b>그라나</b> = 틸라코이드가 동전처럼 차곡차곡 쌓인 더미</div>
+      </div>
+        <p>이 단원은 <b>① 광합성 소개, ② 명반응(태양에너지를 화학에너지로 바꾸는 과정), ③ 캘빈회로(CO₂를 당으로 환원시키는 과정), ④ 지구생태계에서 광합성의 중요성</b>으로 구성.</p>
+
+        <h4>7.1 광합성은 지구생태계의 에너지원이다</h4>
+        <ul>
+          <li><b>생산자(producer)</b> = 광독립영양생물<sup class="fn">①</sup></li>
+          <li><b>소비자</b> = 종속영양생물</li>
+          <li>식물·조류·광합성 원생생물·광합성 세균 = <mark class="b">광독립영양생물</mark>, 거의 모든 종속영양생물이 소모하는 식량을 만드는 생산자</li>
+          <li><b>종속영양생물(heterotroph)</b>: 식물이나 동물을 먹거나 유기물을 분해해서 살아가는 소비자</li>
+        </ul>
+
+        <h4>생명활동과 에너지 &amp; 광합성</h4>
+        <ul>
+          <li><b>물질대사</b>
+            <ul>
+              <li>이화(발열): 고분자 <span class="hl-r">−E</span> 저분자 — 예) 소화, 세포호흡</li>
+              <li>동화(흡열): 저분자 <span class="hl">+E</span> 고분자 — 예) 생명합성, 광합성</li>
+            </ul>
+          </li>
+          <li>반응에 효소가 필요: 유기촉매로서 활성화E 낮춤 → 반응속도 빨라짐</li>
+        </ul>
+        <div class="eqbox">6CO₂ + 12H₂O + 빛E → C₆H₁₂O₆ + 6O₂ + 6H₂O<br><span style="font-size:12px;color:var(--green)">동화작용 (흡열)</span></div>
+        <ul>
+          <li>C, O를 방사성동위원소 ¹⁴C, ¹⁸O로 대체하여 생성물의 상태 확인<sup class="fn">②</sup></li>
+          <li>→ <b>6CO₂</b>로부터 C₆H₁₂O₆ 생성, <b>12H₂O</b>로부터 6O₂ 생성</li>
+        </ul>
+
+        <h4>엽록체의 구조</h4>
+        <ul>
+          <li><b>틸라코이드</b>: 빛을 포획하는 장소 — 명반응 일어남 → O₂(방출), ATP·NADPH 생성(→캘빈회로로)</li>
+          <li><b>틸라코이드 막</b>: 엽록소와 광계가 있어, 빛을 흡수·명반응이 일어나는 장소</li>
+          <li><b>스트로마</b>: 캘빈회로가 일어나는 장소 → 3탄당(G3P) 만들어 냄</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>광합성 총반응식</h5>
+          <div class="key">6CO₂ + 12H₂O + 빛 → C₆H₁₂O₆ + 6O₂ + 6H₂O</div>
+          <p style="margin-top:8px">O₂는 <b>물(H₂O)</b>에서 나옴 (¹⁸O 추적으로 증명). CO₂가 아니라는 점 함정!</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>엽록체 3구역 = 공장 배치도</h5>
+          <ul>
+            <li><strong>틸라코이드(막)</strong> = 발전실(명반응, 빛→ATP·NADPH)</li>
+            <li><strong>스트로마</strong> = 조립실(캘빈회로, CO₂→당)</li>
+            <li><strong>그라나</strong> = 틸라코이드가 동전처럼 쌓인 더미</li>
+          </ul>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>광독립영양생물</b>: 빛으로 스스로 양분을 만드는 생물(독립영양=스스로 만듦). 종속영양=남이 만든 걸 얻어먹음.</p>
+          <p><span class="n">②</span> <b>방사성동위원소 추적</b>: 원자에 표시(꼬리표)를 달아 생성물의 어느 원자가 어디서 왔는지 추적하는 실험 기법.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 13-2 빛/색소/흡수스펙트럼 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">7.6</span>색소가 흡수한 가시광선이 명반응에 이용된다</h3>
+        <div class="explain">
+        <div class="xh">🍊 식물은 빛이라고 아무거나 다 쓸까?</div>
+        <p>아니에요! 햇빛에는 여러 색(파장)이 섞여 있는데, 식물은 그중 <strong>특정 색만 골라서</strong> 광합성에 써요. 그 색을 흡수하는 게 <strong>색소</strong>(엽록소 등)예요.</p>
+        <div class="anal">식물은 주로 <b>청색광과 적색광</b>을 잘 흡수해 써요. 반대로 <b>녹색光은 거의 안 쓰고 반사</b>해버려요. 그래서 우리 눈에 식물이 <b>초록색</b>으로 보이는 거예요! (안 쓰고 튕겨낸 색이 우리 눈에 들어오는 거죠.)</p>
+      </div>
+      <div class="body">
+        <ul>
+          <li>주로 <b>청색광(400~500 nm)</b>, <b>적색광(650~700 nm)</b> 이용 <sup>✎ 필기엔 'mm'였지만 nm가 맞음</sup></li>
+          <li>색소 종류: <b>엽록소 a·b·c</b>, <b>카로티노이드</b>(크산토필·카로틴) → 틸라코이드 막에 존재</li>
+        </ul>
+        <h4>흡수 vs 작용 스펙트럼</h4>
+        <ul>
+          <li><b>흡수스펙트럼</b>: 색소가 어느 파장을 잘 <b>흡수</b>하나? (검류계 실험)</li>
+          <li><b>작용스펙트럼</b>: 식물이 어느 파장을 잘 <b>이용</b>하나? (엥겔만 실험)</li>
+        </ul>
+        <p>→ 결론: 여러 색소가 함께 작용. <b>청색·적색빛</b>이 가장 효율적.</p>
+      </div>
+      <div class="explain">
+        <div class="xh">🍊 단풍은 왜 들까?</div>
+        <p>잎에는 원래 <strong>엽록소(녹색)와 카로티노이드(노랑·주황)가 함께</strong> 있어요. 평소엔 녹색이 워낙 진해서 노랑·주황이 가려져 있죠. 그런데 가을에 추워지면 <strong>약한 엽록소가 먼저 파괴</strong>되고, 잘 버티는 카로티노이드만 남아서 <strong>노랑·주황 단풍</strong>이 드러나는 거예요!</p>
+      </div>
+      <div class="body">
+        <table class="ntable">
+          <tr><th>엽록소 (녹색)</th><th>카로티노이드 (노랑·주황)</th></tr>
+          <tr><td>중심 색소 / 온도 낮아지면 파괴</td><td>보조 색소 / 추위에도 생존 → 단풍</td></tr>
+        </table>
+      </div>
+      <div class="memo">
+        <div class="mh">🔴 꼭 암기</div>
+        <div class="k">흡수스펙트럼 = 색소가 흡수하는 파장 (검류계)</div>
+        <div class="k">작용스펙트럼 = 식물이 이용하는 파장 (엥겔만)</div>
+        <p>잘 쓰는 빛 = <b>청색 + 적색</b>. 녹색은 반사 → 잎이 초록.</p>
+      </div>
+    </div>
+        <div class="explain">
+        <div class="xh">🍊 단풍은 왜 들까?</div>
+        <p>잎에는 원래 <strong>엽록소(녹색)와 카로티노이드(노랑·주황)가 함께</strong> 있어요. 평소엔 녹색이 워낙 진해서 노랑·주황이 가려져 있죠. 그런데 가을에 추워지면 <strong>약한 엽록소가 먼저 파괴</strong>되고, 잘 버티는 카로티노이드만 남아서 <strong>노랑·주황 단풍</strong>이 드러나는 거예요!</p>
+      </div>
+        <h4>광합성과 빛</h4>
+        <ul>
+          <li>광합성: 빛E를 이용하여 포도당 합성·O₂ 생성 → 동화작용(흡열)</li>
+          <li><b>가시광선</b> 영역을 이용하여 광합성
+            <ul>
+              <li>주로 <b>청색광(400~500 nm)</b>, <b>적색광(650~700 nm)</b> 이용 <sup class="fn" style="color:var(--red)">✎</sup></li>
+              <li>흡수하는 여러 종류의 색소가 존재</li>
+            </ul>
+          </li>
+          <li><b>엽록소 a·b·c</b> / <b>카로티노이드(크산토필·카로틴)</b> → 틸라코이드 막에 존재</li>
+        </ul>
+
+        <h4>흡수스펙트럼 vs 작용스펙트럼</h4>
+        <ul>
+          <li><b>흡수스펙트럼</b>: 색소가 어느 파장의 빛을 잘 흡수하는가? → 검류계 실험
+            <ul>
+              <li>엽록소 a·b: 400 nm, 650 nm</li>
+              <li>카로티노이드: 500 nm</li>
+            </ul>
+          </li>
+          <li><b>작용스펙트럼</b>: 생명체(식물)가 어느 파장의 빛을 잘 이용하는가? → 엥겔만의 실험 (광합성 → CO₂ 소모·O₂ 생산)</li>
+        </ul>
+        <div class="callout"><b>결론:</b> 여러 종류의 색소가 잎에 존재하여 광합성에 함께 쓰임. 스펙트럼의 <b>자색–청색·적색빛</b>이 가장 효율적이다.</div>
+
+        <h4>광합성 색소 비교</h4>
+        <table class="ntable">
+          <tr><th>엽록소 (녹색)</th><th>카로티노이드 (주황·보라·빨강)</th></tr>
+          <tr><td>색소 A·B·C / 중심색소 A:B=3:1<br>온도 낮아지면 파괴</td><td>보조 색소 / 온도 낮아져도 생존 → <b>단풍</b></td></tr>
+        </table>
+        <p style="font-size:13px;color:var(--muted)">→ 가을에 엽록소가 먼저 파괴되고 카로티노이드만 남아 단풍이 든다.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>두 스펙트럼 구별</h5>
+          <div class="key">흡수 = 색소가 흡수하는 파장 (검류계)</div>
+          <div class="key">작용 = 식물이 실제 이용하는 파장 (엥겔만)</div>
+          <p style="margin-top:8px">잘 쓰는 빛 = <b>청색 + 적색</b>. 녹색은 반사해서 잎이 초록으로 보임.</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>단풍이 드는 이유</h5>
+          <p>잎엔 원래 엽록소(녹)와 카로티노이드(주황·노랑)가 함께 있는데, 녹색이 워낙 진해 가려져 있어요. 가을에 추워지면 <strong>약한 엽록소가 먼저 파괴</strong>되고, 잘 버티는 카로티노이드만 남아 노랑·주황 단풍이 드러납니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">스캔 교정 ✎</div>
+          <p><span class="n">✎</span> 필기에 파장 단위가 "mm"로 적혀 있었지만, 가시광선 파장은 <b>nm(나노미터)</b>가 맞아요(400~700 nm). mm로 쓰면 전파 수준이라 광합성과 안 맞습니다 — 스캔/표기 오류로 보아 <b>nm</b>로 바로잡았습니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 13-3 광합성 개괄 명반응/캘빈회로 입출력 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">개괄</span>광합성의 개괄 — 명반응 ↔ 캘빈회로</h3>
+        <div class="explain">
+        <div class="xh">🍊 광합성은 사실 '2부작'이에요</div>
+        <p>광합성은 한 번에 끝나는 게 아니라 두 단계가 <strong>서로 재료를 주고받으며</strong> 돌아가요.</p>
+        <div class="anal"><b>1부 — 명반응</b> (빛 필요): 빛을 받아 <b>ATP·NADPH(에너지·배달부)</b>를 만들어요. 부산물로 O₂를 뱉고요.<br><b>2부 — 캘빈회로</b> (빛 직접 안 씀): 명반응이 준 ATP·NADPH를 써서 <b>CO₂를 당으로</b> 조립해요.</div>
+        <p>캘빈회로가 ATP·NADPH를 다 쓰고 나면 <strong>빈 껍데기(ADP·NADP⁺)</strong>가 남는데, 이걸 다시 명반응에 돌려줘서 재충전해요. 이렇게 <strong>빙글빙글 돌며 협력</strong>하는 거예요. 한쪽의 출력이 다른 쪽의 입력이 되는 거죠.</p>
+      </div>
+        <p style="color:var(--red);font-weight:700">★ 암기하기!! — 두 단계의 입력·출력 물질</p>
+        <table class="ntable">
+          <tr><th>단계</th><th>들어가는 것 (입력)</th><th>나오는 것 (출력)</th></tr>
+          <tr><td><b>1) 명반응</b><br>(틸라코이드)</td><td>빛E, H₂O, NADP⁺, ADP+Pi</td><td>O₂(방출), ATP, NADPH<br>→ 캘빈회로로</td></tr>
+          <tr><td><b>2) 캘빈회로</b><br>(스트로마)</td><td>ATP, NADPH, CO₂</td><td>당(G3P), NADP⁺, ADP+Pi<br>→ 명반응으로 되돌아감</td></tr>
+        </table>
+        <p class="arrow">두 반응은 서로 산물을 주고받는 <b>순환 관계</b>: 명반응이 만든 ATP·NADPH를 캘빈회로가 쓰고, 캘빈회로가 돌려준 NADP⁺·ADP를 명반응이 다시 채움.</p>
+
+        <h4>엽록소의 분자 구조</h4>
+        <ul>
+          <li><b>포피린</b> 고리: 빛을 흡수하는 분자로, 머리(메틸기·에세터·CHO 알데하이드기)와 중앙에 마그네슘(Mg) 원자가 위치</li>
+          <li><b>피톨</b> 꼬리: 엽록체의 틸라코이드 내에 위치하는 탄화수소 꼬리(소수성)</li>
+        </ul>
+        <p>1. 엽록소가 빛에너지를 흡수 → 2. 전자의 에너지 준위가 높아지고, 그 에너지가 반응중심 엽록소로 전달됨 → 열·빛(형광)으로도 방출.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★★</span>
+          <h5>명반응 vs 캘빈회로 입출력</h5>
+          <div class="key">명반응: 빛·H₂O·NADP⁺·ADP → O₂·ATP·NADPH</div>
+          <div class="key">캘빈회로: CO₂·ATP·NADPH → 당(G3P)·NADP⁺·ADP</div>
+          <p style="margin-top:8px">한쪽의 <b>출력이 다른 쪽의 입력</b>! ATP·NADPH·NADP⁺·ADP가 두 반응 사이를 뱅글뱅글 돈다.</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>엽록소가 빛을 받으면</h5>
+          <p>빛을 받은 엽록소의 전자가 '들뜬 상태'로 튀어 오릅니다(에너지 준위 ↑). 이 들뜬 전자가 가진 에너지를 옆 분자로 넘기면서 명반응이 시작돼요. 혼자 식으면 열·형광(빨간 빛)으로 흩어집니다.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 13-4 광계 + 명반응 진행 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">명반응</span>광계와 명반응의 진행</h3>
+        <div class="explain">
+        <div class="xh">🍊 '광계'가 뭐예요?</div>
+        <p><strong>광계</strong>는 빛을 모으는 <strong>'태양광 패널 묶음'</strong>이라고 보면 돼요. 색소들이 잔뜩 모여서 빛을 받아 한곳(반응중심)으로 모아주는 장치예요. 종류가 둘 있어요.</p>
+        <div class="anal"><b>광계 Ⅰ (P700)</b> = 700 nm 빛을 잘 흡수<br><b>광계 Ⅱ (P680)</b> = 680 nm 빛을 잘 흡수<br>번호는 발견 순서일 뿐이고, <b>실제 반응은 광계 Ⅱ가 먼저</b> 일어나요 (← 시험 단골 함정!).</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 빛을 받으면 무슨 일이?</div>
+        <p>엽록소가 빛을 받으면, 그 안의 <strong>전자가 에너지를 받아 '들떠서' 튀어 올라요.</strong> 이 들뜬 전자가 마치 도미노처럼 이동하면서(전자전달계) 에너지를 만들어내요.</p>
+        <p>그런데 전자가 자꾸 빠져나가면 광계 Ⅱ가 텅 비겠죠? 이걸 <strong>물을 쪼개서</strong> 채워요. 이때 물에서 떨어져 나온 게 바로 <strong>산소(O₂)</strong>예요!</p>
+      </div>
+        <h4>광계 — 빛의 수확</h4>
+        <p>광계: 엽록소·보조색소·반응중심 엽록소 여를 통틀어 지칭하는 말.</p>
+        <ul>
+          <li><b>광계 Ⅰ – P700</b>: 파장 700 nm의 빛을 잘 흡수하는 엽록소 존재 <sup class="fn" style="color:var(--red)">✎</sup></li>
+          <li><b>광계 Ⅱ – P680</b>: 파장 680 nm의 빛을 잘 흡수하는 엽록소 존재 <sup class="fn" style="color:var(--red)">✎</sup>
+            <ul>
+              <li>광계 Ⅰ보다 먼저 진행되는 반응</li>
+              <li>그러나 광계 Ⅰ보다 늦게 발견되어 광계 Ⅱ로 명명됨</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h4>명반응의 진행 (틸라코이드 막)</h4>
+        <div class="eqbox">빛E, H₂O, NADP⁺, ADP+Pi → O₂, ATP, NADPH</div>
+        <ul>
+          <li>광계 Ⅱ(P680)에서 시작 → 전자전달계 → 광계 Ⅰ(P700) → NADP⁺ + H⁺ → NADPH</li>
+          <li>물(H₂O)이 분해되어 전자를 보충, 부산물로 O₂ 방출</li>
+          <li>엽록소의 빛가 서로 연결하여 이동 → 결국 모든 전자가 반응중심 엽록소로 모임</li>
+        </ul>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>광계 순서의 함정</h5>
+          <div class="key">전자 흐름 순서: 광계 Ⅱ(P680) → 광계 Ⅰ(P700)</div>
+          <p style="margin-top:8px">번호(Ⅰ·Ⅱ)는 <b>발견 순서</b>일 뿐! 실제 반응은 <b>Ⅱ가 먼저</b> 진행됩니다. 시험 단골 함정.</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>물 분해 = 전자 보충 + O₂</h5>
+          <p>광계 Ⅱ가 전자를 잃으면 비어버립니다. 이걸 <strong>물을 쪼개서</strong> 채워요(H₂O → 2H⁺ + ½O₂ + 2e⁻). 이때 나온 O₂가 우리가 숨 쉬는 산소의 근원입니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">스캔 교정 ✎</div>
+          <p><span class="n">✎</span> P700·P680의 파장도 필기엔 "mm"였지만 <b>nm</b>가 맞습니다(700 nm·680 nm). 표기 오류로 보아 바로잡았어요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 13-5 비순환/순환 전자흐름 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">전자흐름</span>비순환적 · 순환적 전자흐름</h3>
+        <div class="explain">
+        <div class="xh">🍊 왜 전자가 흐르는 길이 두 개일까?</div>
+        <p>기본은 전자가 한 방향으로 쭉 흐르는 <strong>'비순환적(직선) 흐름'</strong>이에요. 이걸로 O₂·ATP·NADPH를 다 만들어요. 그런데 문제가 하나 있어요.</p>
+        <div class="anal">캘빈회로(다음 단계)는 <b>NADPH보다 ATP를 더 많이 써요.</b> 직선 흐름만 돌리면 ATP가 모자라요!<br>그래서 ATP만 추가로 찍어내는 <b>'순환적(빙 도는) 흐름'</b>을 곁들여요. 전자가 광계 Ⅰ에서 빙 돌아 제자리로 오면서 ATP만 더 만들어 부족분을 메꿔요.</div>
+      </div>
+        <h4>1) 비순환적(선형) 전자흐름</h4>
+        <ul>
+          <li><b>P680 → P700 → NADP⁺</b> : 전자의 흐름 (한 방향 직선)</li>
+          <li>P680은 물의 분해를 통해 전자를 보충 받음 (H₂O → 2H⁺ + ½O₂, 전자의 개시점)</li>
+          <li>산물: O₂(방출), ATP, NADPH (캘빈회로에서 사용)</li>
+        </ul>
+        <div class="callout">cf) ATP와 NADPH는 거의 동량이 생성. <b>But</b> 캘빈회로는 ATP를 더 많이 소모 → 1포도당 생성 시 ATP 18개, NADPH 12개 소모 → <mark class="b">6개의 ATP를 더 생산해야 함!</mark></div>
+
+        <h4>2) 순환적 전자흐름</h4>
+        <ul>
+          <li>비순환적 전자흐름과 함께 일어남</li>
+          <li><b>P700</b>만 사용 (전자가 빙 돌아 제자리)</li>
+          <li>산물: <b>ATP만</b> 생성</li>
+        </ul>
+
+        <h4>Q) 부족한 6ATP를 어떻게 메꿔야 하나?</h4>
+        <p class="arrow"><b>A) 순환적 전자흐름</b> — ATP만 생성(P700). 캘빈회로가 ATP를 더 많이 쓰는 만큼, 순환 흐름이 ATP만 추가로 만들어 균형을 맞춤.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★</span>
+          <h5>두 전자흐름 산물</h5>
+          <div class="key">비순환(선형): O₂ + ATP + NADPH</div>
+          <div class="key">순환(P700만): ATP만</div>
+          <p style="margin-top:8px">캘빈회로가 ATP를 더 쓰니까(18 ATP vs 12 NADPH), <b>모자란 ATP를 순환흐름이 보충</b>한다는 논리!</p>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>왜 두 흐름이 둘 다 필요?</h5>
+          <p>선형 흐름만 돌리면 ATP:NADPH 비율이 캘빈회로 수요(ATP가 더 많이 필요)와 안 맞습니다. 그래서 식물은 <strong>순환 흐름을 곁들여 ATP만 더 찍어내</strong> 수요–공급 비율을 맞춰요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 13-6 전자전달계 화학삼투 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">전자전달계</span>전자전달계와 ATP 합성 (화학삼투)</h3>
+        <div class="explain">
+        <div class="xh">🍊 어렵게 느껴지면 '수력발전소'를 떠올려요</div>
+        <p>전자가 흐르면서 만든 에너지로 ATP를 만드는 방식이 <strong>화학삼투</strong>인데, 이름만 어렵지 원리는 댐 발전이랑 똑같아요.</p>
+        <div class="anal"><b>① 댐에 물 채우기:</b> 전자가 흐르는 힘으로 H⁺(수소이온)를 틸라코이드 <b>안쪽에 잔뜩 가둬요</b> → 수위(농도)가 높아짐<br><b>② 수문 열기:</b> 갇힌 H⁺가 <b>ATP 합성효소</b>라는 수문으로 콸콸 쏟아져 나와요<br><b>③ 터빈 돌리기:</b> 그 물살의 힘으로 <b>ATP를 찍어내요!</b></div>
+        <p>즉 H⁺의 농도 차이(높이 차)를 만들어뒀다가, 그게 흘러내리는 힘으로 ATP를 만드는 거예요.</p>
+      </div>
+        <ul>
+          <li>명반응에서 전자가 전자전달계를 통해 이동할 때, 스트로마에 존재하는 H⁺는 통로를 통해 <b>틸라코이드 내부</b>로 이동</li>
+          <li>이러한 반응이 진행될수록 틸라코이드 내부의 H⁺가 다른 쪽으로 이동됨 → <b>위치E(위치에너지)</b> 발생</li>
+          <li>높은 농도에 존재하던 H⁺가 통로(ATP 합성효소)를 통해 스트로마로 나오면서 방출되는 에너지를 사용하여 <mark class="b">ATP 생성</mark></li>
+        </ul>
+        <p>틸라코이드 내부 = H⁺ 高 / 스트로마 = H⁺ 低. 이 농도차(기울기)가 ATP를 만드는 '댐의 낙차' 역할.</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>한 단계 더: 미토콘드리아와 공통점</h5>
+          <p>H⁺를 틸라코이드 안에 잔뜩 가둬 농도를 높이는 것 = <strong>댐에 물을 채우는 것</strong>. 갇힌 H⁺가 ATP 합성효소라는 <strong>수문(터빈)</strong>을 통해 쏟아져 나오며 ATP를 돌립니다. 미토콘드리아의 산화적 인산화와 똑같은 원리예요.</p>
+        </div>
+        <div class="scard mem">
+          <span class="tag">꼭 암기</span>
+          <h5>H⁺ 방향 (광합성)</h5>
+          <div class="key">전달계: 스트로마 → 틸라코이드 안 (가둠)</div>
+          <div class="key">ATP합성: 틸라코이드 안 → 스트로마 (방출)</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ WEEK 14 ============ -->
+  <section class="week" id="w14">
+    <div class="week-head">
+      <span class="week-badge">14주차 · 1-7</span>
+      <h2>캘빈회로 · C3 / C4 / CAM 식물</h2>
+      <span class="date">2026.06.05</span>
+    </div>
+
+    <!-- 14-1 캘빈회로 + 광호흡 -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">캘빈회로</span>캘빈회로와 광호흡</h3>
+        <div class="explain">
+        <div class="xh">🍊 명반응이 만든 에너지를 '여기서' 써요</div>
+        <p>명반응이 ATP·NADPH(에너지)를 만들었죠? 캘빈회로는 그걸 <strong>받아서 진짜 일을 하는 곳</strong>이에요. 공기 중의 <strong>CO₂를 붙잡아 당(포도당)으로 조립</strong>하는 공장이에요.</p>
+        <div class="anal">이 공장의 핵심 일꾼이 <b>루비스코(Rubisco)</b>라는 효소예요. 루비스코가 공기 중 CO₂를 딱 붙잡는 것(=탄소 고정)으로 모든 게 시작돼요. 그리고 ATP·NADPH의 에너지를 써서 <b>G3P라는 3탄당</b>을 만들고, 이게 모여 포도당이 돼요.</div>
+      </div>
+        <div class="explain">
+        <div class="xh">🍊 광호흡 — 루비스코의 '실수'</div>
+        <p>완벽해 보이는 루비스코에게 약점이 하나 있어요. CO₂를 잡아야 하는데, <strong>가끔 실수로 산소(O₂)를 잡아요.</strong> 그러면 당을 못 만들고 에너지만 낭비돼요. 이 헛수고를 <strong>광호흡</strong>이라고 해요.</p>
+        <div class="anal">특히 <b>덥고 건조한 날</b> 문제가 심해져요. 식물이 물을 아끼려고 숨구멍(기공)을 닫으면, 잎 속에 O₂가 쌓이거든요. 그러면 루비스코가 O₂를 잡는 실수가 더 잦아져요. (다음에 나올 C4·CAM 식물이 이 문제를 푸는 이야기예요!)</div>
+      </div>
+        <p style="color:var(--red);font-weight:700">★ 시험문제 꼭!!</p>
+        <h4>캘빈회로 (암반응<sup class="fn">①</sup>)</h4>
+        <ul>
+          <li>CO₂와 명반응의 산물(<b>ATP, NADPH</b>)을 이용</li>
+          <li><b>G3P(=PGAL)</b>를 만들어 → 후에 <mark class="b">포도당</mark>으로 변환</li>
+        </ul>
+
+        <h4>7.11 덥고 건조한 기후에서 또 다른 탄소고정 방법이 진화하였다 (진화와의 연관성)</h4>
+        <p><b>광호흡<sup class="fn">②</sup></b>: 루비스코(Rubisco)가 CO₂ 대신 O₂를 고정하여 탄소 손실과 에너지 낭비가 일어나는 과정.</p>
+        <table class="ntable">
+          <tr><th>루비스코 + CO₂ (정상)</th><th>루비스코 + O₂ (광호흡)</th></tr>
+          <tr><td>RuBP → PGA(C3)<br>→ 캘빈회로로</td><td>RuBP → 글리콜산(C2), 3PGA(C3)<br>→ 퍼옥시좀이 분해</td></tr>
+        </table>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★ 시험!</span>
+          <h5>캘빈회로 핵심</h5>
+          <div class="key">입력: CO₂ + ATP + NADPH</div>
+          <div class="key">산물: G3P(=PGAL, 3탄당) → 포도당</div>
+          <div class="key">장소: 스트로마</div>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>루비스코의 '실수' = 광호흡</h5>
+          <p>탄소고정 효소 <strong>루비스코</strong>는 CO₂를 잡아야 하는데, 가끔 O₂를 잘못 잡습니다. 그러면 당을 못 만들고 에너지만 낭비돼요(광호흡). 덥고 건조해 기공을 닫으면 잎 속 O₂가 늘어 이 실수가 더 잦아집니다.</p>
+        </div>
+        <div class="fnbox">
+          <div class="fttl">용어 각주</div>
+          <p><span class="n">①</span> <b>암반응(暗反應)</b>: 빛이 직접 필요 없는 반응이라 붙은 옛 이름. 단, 명반응이 만든 ATP·NADPH를 써야 하므로 <b>실제로는 주로 낮에</b> 돕니다. '어둠 속에서만 일어난다'는 뜻이 아니에요.</p>
+          <p><span class="n">②</span> <b>광호흡</b>: 빛이 있을 때 루비스코가 O₂를 고정해 당 생산을 깎아먹는 헛돌이 과정. '광합성의 손실'로 이해하세요.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 14-2 C3/C4/CAM -->
+    <div class="row">
+      <div class="note">
+        <h3><span class="sec">7.11</span>C3 · C4 · CAM 식물</h3>
+        <div class="explain">
+        <div class="xh">🍊 식물의 딜레마: 물이냐, CO₂냐</div>
+        <p>더운 날 식물은 큰 고민에 빠져요. 숨구멍(기공)을 <strong>열면</strong> CO₂를 마실 수 있지만 <strong>물이 증발해 말라 죽고</strong>, <strong>닫으면</strong> 물은 아끼지만 <strong>CO₂가 부족해 광호흡(헛수고)이 심해져요.</strong></p>
+        <p>이 딜레마를 푸는 방식이 식물마다 달라서 세 종류로 나뉘어요.</p>
+        <div class="anal"><b>C3 = 평범한 식물</b> (벼·콩·밀). 별 대책 없이 그냥 함. 그래서 더위·가뭄에 약해요.<br><br><b>C4 = 옥수수·사탕수수.</b> CO₂를 <b>다른 방에 미리 모아둠</b> (공간을 나눔). 더운 곳에서도 잘 자라요.<br><br><b>CAM = 선인장·다육이.</b> 시원한 <b>밤에 CO₂를 미리 모아둠</b> (시간을 나눔). 낮엔 기공을 꽉 닫아 물을 지켜요.</div>
+        <p>C4와 CAM은 둘 다 <strong>'광호흡을 피하려고 진화한 꼼수'</strong>라고 보면 돼요. 하나는 공간을 나누고, 하나는 시간을 나누는 차이!</p>
+      </div>
+        <h4>C3 식물 (C3 plants)</h4>
+        <ul>
+          <li>평지·비옥한 습한 환경에서 자람, 건조에 약함</li>
+          <li>벼·콩·밀·보리 등</li>
+          <li>광합성으로 <b>3탄당</b> 만드는 식물 (최초 고정산물 = 3탄소 화합물 PGA)</li>
+        </ul>
+
+        <h4>C4 식물 (C4 plants)</h4>
+        <ul>
+          <li>고산지대 등 척박한 환경에서 자람, 적당한 물 필요, 빛 ↑ 높은 고도에서 잘 자람</li>
+          <li>CO₂ 부족한 환경에서도 잘 자람, 추위에 약함</li>
+          <li>사탕수수·옥수수·조</li>
+          <li>기공을 열어 CO₂ 흡수↑·O₂ 방출하려 하나, 낮에 수분 증발↑ → <mark class="b">기공을 닫아 수분 보존</mark>
+            <ul><li>→ 잎 내부 CO₂↓, O₂↑ → 탄소원(RuBP) 유실</li></ul>
+          </li>
+          <li>광합성으로 <b>4탄당</b> 만드는 식물 (최초 고정산물 = 4탄소 화합물) → 3탄당으로 전환해서 탄소 공급</li>
+        </ul>
+
+        <h4>CAM 식물 (CAM plants)</h4>
+        <ul>
+          <li>밤에 CO₂ 흡수한 후, 낮에 소화시켜 양분으로 바꾸는 식물 → <mark class="b">시간적 분리</mark>를 통해 광호흡 회피</li>
+          <li>덥고 건조한 낮에는 기공을 닫아 수분 손실을 막음</li>
+          <li>다육이·선인장·파인애플 등</li>
+          <li>실내에서 배양</li>
+        </ul>
+        <p style="font-size:13px;color:var(--muted)">C4 = 공간적 분리 (엽육세포 ↔ 다발집세포) / CAM = 시간적 분리 (밤 ↔ 낮)</p>
+      </div>
+
+      <aside class="aside">
+        <div class="scard mem">
+          <span class="tag">꼭 암기 ★★</span>
+          <h5>3종 식물 핵심 비교</h5>
+          <div class="key">C3 = 일반(벼·콩·밀) · 습지 · 광호흡 그대로</div>
+          <div class="key">C4 = 옥수수·사탕수수 · <b>공간 분리</b></div>
+          <div class="key">CAM = 선인장·다육이 · <b>시간 분리</b>(밤에 CO₂)</div>
+        </div>
+        <div class="scard bg">
+          <span class="tag">생명과학 배경</span>
+          <h5>왜 C4·CAM이 진화했나</h5>
+          <p>덥고 건조한 곳에선 기공을 닫아야 물을 아끼는데, 그러면 CO₂가 부족해져 광호흡이 심해집니다. C4는 CO₂를 <strong>다른 방(공간)</strong>에 미리 모아두고, CAM은 시원한 <strong>밤(시간)</strong>에 미리 모아둬 이 문제를 피해요. 둘 다 '광호흡 회피' 전략입니다.</p>
+        </div>
+        <div class="scard tip">
+          <span class="tag">알아두면 좋은 지식</span>
+          <h5>이름의 유래</h5>
+          <p>C3·C4는 CO₂를 처음 고정해 만든 산물의 <strong>탄소 개수</strong>(3개 vs 4개)에서 왔어요. CAM은 이 방식을 처음 발견한 식물(돌나물과, Crassulacean)의 이름을 딴 '크래슐산 대사'의 약자입니다.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="cheer">1학기 동안 수고하셨습니다! 파이팅 ✿</div>
+    <p>일반생물학 예1-1 기말 자습서 · 왼쪽=필기 본문 / 오른쪽=암기·배경·추가지식</p>
+  </div>
+
+</div>
+
+<button class="totop" id="totop" aria-label="맨 위로">↑</button>
+<script>
+  var btn=document.getElementById('totop');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY>500){btn.classList.add('show');}else{btn.classList.remove('show');}
+  });
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+</script>
+</body>
+</html>

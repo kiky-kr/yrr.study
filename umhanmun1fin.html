@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한의학 한문 Web App</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+
+:root{
+  --blue:#3182F6; --blue-dark:#1B64DA; --blue-soft:#E8F2FF;
+  --teal:#12B5B0;
+  --grad:linear-gradient(105deg,#3182F6 0%,#1F9FC9 55%,#12B5B0 100%);
+  --grad-red:linear-gradient(100deg,#F0445C 0%,#FB7A3C 100%);
+  --grad-soft:linear-gradient(105deg,#E8F2FF 0%,#E2F6F4 100%);
+  --bg:#F2F4F6; --card:#FFFFFF;
+  --ink:#191F28; --gray:#4E5968; --gray2:#8B95A1; --line:#E5E8EB;
+  --btn-gray:#DCE0E5; --btn-gray-h:#D0D5DB;
+  --green:#0FB36B; --green-soft:#E5F7EF;
+  --green-grad:linear-gradient(135deg,#EAF7EF 0%,#DDF1E4 100%);
+  --red:#F04452; --red-soft:#FDECEE;
+  --red-grad:linear-gradient(135deg,#FBEDEE 0%,#F8E1E4 100%);
+  --radius:22px; --radius-sm:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5; letter-spacing:-0.01em;}
+
+.app{display:flex; min-height:100vh;}
+.sidebar{width:236px; flex:none; background:#fff; border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:24px 18px; position:sticky; top:0; height:100vh;}
+.brand-wrap{position:relative; padding-bottom:16px;}
+.brand-wrap::after{content:""; position:absolute; left:0; bottom:0; width:46px; height:3px;
+  border-radius:3px; background:var(--grad);}
+.brand{font-size:18px; font-weight:800; letter-spacing:-0.03em; line-height:1.25; word-break:keep-all;}
+.brand-accent{
+  background:linear-gradient(100deg,#3182F6 0%,#12B5B0 52%,#0FB36B 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;}
+.brand-mid{font-size:13px; color:var(--gray); font-weight:700; letter-spacing:0.06em; margin-top:6px;}
+.brand-sub{font-size:12px; color:var(--gray2); font-weight:600; margin-top:5px;}
+.nav{margin-top:24px; display:flex; flex-direction:column; gap:5px;}
+.nav button{position:relative; display:flex; align-items:center; gap:10px; border:0; background:none; font-family:inherit;
+  cursor:pointer; text-align:left; padding:12px 13px; border-radius:13px; font-weight:700; font-size:14px; color:var(--gray);}
+.nav button .ic{font-size:17px;}
+.nav button.active{background:var(--grad-soft); color:var(--blue-dark);}
+.nav button.active::before{content:""; position:absolute; left:4px; top:50%; transform:translateY(-50%);
+  width:3px; height:18px; border-radius:3px; background:var(--grad);}
+.sidebar .grow{flex:1;}
+.save-pill{display:flex; align-items:center; gap:7px; background:var(--bg); border-radius:12px;
+  padding:11px 12px; font-size:12px; font-weight:700; color:var(--gray);}
+.save-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none;}
+.help-btn{margin-top:8px; border:0; background:none; font-family:inherit; cursor:pointer;
+  color:var(--blue); font-weight:700; font-size:12.5px; padding:8px; border-radius:10px;}
+
+main{flex:1; min-width:0; padding:30px 34px 60px;}
+.main-head{margin-bottom:18px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+.main-head h1{font-size:24px; font-weight:800; margin:0; letter-spacing:-0.03em;}
+.main-head p{margin:4px 0 0; color:var(--gray2); font-size:14px; font-weight:500;}
+
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start;}
+.card{background:var(--card); border-radius:var(--radius); padding:24px;}
+.card h2{font-size:13px; font-weight:800; color:var(--gray2); margin:0 0 14px; letter-spacing:.03em;}
+.q-counter{font-weight:700; color:var(--gray2); font-size:12.5px;}
+
+.hanja-line{font-size:27px; font-weight:700; line-height:1.5; word-break:keep-all; margin-top:12px;}
+textarea,input{font-family:inherit; width:100%; border:1.5px solid var(--line); border-radius:14px;
+  padding:14px; font-size:16px; color:var(--ink); resize:none; outline:none; transition:border-color .15s; background:#fff;}
+textarea:focus,input:focus{border-color:var(--blue);}
+
+.btn{display:block; width:100%; border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:16px;
+  padding:15px; border-radius:14px; background:var(--grad); background-size:140% 140%; color:#fff;
+  box-shadow:0 4px 14px rgba(20,140,170,.18); transition:transform .06s, box-shadow .15s, opacity .15s;}
+.btn:hover{box-shadow:0 6px 18px rgba(20,140,170,.26);}
+.btn:active{transform:scale(.985);}
+.btn.ghost{background:var(--btn-gray); color:var(--gray); box-shadow:none;}
+.btn.ghost:hover{background:var(--btn-gray-h); box-shadow:none;}
+.btn.green{background:var(--green); box-shadow:0 4px 14px rgba(15,179,107,.2);} .btn.red{background:var(--red); box-shadow:none;}
+.btn.sm{font-size:14px; padding:12px;}
+.btn-row{display:flex; gap:10px;} .btn-row .btn{flex:1;}
+.spacer{height:10px;}
+.mini{border:0; background:var(--bg); color:var(--gray); font-family:inherit; font-weight:700; font-size:12.5px;
+  padding:8px 12px; border-radius:10px; cursor:pointer;}
+.mini:disabled{opacity:.38; cursor:default;}
+.kbd{display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:6px;
+  padding:1px 7px; font-size:11px; font-weight:700; color:var(--gray2);}
+
+.ans-placeholder{color:var(--gray2); font-size:14px; font-weight:600; text-align:center; padding:40px 10px;}
+.ans-line{margin-bottom:14px;}
+.ans-line .ah{font-size:15px; font-weight:700; color:var(--gray2); word-break:keep-all;}
+.ans-line .ai{font-size:17px; font-weight:600; line-height:1.55; margin-top:3px;}
+.src-badge{display:inline-block; background:var(--green-soft); color:var(--green); font-weight:800;
+  font-size:12.5px; padding:6px 12px; border-radius:999px; margin-top:6px;}
+.note{margin-top:14px; font-size:13px; color:var(--gray); line-height:1.65; background:var(--bg); border-radius:12px; padding:12px 14px;}
+.point{margin-top:12px; font-size:14px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft); border-radius:12px; padding:11px 14px;}
+
+.stats{display:flex; gap:10px; margin-bottom:16px;}
+.stat{flex:1; background:var(--card); border:1px solid var(--line); border-radius:var(--radius-sm); padding:15px 10px; text-align:center;}
+.stat .n{font-size:24px; font-weight:800; line-height:1.1;}
+.stat .l{font-size:11.5px; color:var(--gray2); font-weight:600; margin-top:3px;}
+.stat.ok .n{color:var(--green);} .stat.no .n{color:var(--red);}
+
+.chips{display:flex; gap:8px; margin-bottom:14px;}
+.chip{border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13px; padding:8px 15px; border-radius:999px; background:var(--bg); color:var(--gray);}
+.chip.active{background:var(--ink); color:#fff;}
+.chip.ok.active{background:var(--green);} .chip.no.active{background:var(--red);}
+
+.quiz-top{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px;}
+.counter{font-size:13px; font-weight:700; color:var(--gray2);}
+
+.scene{perspective:1500px; margin-bottom:16px;}
+.flip{position:relative; width:100%; min-height:300px; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.7,.2,1);}
+.flip.flipped{transform:rotateY(180deg);}
+.face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; background:var(--card);
+  border:1px solid var(--line); border-radius:var(--radius); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;}
+.face.back{transform:rotateY(180deg);}
+.big-hanja{font-size:108px; font-weight:700; line-height:1;}
+.big-hun{font-size:34px; font-weight:800; line-height:1.35; word-break:keep-all;}
+.face .cap{font-size:12px; font-weight:700; color:var(--gray2); margin-top:16px; letter-spacing:.04em;}
+.verdict{font-size:13px; font-weight:800; margin-top:14px; padding:6px 15px; border-radius:999px;}
+.verdict.ok{background:var(--green-soft); color:var(--green);}
+.verdict.no{background:var(--red-soft); color:var(--red);}
+
+.reveal-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:34px 24px;
+  text-align:center; margin-bottom:16px; min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.reveal-card .hidden-h{font-size:108px; font-weight:700; line-height:1; animation:pop .3s ease;}
+@keyframes pop{from{opacity:0; transform:translateY(8px) scale(.96);} to{opacity:1; transform:none;}}
+.done-card{text-align:center; padding:44px 20px;}
+.done-card .emoji{font-size:50px;} .done-card h2{font-size:21px; font-weight:800; margin:12px 0 4px; color:var(--ink);}
+
+.review-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(72px,1fr)); gap:9px;}
+.review-item{background:var(--bg); border:2px solid transparent; border-radius:12px; padding:11px 4px; text-align:center; cursor:pointer; user-select:none;}
+.review-item .h{font-size:28px; font-weight:700; line-height:1;}
+.review-item .u{font-size:11px; color:var(--gray2); font-weight:600; margin-top:5px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.review-item.sel{border-color:var(--blue); background:var(--blue-soft);}
+.empty{grid-column:1/-1; text-align:center; color:var(--gray2); font-size:14px; font-weight:600; padding:34px 0;}
+.selact{margin-top:12px;}
+.selinfo{font-size:12.5px; font-weight:800; color:var(--blue-dark); margin-bottom:8px;}
+
+/* original tab */
+.orig-page{margin-bottom:16px;}
+.orig-head{font-size:13px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft);
+  display:inline-block; padding:6px 13px; border-radius:999px; margin-bottom:6px;}
+.orig-block{padding:14px 0; border-top:1px solid var(--line);}
+.orig-h{font-size:21px; font-weight:700; line-height:1.5; word-break:keep-all;}
+.orig-e{font-size:13px; color:var(--gray2); font-weight:600; margin-top:2px;}
+.orig-i{font-size:15px; color:var(--ink); font-weight:500; margin-top:8px; line-height:1.6;}
+.orig-n{font-size:12.5px; color:var(--gray); margin-top:7px; line-height:1.6;}
+.orig-pt{font-size:13px; font-weight:800; color:var(--blue-dark); margin-top:7px;}
+
+/* hanja list tab */
+.toggle-row{display:flex; gap:8px; margin-bottom:12px;}
+.tog{display:inline-flex; align-items:center; justify-content:center; line-height:1.4; border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13.5px; padding:9px 16px; border-radius:999px; background:#fff; color:var(--gray); box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.tog.active{background:var(--grad); color:#fff; box-shadow:0 3px 10px rgba(20,140,170,.2);}
+.legend{display:flex; gap:16px; margin-bottom:16px; flex-wrap:wrap;}
+.legend span{display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:var(--gray);}
+.legend .sw{width:14px; height:14px; border-radius:4px; border:2px solid;}
+.sw.g{border-color:var(--green); background:var(--green-soft);}
+.sw.r{border-color:var(--red); background:var(--red-soft);}
+.sw.x{border-color:var(--line); background:#fff;}
+.hanja-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:9px;}
+.hcell{border:2px solid var(--line); border-radius:13px; padding:11px 5px; text-align:center; background:#fff; transition:transform .18s, opacity .18s, box-shadow .18s, border-color .18s;}
+.hcell.ok{border-color:var(--green); background:var(--green-grad);}
+.hcell.no{border-color:var(--red); background:var(--red-grad);}
+.hcell .hc{font-size:30px; font-weight:700; line-height:1;}
+.hcell .hu{font-size:11px; color:var(--gray2); font-weight:600; margin-top:6px; line-height:1.2; word-break:keep-all;}
+.search-row{display:flex; gap:8px; margin-bottom:10px;}
+.search-row input{flex:1;}
+.hg-result{font-size:12.5px; font-weight:700; color:var(--blue-dark); margin-bottom:12px; min-height:16px;}
+.hanja-grid.searching .hcell:not(.hit){opacity:.25;}
+.hcell.hit{transform:scale(1.14); border-color:var(--blue); box-shadow:0 8px 24px rgba(49,130,246,.32); position:relative; z-index:3;}
+
+.toast{position:fixed; left:50%; bottom:30px; transform:translateX(-50%) translateY(10px); background:var(--ink); color:#fff;
+  font-weight:700; font-size:14px; padding:12px 20px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; z-index:200; white-space:nowrap;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; z-index:300; align-items:center; justify-content:center; padding:24px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff; border-radius:22px; max-width:480px; width:100%; padding:28px; max-height:86vh; overflow:auto;}
+.modal h3{margin:0 0 6px; font-size:19px; font-weight:800;}
+.modal .mode-now{display:inline-block; background:var(--green-soft); color:var(--green); font-size:12px; font-weight:800; padding:5px 11px; border-radius:999px; margin-bottom:14px;}
+.modal ol{margin:0; padding-left:20px;}
+.modal li{font-size:14.5px; color:var(--gray); line-height:1.7; margin-bottom:10px;}
+.modal li b{color:var(--ink);}
+.modal .close{margin-top:8px;}
+
+.view{display:none;} .view.active{display:block;}
+.reset-row{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+
+@media (max-width:900px){
+  .app{flex-direction:column;}
+  .sidebar{width:100%; height:auto; position:static; flex-direction:row; align-items:center; flex-wrap:wrap; gap:10px; padding:16px;}
+  .sidebar .brand-wrap{margin-right:auto;}
+  .nav{flex-direction:row; margin-top:0; flex-wrap:wrap;}
+  .sidebar .grow{display:none;}
+  main{padding:20px 18px 60px;}
+  .cols{grid-template-columns:1fr;}
+}
+
+/* extra for hanja exam */
+.unit-head{font-size:14px; font-weight:800; color:var(--blue-dark); background:var(--blue-soft); display:inline-block; padding:7px 14px; border-radius:999px; margin:20px 0 12px;}
+.unit-head .cnt{font-weight:700; color:var(--blue); margin-left:6px; font-size:12px;}
+.browse-toggles{display:flex; flex-direction:column; gap:14px; margin-bottom:14px;}
+.browse-toggles .scope-row{margin-bottom:0;}
+.browse-toggles .toggle-row{margin-bottom:0;}
+.tog-label{font-size:11.5px; font-weight:700; color:var(--gray2); margin-bottom:8px;}
+.alt-readings{font-size:14px; color:var(--gray); font-weight:600; margin-top:6px; word-break:keep-all;}
+.scope-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+.scope-btn{display:inline-flex; align-items:center; justify-content:center; line-height:1.4; border:0; font-family:inherit; cursor:pointer; font-weight:700; font-size:13px; padding:9px 16px; border-radius:999px; background:#fff; color:var(--gray); transition:background .15s,color .15s; box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.scope-btn.active{background:var(--grad); color:#fff; box-shadow:0 3px 10px rgba(20,140,170,.2);}
+
+/* ===== 문장해석 테스트 ===== */
+.qx-controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
+.qx{background:var(--card); border-radius:var(--radius); padding:22px; margin-bottom:14px;}
+.qx-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;}
+.qx-num{display:inline-block; background:var(--blue-soft); color:var(--blue-dark); font-weight:800; font-size:12.5px; padding:4px 12px; border-radius:999px; margin-bottom:12px;}
+.qx-hanja{font-size:25px; font-weight:700; line-height:1.65; word-break:keep-all; margin-bottom:18px;}
+.qx-lab{font-size:11.5px; font-weight:800; color:var(--gray2); margin:0 0 6px; letter-spacing:.02em;}
+.qx-left textarea{min-height:62px; margin-bottom:14px;}
+.qx-left input{margin-bottom:0;}
+.qx input.good{border-color:var(--green); background:var(--green-soft);}
+.qx input.bad{border-color:var(--red); background:var(--red-soft);}
+.qx-verdict{font-size:13px; font-weight:800; margin-top:12px; padding:7px 13px; border-radius:999px; display:none; word-break:keep-all; line-height:1.5;}
+.qx-verdict.ok{background:var(--green-soft); color:var(--green); display:inline-block;}
+.qx-verdict.no{background:var(--red-soft); color:var(--red); display:block;}
+.qx-right{background:var(--bg); border-radius:16px; padding:18px; min-height:120px; display:flex; align-items:center; justify-content:center;}
+.qx-check{display:inline-block; width:auto; padding:11px 22px; font-size:14px; margin-top:16px; border:0; border-radius:12px;
+  background:var(--btn-gray); color:var(--gray); font-family:inherit; font-weight:700; cursor:pointer;
+  box-shadow:none; transition:transform .06s, background .15s;}
+.qx-check:hover{background:var(--btn-gray-h);}
+.qx-check:active{transform:scale(.98);}
+.qx-check.done{background:var(--btn-gray); color:var(--gray); box-shadow:none; opacity:.7;}
+.qx-prompt{color:var(--gray2); font-size:14px; font-weight:700; text-align:center; padding:20px 12px; line-height:1.7; word-break:keep-all;}
+.qx-prompt .sub{display:block; font-size:12px; font-weight:600; color:var(--gray2); margin-top:6px; opacity:.8;}
+.qx-ans .k{font-size:11px; font-weight:800; color:var(--gray2); letter-spacing:.03em;}
+.qx-ans .v{font-size:15px; font-weight:600; color:var(--ink); line-height:1.65; margin-top:3px; word-break:keep-all;}
+.qx-ans .v.order{font-size:18px; font-weight:800; letter-spacing:.07em; color:var(--blue-dark);}
+@media(max-width:900px){ .qx-grid{grid-template-columns:1fr;} }
+
+/* ===== 문장 전체 모음 (해설지) ===== */
+.exp{background:var(--card); border-radius:var(--radius); padding:6px 6px; margin-bottom:22px;}
+.exp-row{padding:18px; border-top:1px solid var(--line);}
+.exp-row:first-child{border-top:0;}
+.exp-h{font-size:22px; font-weight:700; line-height:1.65; word-break:keep-all;}
+.exp-o{font-size:15px; font-weight:800; color:var(--blue-dark); letter-spacing:.05em; margin-top:8px;}
+.exp-t{font-size:15px; color:var(--ink); font-weight:500; line-height:1.7; margin-top:7px; word-break:keep-all;}
+.exp-s{display:inline-block; background:var(--green-soft); color:var(--green); font-weight:800; font-size:12px; padding:4px 12px; border-radius:999px; margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand-wrap">
+      <div class="brand">한의학 한문 <span class="brand-accent">Web App</span></div>
+      <div class="brand-mid">By. 25 끼끼</div>
+      <div class="brand-sub">예과 1학년 1학기 기말 · 엄동명 교수님</div>
+    </div>
+    <nav class="nav">
+      <button class="active" data-view="1"><span class="ic">🀄</span>한자 → 훈음</button>
+      <button data-view="2"><span class="ic">💡</span>훈음 → 한자</button>
+      <button data-view="3"><span class="ic">🔠</span>전체 한자 목록</button>
+      <button data-view="4"><span class="ic">📝</span>문장해석 테스트</button>
+      <button data-view="5"><span class="ic">📖</span>문장 전체 모음</button>
+    </nav>
+    <div class="grow"></div>
+    <div class="save-pill"><span class="dot"></span><span id="save-text">자동 저장 중</span></div>
+    <button class="help-btn" id="help-open">저장은 어떻게 되나요?</button>
+  </aside>
+
+  <main>
+    <!-- VIEW 1 : 한자 → 훈음 (mode r) -->
+    <section id="view1" class="view active">
+      <div class="main-head"><div><h1>한자 → 훈음</h1>
+        <p>한자를 보고 훈·음 입력 → <span class="kbd">Enter</span> 채점 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="r-shuffle">🔀 셔플</button><button class="mini" id="r-restore">↩︎ 원래 순서</button></div></div>
+      <div class="scope-row" id="r-scopes"></div>
+      <div class="cols">
+        <div class="card">
+          <div id="r-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="r-back">← 이전 문제</button>
+                <button class="mini" id="r-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="r-counter"></span>
+            </div>
+            <div class="scene">
+              <div class="flip" id="r-flip">
+                <div class="face front"><div class="big-hanja" id="r-hanja"></div><div class="cap">훈과 음을 입력하세요</div></div>
+                <div class="face back"><div class="cap">정답</div><div class="big-hun" id="r-answer"></div><div class="verdict" id="r-verdict"></div></div>
+              </div>
+            </div>
+            <div id="r-input-area">
+              <input id="r-input" type="text" placeholder="예: 의심할 의" autocomplete="off">
+              <div class="spacer"></div>
+              <button class="btn" id="r-submit">정답 입력 (Enter)</button>
+            </div>
+            <div id="r-next-area" style="display:none">
+              <div class="btn-row">
+                <button class="btn red" id="r-wrong">✕ 틀림 (←)</button>
+                <button class="btn green" id="r-right">✓ 맞음 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="r-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2><p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="r-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="r-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="r-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="r">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="r">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="r">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="r-review" class="review-list"></div>
+          <div id="r-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="r-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="r-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2 : 훈음 → 한자 (mode h) -->
+    <section id="view2" class="view">
+      <div class="main-head"><div><h1>훈음 → 한자</h1>
+        <p>훈·음을 보고 떠올린 뒤 <span class="kbd">Space</span> <span class="kbd">Enter</span> 정답 보기 · 틀림 <span class="kbd">←</span> / 맞음 <span class="kbd">→</span> <span class="kbd">Space</span> <span class="kbd">Enter</span></p></div>
+        <div style="display:flex;gap:8px"><button class="mini" id="h-shuffle">🔀 셔플</button><button class="mini" id="h-restore">↩︎ 원래 순서</button></div></div>
+      <div class="scope-row" id="h-scopes"></div>
+      <div class="cols">
+        <div class="card">
+          <div id="h-quiz">
+            <div class="quiz-top">
+              <div style="display:flex;gap:8px">
+                <button class="mini" id="h-back">← 이전 문제</button>
+                <button class="mini" id="h-skip">건너뛰기 →</button>
+              </div>
+              <span class="counter" id="h-counter"></span>
+            </div>
+            <div class="reveal-card">
+              <div class="big-hun" id="h-hun"></div>
+              <div class="cap" id="h-hint">머릿속으로 한자를 떠올려보세요</div>
+              <div id="h-hanja-wrap" style="display:none; margin-top:16px;"><div class="hidden-h" id="h-hanja"></div></div>
+            </div>
+            <div id="h-reveal-area"><button class="btn" id="h-reveal">정답 보기 (Space)</button></div>
+            <div id="h-grade-area" style="display:none">
+              <div style="text-align:center; font-size:12px; font-weight:700; color:var(--gray2); margin-bottom:10px;">맞았나요?</div>
+              <div class="btn-row">
+                <button class="btn red" id="h-wrong">✕ 틀렸어요 (←)</button>
+                <button class="btn green" id="h-right">✓ 맞았어요 (→)</button>
+              </div>
+            </div>
+          </div>
+          <div id="h-done" class="done-card" style="display:none">
+            <div class="emoji">🎉</div><h2>한 바퀴 다 풀었어요</h2><p style="color:var(--gray2)">오른쪽에서 틀린 문제만 다시 풀 수 있어요</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>진행 상황</h2>
+          <div class="stats">
+            <div class="stat"><div class="n" id="h-left">0</div><div class="l">남은 문제</div></div>
+            <div class="stat ok"><div class="n" id="h-ok">0</div><div class="l">맞춘 문제</div></div>
+            <div class="stat no"><div class="n" id="h-no">0</div><div class="l">틀린 문제</div></div>
+          </div>
+          <div class="chips">
+            <button class="chip active" data-f="all" data-sheet="h">전체</button>
+            <button class="chip ok" data-f="ok" data-sheet="h">맞춘 문제</button>
+            <button class="chip no" data-f="no" data-sheet="h">틀린 문제</button>
+          </div>
+          <p style="font-size:12px;color:var(--gray2);font-weight:600;margin:-4px 0 10px;">한자를 눌러 선택한 뒤 아래 버튼으로 옮기거나 리셋하세요</p>
+          <div id="h-review" class="review-list"></div>
+          <div id="h-selact" class="selact"></div>
+          <div class="reset-row">
+            <button class="btn ghost sm" id="h-retry" style="flex:1">틀린 문제만 다시</button>
+            <button class="btn ghost sm" id="h-reset" style="flex:1">전체 리셋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3 : 전체 한자 목록 -->
+    <section id="view3" class="view">
+      <div class="main-head"><div><h1>전체 한자 목록</h1><p>맞은 한자 = 초록, 틀린 한자 = 빨강, 아직 안 한 한자 = 회색 · 고유 <span id="hg-total">0</span>자</p></div></div>
+      <div class="browse-toggles">
+        <div>
+          <div class="tog-label">단원 선택</div>
+          <div class="scope-row" id="b-scopes"></div>
+        </div>
+        <div>
+          <div class="tog-label">색상 기준</div>
+          <div class="toggle-row">
+            <button class="tog active" data-bm="r">한자 → 훈음 기준</button>
+            <button class="tog" data-bm="h">훈음 → 한자 기준</button>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <span><span class="sw g"></span>맞음 <b id="hg-ok" style="margin-left:2px">0</b></span>
+        <span><span class="sw r"></span>틀림 <b id="hg-no" style="margin-left:2px">0</b></span>
+        <span><span class="sw x"></span>안 함 <b id="hg-rest" style="margin-left:2px">0</b></span>
+      </div>
+      <div class="search-row">
+        <input id="hg-search" type="text" placeholder="음·훈 또는 한자 검색 (예: 의심할 의 · 疑 · 의)" autocomplete="off">
+        <button class="mini" id="hg-clear">닫기</button>
+      </div>
+      <div id="hg-result" class="hg-result"></div>
+      <div id="browse-body"></div>
+    </section>
+
+    <!-- VIEW 4 : 문장해석 테스트 -->
+    <section id="view4" class="view">
+      <div class="main-head"><div><h1>문장해석 테스트</h1>
+        <p>문장을 보고 <b>해석</b>과 <b>해석 순서</b>를 입력하세요 · 채점은 해석 순서 기준</p></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="mini" id="qx-shuffle">🔀 셔플</button>
+          <button class="mini" id="qx-restore">↩︎ 원래 순서</button>
+          <button class="mini" id="qx-clear">입력 지우기</button>
+        </div></div>
+      <div class="scope-row" id="qx-scopes"></div>
+      <div class="qx-controls">
+        <button class="btn" id="qx-grade" style="width:auto; padding:12px 24px;">전체 채점</button>
+        <span class="counter" id="qx-score"></span>
+      </div>
+      <div id="qx-body"></div>
+    </section>
+
+    <!-- VIEW 5 : 문장 전체 모음 (해설지) -->
+    <section id="view5" class="view">
+      <div class="main-head"><div><h1>문장 전체 모음</h1>
+        <p>모든 문장의 해석·순서·출처 모음 — 해설지처럼 보세요</p></div></div>
+      <div class="scope-row" id="exp-scopes"></div>
+      <div id="exp-body"></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-bg" id="help-bg">
+  <div class="modal">
+    <h3>저장은 자동으로 됩니다</h3>
+    <div class="mode-now" id="mode-now">저장 위치 확인 중…</div>
+    <ol>
+      <li><b>따로 누를 버튼이 없어요.</b> 문제를 채점하면 그 즉시 자동 저장됩니다. 사이드바에 잠깐 “저장됨 ✓”이 뜨면 저장된 거예요.</li>
+      <li><b>같은 곳에서 다시 열면 이어집니다.</b> 풀던 위치와 맞은·틀린 기록이 그대로 남아요.</li>
+      <li><b>아이패드에서 계속 쓰려면:</b> 이 파일을 <b>다운로드</b>해서 <b>사파리(또는 크롬)</b>로 여세요. 그 브라우저에 저장되고, 다음에 <b>같은 브라우저</b>로 열면 이어집니다.</li>
+      <li><b>주의:</b> 시크릿(비공개) 모드로 열거나 브라우저 기록·사이트 데이터를 지우면 저장 내용도 함께 사라집니다.</li>
+    </ol>
+    <button class="btn close" id="help-close">알겠어요</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = [
+  { id:"q1", label:"의문대명사", cards:[
+    {h:"疑",r:"의심할 의"},{h:"誰",r:"누구 수"},{h:"孰",r:"누구 숙"},{h:"何",r:"어찌 하"},
+    {h:"曷",r:"어찌 갈"},{h:"胡",r:"수염 호, 어찌 호"},{h:"奚",r:"어찌 해"},{h:"安",r:"편안 안, 어찌 안"},
+    {h:"惡",r:"악할 악, 어찌 악"},{h:"焉",r:"어찌 언"},{h:"烏",r:"까마귀 오"},{h:"那",r:"어찌 나"},
+    {h:"奈",r:"어찌 내, 어찌 나"},{h:"欺",r:"속일 기"},{h:"是",r:"이 시"},{h:"可",r:"옳을 가"},
+    {h:"忍",r:"참을 인"},{h:"伊",r:"저 이"},{h:"尹",r:"다스릴 윤"},{h:"事",r:"섬길 사, 일 사"},
+    {h:"君",r:"임금 군"},{h:"使",r:"부릴 사"},{h:"治",r:"다스릴 치"},{h:"亦",r:"또 역"},
+    {h:"進",r:"나아갈 진"},{h:"亂",r:"어지러울 란"},{h:"將",r:"장수 장"},{h:"爲",r:"할 위"},
+    {h:"能",r:"능할 능"},{h:"久",r:"오랠 구"},{h:"熏",r:"불길 훈"},{h:"勞",r:"일할 로"},
+    {h:"而",r:"말 이을 이"},{h:"息",r:"쉴 식"},{h:"佐",r:"도울 좌"},{h:"婦",r:"며느리 부"},
+    {h:"余",r:"나 여"},{h:"岐",r:"갈림길 기"},{h:"又",r:"또 우"},{h:"項",r:"목 항"},
+    {h:"伯",r:"맏 백"},{h:"故",r:"연고 고"},{h:"得",r:"얻을 득"},{h:"知",r:"알 지"},
+    {h:"忽",r:"갑자기 홀"},{h:"至",r:"이를 지"},{h:"樂",r:"즐길 락"},{h:"商",r:"장사 상"},
+    {h:"荒",r:"거칠 황, 공허할 강"},{h:"遽",r:"급히 거"},{h:"向",r:"향할 향"},{h:"惟",r:"생각할 유"}
+  ]},
+  { id:"q2", label:"정도부사", cards:[
+    {h:"副",r:"버금 부"},{h:"稍",r:"점점 초, 끝 초"},{h:"略",r:"다스릴 략"},{h:"頗",r:"자못/치우칠 파"},
+    {h:"殊",r:"다를 수"},{h:"甚",r:"심할 심"},{h:"極",r:"극진할 극, 다할 극"},{h:"催",r:"재촉할 최"},
+    {h:"太",r:"클 태"},{h:"愈",r:"나을 유"},{h:"益",r:"더할 익"},{h:"彌",r:"그칠 미"},
+    {h:"尤",r:"더욱 우"},{h:"今",r:"이제 금"},{h:"予",r:"나 여"},{h:"病",r:"병 병"},
+    {h:"又",r:"또 우"},{h:"且",r:"또 차"},{h:"復",r:"다시 부"},{h:"遊",r:"놀 유"},
+    {h:"於",r:"어조사 어"},{h:"六",r:"여섯 육"},{h:"合",r:"합할 합"},{h:"外",r:"바깥 외"},
+    {h:"解",r:"풀 해"},{h:"因",r:"인할 인"},{h:"請",r:"청할 청"},{h:"朝",r:"아침 조"},
+    {h:"景",r:"볕 경, 그림자 영"},{h:"帝",r:"임금 제"},{h:"書",r:"글 서"},{h:"能",r:"능할 능"},
+    {h:"悉",r:"다 실"},{h:"意",r:"뜻 의"},{h:"陳",r:"베풀 진"},{h:"固",r:"굳을 고"},
+    {h:"陋",r:"더러울 루"},{h:"殷",r:"성할 은"},{h:"諸",r:"모두 제"},{h:"侯",r:"제후 후"},
+    {h:"可",r:"옳을 가"},{h:"而",r:"말 이을 이"},{h:"譜",r:"족보 보"},{h:"周",r:"두루 주"},
+    {h:"來",r:"올 래"},{h:"乃",r:"이에 내"},{h:"著",r:"나타날 저"},{h:"列",r:"벌일 렬"},
+    {h:"記",r:"기록할 기"},{h:"老",r:"늙을 로"},{h:"臣",r:"신하 신"},{h:"者",r:"놈 자"},
+    {h:"欲",r:"하고자 할 욕"},{h:"彭",r:"나라이름 팽"},{h:"城",r:"재 성"},{h:"快",r:"쾌할 쾌"},
+    {h:"牛",r:"소 우"},{h:"愛",r:"사랑 애"},{h:"惜",r:"아낄 석"},{h:"至",r:"이를 지"},
+    {h:"田",r:"밭 전"},{h:"成",r:"이룰 성"},{h:"氏",r:"성씨 씨"},{h:"齊",r:"가지런할 제"},
+    {h:"孤",r:"외로울 고"},{h:"燕",r:"제비 연, 잔치 연"},{h:"報",r:"갚을 보"},{h:"樂",r:"즐거울 락"},
+    {h:"從",r:"좇을 종"},{h:"容",r:"얼굴 용"},{h:"通",r:"통할 통"},{h:"誰",r:"누구 수"},
+    {h:"乎",r:"어조사 호"},{h:"剛",r:"굳셀 강"},{h:"則",r:"곧 즉"},{h:"折",r:"꺾을 절"},
+    {h:"柔",r:"부드러울 유"},{h:"卷",r:"책 권, 말 권"},{h:"本",r:"근본 본"},{h:"聖",r:"성인 성"},
+    {h:"間",r:"사이 간"},{h:"賢",r:"어질 현"},{h:"主",r:"임금 주"},{h:"爠",r:"여읠 구"},
+    {h:"強",r:"강할 강"},{h:"恐",r:"두려울 공"},{h:"腸",r:"창자 장"},{h:"胃",r:"위장 위"},
+    {h:"君",r:"임금 군"},{h:"治",r:"다스릴 치"},{h:"將",r:"장수 장"},{h:"深",r:"깊을 심"},
+    {h:"仰",r:"우러를 앙"},{h:"高",r:"높을 고"},{h:"鑽",r:"끌 찬"},{h:"堅",r:"굳을 견"},
+    {h:"然",r:"그럴 연"},{h:"是",r:"이 시"},{h:"說",r:"말씀 설"},{h:"疑",r:"의심할 의"}
+  ]},
+  { id:"q3", label:"범위부사", cards:[
+    {h:"唯",r:"오직 유, 누구 수"},{h:"惟",r:"생각할 유"},{h:"維",r:"오직 유, 벼리 유"},{h:"獨",r:"홀로 독"},
+    {h:"特",r:"특별할 특"},{h:"第",r:"차례 제"},{h:"但",r:"다만 단"},{h:"徒",r:"한갓 도"},
+    {h:"直",r:"곧을 직"},{h:"僅",r:"겨우 근"},{h:"皆",r:"다 개"},{h:"畢",r:"마칠 필"},
+    {h:"俱",r:"함께 구, 갖출 구"},{h:"具",r:"갖출 구"},{h:"咸",r:"다 함"},{h:"悉",r:"다 실"},
+    {h:"盡",r:"다할 진"},{h:"擧",r:"들 거"},{h:"時",r:"때 시"},{h:"城",r:"재 성"},
+    {h:"千",r:"일천 천"},{h:"學",r:"배울 학"},{h:"則",r:"곧 즉, 법칙 칙"},{h:"孤",r:"외로울 고"},
+    {h:"陋",r:"더러울 루"},{h:"寡",r:"적을 과"},{h:"漢",r:"한나라 한"},{h:"將",r:"장수 장"},
+    {h:"韓",r:"한국 한"},{h:"信",r:"믿을 신"},{h:"可",r:"옳을 가"},{h:"屬",r:"무리 속"},
+    {h:"姦",r:"간사할 간"},{h:"誤",r:"그르칠 오"},{h:"於",r:"어조사 어"},{h:"亂",r:"어지러울 란"},
+    {h:"說",r:"말씀 설"},{h:"見",r:"볼 견"},{h:"加",r:"더할 가"},{h:"賜",r:"줄 사"},
+    {h:"尊",r:"높을 존"},{h:"官",r:"벼슬 관"},{h:"州",r:"고을 주"},{h:"斷",r:"끊을 단"},
+    {h:"頭",r:"머리 두"},{h:"軍",r:"군사 군"},{h:"降",r:"내릴 강"},{h:"吾",r:"나 오"},
+    {h:"能",r:"능할 능"},{h:"好",r:"좋을 호"},{h:"先",r:"먼저 선"},{h:"樂",r:"즐길 락, 노래 악"},
+    {h:"俗",r:"풍속 속"},{h:"士",r:"선비 사"},{h:"焉",r:"어찌 언"},{h:"定",r:"정할 정"},
+    {h:"近",r:"가까울 근"},{h:"遠",r:"멀 원"},{h:"去",r:"갈 거"},{h:"終",r:"마칠 종, 끝 종"},
+    {h:"轉",r:"구를 전"},{h:"迷",r:"미혹할 미"},{h:"嘗",r:"맛 볼 상"},{h:"矣",r:"어조사 의"},
+    {h:"未",r:"아닐 미"},{h:"羹",r:"국 갱, 땅 이름 랑"},{h:"君",r:"임금 군"},{h:"請",r:"청할 청"},
+    {h:"遺",r:"남길 유, 따를 수"},{h:"萬",r:"일만 만"},{h:"物",r:"물건 물"},{h:"同",r:"한가지 동"},
+    {h:"異",r:"다를 이"},{h:"此",r:"이 차"},{h:"成",r:"이룰 성"},{h:"功",r:"공 공"},
+    {h:"富",r:"부유할 부"},{h:"罪",r:"허물 죄"},{h:"服",r:"옷 복"},{h:"誅",r:"벨 주"},
+    {h:"仁",r:"어질 인"},{h:"命",r:"목숨 명"},{h:"衆",r:"무리 중"},{h:"至",r:"이를 지"},
+    {h:"于",r:"어조사 우"},{h:"庭",r:"뜰 정"},{h:"左",r:"왼 좌"},{h:"右",r:"오른 우"},
+    {h:"逐",r:"쫓을 축"},{h:"獸",r:"짐승 수"},{h:"救",r:"구원할 구"},{h:"庶",r:"여러 서"},
+    {h:"幾",r:"조짐 기"},{h:"望",r:"바랄 망"}
+  ]},
+  { id:"q4", label:"시간부사", cards:[
+    {h:"始",r:"비로소 시"},{h:"乃",r:"이에 내"},{h:"將",r:"장차 장, 장수 장"},{h:"欲",r:"하고자 할 욕"},
+    {h:"且",r:"또 차"},{h:"行",r:"다닐 행"},{h:"適",r:"맞을 적"},{h:"旣",r:"이미 기"},
+    {h:"業",r:"업 업"},{h:"已",r:"이미 이"},{h:"向",r:"향할 향"},{h:"曾",r:"일찍 증"},
+    {h:"嘗",r:"맛 볼 상"},{h:"卒",r:"마칠 졸"},{h:"竟",r:"마침내 경"},{h:"終",r:"끝 종"},
+    {h:"斯",r:"이 사"},{h:"須",r:"모름지기 수"},{h:"臾",r:"잠깐 유"},{h:"復",r:"회복 복, 다시 부"},
+    {h:"更",r:"다시 갱"},{h:"猶",r:"오히려 유"},{h:"晉",r:"나아갈 진"},{h:"候",r:"기후 후"},
+    {h:"及",r:"미칠 급"},{h:"諸",r:"모두 제"},{h:"尤",r:"더욱 우"},{h:"因",r:"인할 인"},
+    {h:"擧",r:"들 거"},{h:"哀",r:"슬플 애"},{h:"樹",r:"나무 수"},{h:"靜",r:"고요할 정"},
+    {h:"養",r:"기를 양"},{h:"待",r:"기다릴 대"},{h:"滿",r:"찰 만"},{h:"樓",r:"다락 루"},
+    {h:"愚",r:"어리석을 우"},{h:"公",r:"공평할 공"},{h:"歲",r:"해 세"},{h:"當",r:"마땅 당"},
+    {h:"此",r:"이 차"},{h:"散",r:"흩을 산"},{h:"亦",r:"또 역"},{h:"差",r:"다를 차"},
+    {h:"啓",r:"열 계"},{h:"匕",r:"비수 비"},{h:"陷",r:"빠질 함"},{h:"胸",r:"가슴 흉"},
+    {h:"江",r:"강 강"},{h:"嬰",r:"어린아이 영"},{h:"兒",r:"아이 아"},{h:"投",r:"던질 투"},
+    {h:"克",r:"이길 극"},{h:"故",r:"연고 고"},{h:"許",r:"허락할 허"},{h:"可",r:"옳을 가"},
+    {h:"易",r:"바꿀 역"},{h:"孟",r:"맏 맹"},{h:"客",r:"손 객"},{h:"夜",r:"밤 야"},
+    {h:"吾",r:"나 오"},{h:"寢",r:"잘 침"},{h:"益",r:"더할 익"},{h:"紂",r:"껑거리끈 주"},
+    {h:"志",r:"뜻 지"},{h:"仲",r:"버금 중"},{h:"寡",r:"적을 과"},{h:"笑",r:"웃음 소"},
+    {h:"譽",r:"명예 예, 기릴 예"},{h:"毀",r:"헐 훼"},{h:"作",r:"지을 작"},{h:"湯",r:"끓일 탕"},
+    {h:"昇",r:"오를 승"},{h:"窮",r:"다할 궁"},{h:"孔",r:"구멍 공"},{h:"津",r:"나루 진"}
+  ]},
+  { id:"q5", label:"사자소학", cards:[
+    {h:"追",r:"추모할 추, 쫓을 추"},{h:"遠",r:"조상 원, 멀 원"},{h:"報",r:"갚을 보"},{h:"本",r:"근본 본"},
+    {h:"祭",r:"제사지낼 제"},{h:"祀",r:"제사 사"},{h:"誠",r:"정성 성"},{h:"至",r:"지극할 지, 이를 지"},
+    {h:"享",r:"흠향할 향"},{h:"祖",r:"할아버지 조"},{h:"曷",r:"어찌 갈"},{h:"豺",r:"승냥이 시"},
+    {h:"況",r:"하물며 황"},{h:"且",r:"또 차"},{h:"優",r:"넉넉할 우"},{h:"則",r:"곧 즉"},
+    {h:"仕",r:"벼슬할 사, 섬길 사"},{h:"爲",r:"위할 위, 할 위"},{h:"盡",r:"다할 진"},{h:"忠",r:"충성 충"},
+    {h:"敬",r:"삼갈 경, 공경 경"},{h:"信",r:"믿을 신"},{h:"節",r:"절약할 절, 마디 절"},{h:"用",r:"쓸 용"},
+    {h:"如",r:"같을 여"},{h:"幸",r:"바랄 행, 다행 행"},{h:"官",r:"관리 관, 벼슬 관"},{h:"莫",r:"말 막, 없을 막"},
+    {h:"貪",r:"탐낼 탐"},{h:"道",r:"법도 도, 길 도"},{h:"隱",r:"숨을 은"},{h:"夫",r:"남편 부, 지아비 부"},
+    {h:"婦",r:"아내 부, 며느리 부"},{h:"異",r:"다를 이"},{h:"倫",r:"인륜 륜"},{h:"姓",r:"성씨 성"},
+    {h:"合",r:"합할 합"},{h:"和",r:"화할 화"},{h:"義",r:"의로울 의, 옳을 의"},{h:"妻",r:"아내 처"},
+    {h:"柔",r:"부드러울 유"},{h:"順",r:"순할 순"},{h:"別",r:"구별 별, 나눌 별"},{h:"相",r:"서로 상"},
+    {h:"賓",r:"손님 빈"},{h:"唱",r:"부를 창"},{h:"隨",r:"따를 수"},{h:"庭",r:"집안 정, 뜰 정"},
+    {h:"睦",r:"화목할 목"},{h:"形",r:"모양 형"},{h:"體",r:"몸 체"},{h:"雖",r:"비록 수"},
+    {h:"分",r:"나눌 분"},{h:"比",r:"비유할 비, 견줄 비"},{h:"喩",r:"비유할 유, 깨우칠 유"},{h:"樹",r:"나무 수"},
+    {h:"同",r:"같을 동, 한가지 동"},{h:"根",r:"뿌리 근"},{h:"枝",r:"가지 지"},{h:"友",r:"사랑할 우, 벗 우"},
+    {h:"毋",r:"말 무"},{h:"爭",r:"다툴 쟁"},{h:"打",r:"칠 타"},{h:"求",r:"구할 구"},
+    {h:"通",r:"같이쓸 통, 통할 통"},{h:"粒",r:"낱알 립"},{h:"食",r:"양식 식, 먹을 식"},{h:"杯",r:"잔 배"},
+    {h:"飮",r:"마실 음"},{h:"服",r:"옷 복"},{h:"獻",r:"드릴 헌, 바칠 헌"},{h:"與",r:"줄 여, 더불 여"},
+    {h:"私",r:"사사로울 사"},{h:"其",r:"그 기"},{h:"禽",r:"새 금, 사로잡을 금"},{h:"獸",r:"짐승 수"},
+    {h:"類",r:"무리 류"},{h:"夷",r:"오랑캐 이"},{h:"狄",r:"오랑캐 적"},{h:"怡",r:"기쁠 이"},
+    {h:"雁",r:"기러기 안"},{h:"行",r:"다닐 행, 줄 항"},{h:"床",r:"상 상, 평상 상"},{h:"寢",r:"잠잘 침, 잘 침"},
+    {h:"連",r:"나란히 련, 잇닿을 련"},{h:"衾",r:"이불 금"},{h:"悶",r:"근심할 민, 답답할 민"},{h:"思",r:"생각할 사"},
+    {h:"救",r:"치료할 구, 구원할 구"},{h:"責",r:"꾸짖을 책"},{h:"敢",r:"감히 감"},{h:"抗",r:"대들 항, 겨룰 항"},
+    {h:"怒",r:"성낼 노"},{h:"過",r:"허물 과, 지날 과"},{h:"須",r:"모름지기 수"},{h:"勿",r:"말 물"},
+    {h:"聲",r:"소리 성"},{h:"喜",r:"기쁠 희"},{h:"憂",r:"근심할 우, 근심 우"},{h:"事",r:"섬길 사, 일 사"},
+    {h:"師",r:"스승 사"},{h:"親",r:"어버이 친, 친할 친"},{h:"恭",r:"공손할 공"},{h:"施",r:"베풀 시"},
+    {h:"敎",r:"가르칠 교"},{h:"弟",r:"제자 제, 아우 제"},{h:"是",r:"이 시"},{h:"疑",r:"의문 의, 의심할 의"},
+    {h:"問",r:"물을 문"},{h:"明",r:"밝을 명"},{h:"措",r:"그만둘 조, 둘 조"},{h:"博",r:"넓을 박"},
+    {h:"學",r:"배울 학"},{h:"方",r:"장소 방, 모 방"},{h:"惟",r:"오직 유, 생각할 유"},{h:"年",r:"나이 년, 해 년"},
+    {h:"長",r:"많을 장, 길 장"},{h:"以",r:"써 이"},{h:"倍",r:"갑절 배, 곱 배"},{h:"五",r:"다섯 오"},
+    {h:"肩",r:"어깨 견"},{h:"幼",r:"어릴 유"},{h:"者",r:"사람 자, 놈 자"},{h:"愛",r:"아낄 애, 사랑 애"},
+    {h:"客",r:"손님 객, 손 객"},{h:"來",r:"올 래"},{h:"訪",r:"찾을 방"},{h:"待",r:"대접할 대"},
+    {h:"接",r:"대접할 접"},{h:"貴",r:"귀할 귀"},{h:"枉",r:"굽힐 왕, 굽을 왕"},{h:"臨",r:"임할 림"},
+    {h:"戶",r:"문 호, 집 호"},{h:"增",r:"더욱 증, 더할 증"},{h:"寂",r:"쓸쓸할 적, 고요할 적"},{h:"寞",r:"쓸쓸할 막, 고요할 막"},
+    {h:"文",r:"글월 문"},{h:"會",r:"모일 회"},{h:"輔",r:"도울 보"},{h:"仁",r:"어질 인"},
+    {h:"亦",r:"또 역"},{h:"自",r:"스스로 자"},{h:"從",r:"따를 종, 좇을 종"},{h:"遊",r:"놀 유"},
+    {h:"邪",r:"간사할 사"},{h:"近",r:"가까이 할 근, 가까울 근"},{h:"墨",r:"검은먹 묵, 먹 묵"},{h:"黑",r:"검을 흑"},
+    {h:"朱",r:"붉은먹 주, 붉을 주"},{h:"赤",r:"붉을 적"},{h:"蓬",r:"쑥 봉"},{h:"麻",r:"삼 마"},
+    {h:"扶",r:"붙들 부, 도울 부"},{h:"直",r:"곧을 직"},{h:"沙",r:"모래 사"},{h:"在",r:"있을 재"},
+    {h:"泥",r:"진흙 니"},{h:"染",r:"물들일 염, 물들 염"},{h:"陋",r:"더러울 루"},{h:"言",r:"말할 언, 말씀 언"},
+    {h:"朋",r:"벗 붕"},{h:"告",r:"고할 고"},{h:"善",r:"잘할 선, 착할 선"},{h:"導",r:"이끌 도, 인도할 도"},
+    {h:"憚",r:"꺼릴 탄"},{h:"改",r:"고칠 개"},{h:"君",r:"임금 군"},{h:"臣",r:"신하 신"},
+    {h:"綱",r:"벼리 강"},{h:"謂",r:"이를 위"},{h:"序",r:"차례 서"},{h:"元",r:"으뜸 원"},
+    {h:"常",r:"법도 상, 떳떳할 상, 항상 상"},{h:"亨",r:"형통할 형"},{h:"利",r:"이로울 리, 날카로울 리"},{h:"貞",r:"곧을 정"},
+    {h:"禮",r:"예도 례"},{h:"智",r:"지혜 지, 슬기 지"},{h:"性",r:"성품 성"},{h:"非",r:"아닐 비"},
+    {h:"視",r:"볼 시"},{h:"聽",r:"들을 청"},{h:"動",r:"움직일 동"},{h:"容",r:"모양 용, 얼굴 용"},
+    {h:"端",r:"단정할 단, 끝 단"},{h:"止",r:"그칠 지"},{h:"靜",r:"고요할 정"},{h:"頭",r:"머리 두"},
+    {h:"氣",r:"숨쉴 기, 기운 기"},{h:"肅",r:"고요할 숙, 엄숙할 숙"},{h:"德",r:"덕 덕"},{h:"莊",r:"씩씩할 장, 엄할 장"},
+    {h:"聰",r:"귀 밝을 총"},{h:"溫",r:"따뜻할 온"},{h:"貌",r:"거동 모, 모양 모"},{h:"忿",r:"분할 분, 성낼 분"},
+    {h:"難",r:"어려울 난"},{h:"得",r:"얻을 득"}
+  ]},
+];
+
+
+
+/* ---- build UNIQUE + reading map ---- */
+const UNIQUE=[]; const _idx={};
+DATA.forEach(w=>w.cards.forEach(c=>{
+  if(_idx[c.h]===undefined){ _idx[c.h]=UNIQUE.length; UNIQUE.push({h:c.h, r:c.r, allR:[c.r]}); }
+  else { const u=UNIQUE[_idx[c.h]]; if(!u.allR.includes(c.r)) u.allR.push(c.r); }
+}));
+const HALL={}; UNIQUE.forEach(c=>HALL[c.h]=c.allR);
+
+/* scopes: 전체 + 단원들 */
+const SCOPES=[{id:"all",label:"전체"}].concat(DATA.map(w=>({id:w.id,label:w.label})));
+function scopeCards(sc){ return sc==="all"?UNIQUE:DATA.find(w=>w.id===sc).cards; }
+function scopeLabel(sc){ const s=SCOPES.find(x=>x.id===sc); return s?s.label:"전체"; }
+
+const $=id=>document.getElementById(id);
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1300);}
+function norm(s){return (s||"").replace(/\s+/g,"").replace(/[()]/g,"").toLowerCase();}
+function readingMatch(inp,card){ const ni=norm(inp); if(!ni) return false; const reads=HALL[card.h]||[card.r]; return reads.some(rd=> rd.split(/[,/]/).some(seg=>norm(seg)===ni) || norm(rd)===ni ); }
+function answerText(card){ return card.allR ? card.allR.join("  /  ") : card.r; }
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---- storage ---- */
+const store={
+  mode:(typeof window!=="undefined" && window.storage && typeof window.storage.get==="function")?"cloud":"local",
+  async get(k){try{ if(this.mode==="cloud"){const r=await window.storage.get(k);return r?r.value:null;} return localStorage.getItem(k);}catch(e){try{return localStorage.getItem(k);}catch(_){return null;}}},
+  async set(k,v){try{ if(this.mode==="cloud"){await window.storage.set(k,v);return;} localStorage.setItem(k,v);}catch(e){try{localStorage.setItem(k,v);}catch(_){}}}
+};
+const KEY="umhanmun_v1";
+let STATE={ scope:{r:"all",h:"all"}, decks:{}, status:{r:{},h:{}} };
+function ensureShape(){
+  if(!STATE.scope) STATE.scope={r:"all",h:"all"};
+  if(!STATE.decks) STATE.decks={};
+  if(!STATE.test) STATE.test={};
+  if(STATE.v!==3){
+    const mig={r:{},h:{}};
+    Object.keys(STATE.decks).forEach(k=>{
+      const m=k.split("|")[0], sc=k.split("|")[1]; const dk=STATE.decks[k]||{};
+      if(m==="r"||m==="h"){
+        let cards; try{cards=scopeCards(sc);}catch(e){cards=null;}
+        if(cards){
+          (dk.ok||[]).forEach(i=>{const c=cards[i]; if(c)mig[m][c.h]="ok";});
+          (dk.no||[]).forEach(i=>{const c=cards[i]; if(c&&mig[m][c.h]!=="ok")mig[m][c.h]="no";});
+        }
+      }
+      delete dk.ok; delete dk.no;
+    });
+    STATE.status={ r:Object.assign({},(STATE.status&&STATE.status.r)||{},mig.r), h:Object.assign({},(STATE.status&&STATE.status.h)||{},mig.h) };
+    STATE.v=3;
+  }
+  if(!STATE.status) STATE.status={r:{},h:{}};
+  if(!STATE.status.r) STATE.status.r={}; if(!STATE.status.h) STATE.status.h={};
+  ["r","h"].forEach(m=>{ if(!SCOPES.find(s=>s.id===STATE.scope[m])) STATE.scope[m]="all"; });
+}
+function deckKey(m,sc){return m+"|"+sc;}
+function deck(m,sc){
+  const k=deckKey(m,sc); const n=scopeCards(sc).length;
+  if(!STATE.decks[k]) STATE.decks[k]={order:scopeCards(sc).map((_,i)=>i),pos:0,hist:[]};
+  const d=STATE.decks[k];
+  if(!Array.isArray(d.order)||d.order.length!==n) d.order=scopeCards(sc).map((_,i)=>i);
+  if(!Array.isArray(d.hist))d.hist=[];
+  if(typeof d.pos!=="number")d.pos=0;
+  return d;
+}
+function curDeck(m){ return deck(m,STATE.scope[m]); }
+async function loadState(){ const raw=await store.get(KEY); if(raw){try{STATE=Object.assign(STATE,JSON.parse(raw));}catch(e){}} ensureShape(); }
+let saveTimer=null;
+function saveState(){ if(saveTimer)clearTimeout(saveTimer); saveTimer=setTimeout(async()=>{await store.set(KEY,JSON.stringify(STATE));flashSave();},250); }
+function flashSave(){const t=$("save-text");t.textContent="저장됨 ✓";setTimeout(()=>{t.textContent="자동 저장 중";},1400);}
+
+/* ---- nav ---- */
+let curView=1;
+document.querySelectorAll(".nav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    curView=parseInt(b.dataset.view);
+    document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));
+    document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    $("view"+curView).classList.add("active");
+    if(curView===3) renderBrowse();
+    if(curView===4) renderTest();
+    if(curView===5) renderExp();
+    if(curView===1) setTimeout(()=>{try{$("r-input").focus({preventScroll:true});}catch(e){}},0);
+    window.scrollTo(0,0);
+  });
+});
+
+/* ---- help ---- */
+$("help-open").addEventListener("click",()=>{ $("mode-now").textContent= store.mode==="cloud"?"지금: 클로드 앱에 자동 저장 중":"지금: 이 브라우저에 자동 저장 중"; $("help-bg").classList.add("show"); });
+$("help-close").addEventListener("click",()=>$("help-bg").classList.remove("show"));
+$("help-bg").addEventListener("click",e=>{if(e.target===$("help-bg"))$("help-bg").classList.remove("show");});
+
+/* ---- scope buttons ---- */
+function buildScopes(containerId, getCur, onPick){
+  const el=$(containerId); el.innerHTML="";
+  SCOPES.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="scope-btn"+(getCur()===s.id?" active":""); b.textContent=s.label; b.dataset.sc=s.id;
+    b.addEventListener("click",()=>{ onPick(s.id); el.querySelectorAll(".scope-btn").forEach(x=>x.classList.toggle("active",x.dataset.sc===s.id)); });
+    el.appendChild(b);
+  });
+}
+
+/* =====================================================================
+   STUDY ENGINE (scope-aware)
+   ===================================================================== */
+function st(m){ if(!STATE.status)STATE.status={r:{},h:{}}; if(!STATE.status[m])STATE.status[m]={}; return STATE.status[m]; }
+function cardsOf(m){ return scopeCards(STATE.scope[m]); }
+function scopeOk(m){ const cards=cardsOf(m), s=st(m), a=[]; cards.forEach((c,i)=>{ if(s[c.h]==="ok")a.push(i); }); return a; }
+function scopeNo(m){ const cards=cardsOf(m), s=st(m), a=[]; cards.forEach((c,i)=>{ if(s[c.h]==="no")a.push(i); }); return a; }
+function rem(m){ const d=curDeck(m); const cards=cardsOf(m); const s=st(m); return d.order.filter(i=>{ const c=cards[i]; return !(c && s[c.h]); }); }
+function render(m){ (m==="r"?renderR:renderH)(); }
+
+function record(m,ok){
+  const d=curDeck(m); const r=rem(m); if(!r.length) return;
+  const idx=r[d.pos]; const c=cardsOf(m)[idx]; if(!c)return;
+  st(m)[c.h]= ok?"ok":"no"; d.hist.push(c.h);
+  saveState(); render(m); if(curView===3)renderBrowse();
+}
+function back(m){
+  const d=curDeck(m); if(!d.hist.length){ toast("되돌릴 문제가 없어요"); return; }
+  const h=d.hist.pop(); delete st(m)[h];
+  const cards=cardsOf(m); const idx=cards.findIndex(c=>c.h===h); const r=rem(m);
+  d.pos=Math.max(0,r.indexOf(idx));
+  saveState(); render(m); if(curView===3)renderBrowse();
+}
+function skip(m){ const d=curDeck(m); const r=rem(m); if(r.length<=1){toast("건너뛸 다른 문제가 없어요");return;} d.pos=(d.pos+1)%r.length; saveState(); render(m); }
+function doShuffle(m){ const d=curDeck(m); shuffle(d.order); d.pos=0; saveState(); render(m); toast("문제를 섞었어요"); }
+function restoreOrder(m){ const d=curDeck(m); d.order=cardsOf(m).map((_,i)=>i); d.pos=0; saveState(); render(m); toast("원래 순서로 되돌렸어요"); }
+function resetDeck(m){ const d=curDeck(m); const lbl=scopeLabel(STATE.scope[m]); if(confirm("["+lbl+"] 채점 기록을 초기화할까요?")){ const s=st(m); cardsOf(m).forEach(c=>{ delete s[c.h]; }); d.hist=[];d.pos=0; sel(m).clear(); saveState(); render(m); if(curView===3)renderBrowse(); toast("초기화 완료"); } }
+function retryWrong(m){ const no=scopeNo(m); if(!no.length){toast("틀린 문제가 없어요");return;} if(confirm("틀린 문제 "+no.length+"개를 다시 풀까요?")){ const d=curDeck(m); const s=st(m); cardsOf(m).forEach(c=>{ if(s[c.h]==="no")delete s[c.h]; }); d.pos=0; sel(m).clear(); saveState(); render(m); toast("틀린 문제 다시 풀기"); } }
+
+/* ----- mode r : 한자 → 훈음 ----- */
+function renderR(){
+  const d=curDeck("r"); const cards=cardsOf("r");
+  $("r-ok").textContent=scopeOk("r").length; $("r-no").textContent=scopeNo("r").length;
+  const r=rem("r"); $("r-left").textContent=r.length; $("r-back").disabled=d.hist.length===0;
+  $("r-reset").textContent = STATE.scope.r==="all" ? "전체 리셋" : "이 단원 리셋";
+  if(!r.length){ $("r-quiz").style.display="none"; $("r-done").style.display="block"; }
+  else{
+    $("r-quiz").style.display="block"; $("r-done").style.display="none";
+    if(d.pos>=r.length)d.pos=0;
+    const c=cards[r[d.pos]];
+    $("r-counter").textContent=(d.pos+1)+" / "+r.length+" 문제";
+    $("r-hanja").textContent=c.h; $("r-answer").textContent=answerText(c);
+    $("r-flip").classList.remove("flipped");
+    $("r-input").value=""; $("r-input-area").style.display="block"; $("r-next-area").style.display="none";
+    $("r-verdict").className="verdict";
+  }
+  renderReview("r");
+}
+function rSubmit(){
+  const r=rem("r"); if(!r.length) return;
+  const c=cardsOf("r")[r[curDeck("r").pos]]; const ok=readingMatch($("r-input").value,c);
+  const v=$("r-verdict");
+  if(ok){v.className="verdict ok";v.textContent="입력한 답이 정답과 일치해요 ✓";}
+  else{v.className="verdict no";v.textContent="입력한 답과 달라요 — 직접 채점하세요";}
+  $("r-flip").classList.add("flipped");
+  $("r-input-area").style.display="none"; $("r-next-area").style.display="block";
+  try{$("r-input").blur();}catch(e){}
+}
+$("r-submit").addEventListener("click",rSubmit);
+$("r-wrong").addEventListener("click",()=>record("r",false));
+$("r-right").addEventListener("click",()=>record("r",true));
+$("r-back").addEventListener("click",()=>back("r"));
+$("r-skip").addEventListener("click",()=>skip("r"));
+$("r-shuffle").addEventListener("click",()=>doShuffle("r"));
+$("r-restore").addEventListener("click",()=>restoreOrder("r"));
+$("r-reset").addEventListener("click",()=>resetDeck("r"));
+$("r-retry").addEventListener("click",()=>retryWrong("r"));
+
+/* ----- mode h : 훈음 → 한자 ----- */
+function renderH(){
+  const d=curDeck("h"); const cards=cardsOf("h");
+  $("h-ok").textContent=scopeOk("h").length; $("h-no").textContent=scopeNo("h").length;
+  const r=rem("h"); $("h-left").textContent=r.length; $("h-back").disabled=d.hist.length===0;
+  $("h-reset").textContent = STATE.scope.h==="all" ? "전체 리셋" : "이 단원 리셋";
+  if(!r.length){ $("h-quiz").style.display="none"; $("h-done").style.display="block"; }
+  else{
+    $("h-quiz").style.display="block"; $("h-done").style.display="none";
+    if(d.pos>=r.length)d.pos=0;
+    const c=cards[r[d.pos]];
+    $("h-counter").textContent=(d.pos+1)+" / "+r.length+" 문제";
+    $("h-hun").textContent=c.r; $("h-hanja").textContent=c.h;
+    $("h-hanja-wrap").style.display="none"; $("h-hint").style.display="block";
+    $("h-reveal-area").style.display="block"; $("h-grade-area").style.display="none";
+  }
+  renderReview("h");
+}
+function hReveal(){ $("h-hanja-wrap").style.display="block"; $("h-hint").style.display="none"; $("h-reveal-area").style.display="none"; $("h-grade-area").style.display="block"; }
+$("h-reveal").addEventListener("click",hReveal);
+$("h-wrong").addEventListener("click",()=>record("h",false));
+$("h-right").addEventListener("click",()=>record("h",true));
+$("h-back").addEventListener("click",()=>back("h"));
+$("h-skip").addEventListener("click",()=>skip("h"));
+$("h-shuffle").addEventListener("click",()=>doShuffle("h"));
+$("h-restore").addEventListener("click",()=>restoreOrder("h"));
+$("h-reset").addEventListener("click",()=>resetDeck("h"));
+$("h-retry").addEventListener("click",()=>retryWrong("h"));
+
+/* ---- scope pick wiring ---- */
+function pickScope(m,sc){ STATE.scope[m]=sc; sel(m).clear(); saveState(); render(m); }
+
+/* =====================================================================
+   REVIEW + SELECTION (per current deck; indices)
+   ===================================================================== */
+const filterState={r:"all",h:"all"};
+const selR=new Set(), selH=new Set();
+function sel(s){return s==="r"?selR:selH;}
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click",()=>{
+    const s=ch.dataset.sheet; filterState[s]=ch.dataset.f; sel(s).clear();
+    document.querySelectorAll('.chip[data-sheet="'+s+'"]').forEach(c=>c.classList.toggle("active",c===ch));
+    renderReview(s);
+  });
+});
+function renderReview(s){
+  const cards=cardsOf(s); const box=$(s+"-review"); const f=filterState[s];
+  const okArr=scopeOk(s), noArr=scopeNo(s);
+  let arr;
+  if(f==="all") arr=[...okArr.map(i=>({i,ok:true})),...noArr.map(i=>({i,ok:false}))];
+  else if(f==="ok") arr=okArr.map(i=>({i,ok:true}));
+  else arr=noArr.map(i=>({i,ok:false}));
+  if(!arr.length){ box.innerHTML='<div class="empty">아직 기록이 없어요</div>'; renderSelact(s); return; }
+  box.innerHTML=arr.map(it=>{
+    const c=cards[it.i]; const selCls=sel(s).has(it.i)?" sel":"";
+    return `<div class="review-item${selCls}" data-i="${it.i}" data-sheet="${s}"><div class="h" style="color:${it.ok?'var(--green)':'var(--red)'}">${esc(c.h)}</div><div class="u">${esc(c.r)}</div></div>`;
+  }).join("");
+  renderSelact(s);
+}
+document.addEventListener("click",e=>{
+  const item=e.target.closest(".review-item"); if(!item)return;
+  const s=item.dataset.sheet, i=parseInt(item.dataset.i), set=sel(s);
+  if(set.has(i))set.delete(i); else set.add(i);
+  renderReview(s);
+});
+function renderSelact(s){
+  const box=$(s+"-selact"); const f=filterState[s]; const n=sel(s).size;
+  if(n===0){ box.innerHTML=""; return; }
+  let btns="";
+  if(f==="ok") btns=`<button class="btn red sm" data-act="toWrong" data-sheet="${s}">틀림으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else if(f==="no") btns=`<button class="btn green sm" data-act="toRight" data-sheet="${s}">맞음으로 이동</button><button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 리셋</button>`;
+  else btns=`<button class="btn ghost sm" data-act="toRest" data-sheet="${s}">선택 미학습으로 리셋</button>`;
+  box.innerHTML=`<div class="selinfo">선택한 ${n}개</div><div class="btn-row">${btns}</div>`;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".selact button"); if(!b)return;
+  const s=b.dataset.sheet, act=b.dataset.act, set=sel(s); const cards=cardsOf(s); const stm=st(s);
+  if(!set.size)return;
+  set.forEach(i=>{ const c=cards[i]; if(!c)return; if(act==="toWrong")stm[c.h]="no"; else if(act==="toRight")stm[c.h]="ok"; else delete stm[c.h]; });
+  set.clear(); saveState(); render(s); if(curView===3)renderBrowse(); toast("적용했어요");
+});
+
+/* =====================================================================
+   KEYBOARD
+   ===================================================================== */
+document.addEventListener("keydown",e=>{
+  if($("help-bg").classList.contains("show")) return;
+  const tag=(e.target.tagName||"").toUpperCase();
+  if(curView===1){
+    if($("r-input-area").style.display!=="none"){ if(e.key==="Enter"){e.preventDefault();rSubmit();} return; }
+    if($("r-next-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){e.preventDefault();record("r",false);}
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){e.preventDefault();record("r",true);}
+    }
+  } else if(curView===2){
+    if(tag==="INPUT"||tag==="TEXTAREA") return;
+    if($("h-reveal-area").style.display!=="none"){ if(e.key===" "||e.key==="Enter"){e.preventDefault();hReveal();} }
+    else if($("h-grade-area").style.display!=="none"){
+      if(e.key==="ArrowLeft"){e.preventDefault();record("h",false);}
+      else if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){e.preventDefault();record("h",true);}
+    }
+  }
+});
+
+/* =====================================================================
+   VIEW 3 : 전체 한자 목록 (전체보기 + 단원 버튼, 색상기준, 검색)
+   ===================================================================== */
+let browseScope="all", browseMode="r";
+document.querySelectorAll(".tog[data-bm]").forEach(t=>{
+  t.addEventListener("click",()=>{ browseMode=t.dataset.bm; document.querySelectorAll(".tog[data-bm]").forEach(x=>x.classList.toggle("active",x===t)); renderBrowse(); });
+});
+function statusMap(mode){ return Object.assign({}, st(mode)); }
+function cellHTML(h,reading,smap){ const stt=smap[h]; const cls=stt==="ok"?" ok":stt==="no"?" no":""; return `<div class="hcell${cls}" data-c="${esc(h)}" data-h="${esc(reading)}"><div class="hc">${esc(h)}</div><div class="hu">${esc(reading)}</div></div>`; }
+function renderBrowse(){
+  const smap=statusMap(browseMode); const cards=scopeCards(browseScope);
+  $("browse-body").innerHTML=`<div class="hanja-grid">`+cards.map(c=>cellHTML(c.h,c.r,smap)).join("")+`</div>`;
+  const seen=new Set(); let ok=0,no=0,tot=0;
+  cards.forEach(c=>{ if(seen.has(c.h))return; seen.add(c.h); tot++; if(smap[c.h]==="ok")ok++; else if(smap[c.h]==="no")no++; });
+  $("hg-total").textContent=tot; $("hg-ok").textContent=ok; $("hg-no").textContent=no; $("hg-rest").textContent=tot-ok-no;
+  applySearch();
+}
+function applySearch(){
+  const body=$("browse-body"); if(!body) return;
+  const q=($("hg-search").value||"").trim();
+  const cells=body.querySelectorAll(".hcell");
+  if(!q){ cells.forEach(c=>c.classList.remove("hit")); body.querySelectorAll(".hanja-grid").forEach(g=>g.classList.remove("searching")); $("hg-result").textContent=""; return; }
+  const nq=q.replace(/\s+/g,"").toLowerCase(); let n=0, first=null;
+  cells.forEach(c=>{ const ch=c.dataset.c||"", hu=(c.dataset.h||"").toLowerCase(); const hit = ch===q||ch.includes(q)||hu.includes(q.toLowerCase())||hu.replace(/\s+/g,"").includes(nq); c.classList.toggle("hit",hit); if(hit){n++; if(!first)first=c;} });
+  body.querySelectorAll(".hanja-grid").forEach(g=>g.classList.add("searching"));
+  $("hg-result").textContent = n ? (n+"개 찾음") : "결과가 없어요";
+  if(first) first.scrollIntoView({behavior:"smooth",block:"center"});
+}
+$("hg-search").addEventListener("input",applySearch);
+$("hg-clear").addEventListener("click",()=>{ $("hg-search").value=""; applySearch(); $("hg-search").blur(); });
+
+/* =====================================================================
+   문장 데이터 (PDF 그대로) + 테스트/해설 로직
+   o = 해석 순서 (PDF 괄호 안 숫자 그대로) · t = 해석 · s = 출처
+   ===================================================================== */
+const SENTENCES = [
+  { id:"sq", label:"의문대명사", items:[
+    {h:"吾矛之利, 於物無不陷也.", o:"1 2 3 4 6 5 9 8 7 10", t:"내 창의 날카로움은 사물에 대하여 뚫지 않는 것이 없다.", s:"韓非子 難一第三十六"},
+    {h:"不爲者, 與不能者之形, 何以異.", o:"2 1 3 4 6 5 7 8 9 10 11 12", t:"하지 않는 경우와 할 수 없는 경우의 모양이 무엇으로써 어떻게 다른가?", s:"孟子 梁惠王上"},
+    {h:"子之所言, 世俗之言也.", o:"1 2 4 3 5 6 7 8", t:"너가 말하는 것은 세속의 말이다.", s:"商君書 更法"},
+    {h:"吾誰欺, 欺天乎.", o:"1 2 3 5 4 6", t:"내가 누구를 속이겠는가, 하늘을 속이겠는가? (= 난 속이는 거 없다.)", s:"論語 子罕"},
+    {h:"是可忍也, 孰不可忍也.", o:"1 3 2 4 5 8 7 6 9", t:"이것을 차마 할 수 있다면, 무엇을 차마 할 수 없겠는가?", s:"論語 八佾"},
+    {h:"何事非君, 何使非民, 治亦進, 亂亦進, 伊尹也.", o:"1 2 4 3 5 6 8 7 9 10 11 12 13 14 15 16", t:"누구를 섬기건 임금은 아니겠으며 누구를 부리건 백성은 아니겠는가 나라가 잘 다스려져도 또한 나아갔고 나라가 어지러워도 또한 나아갔다 이윤이었다.", s:"孟子 公孫丑上"},
+    {h:"事將何爲.", o:"1 2 3 4", t:"일은 장차 어떻게 위할 것인가.", s:"출전 미상"},
+    {h:"此事將何處置而可乎.", o:"1 2 3 4 5 6 7 8 9", t:"이 일은 장차 어느 곳에다가 둘 수 있는가.", s:"承政院日記 英祖二十一年"},
+    {h:"人之耳目, 曷能久熏勞而不息乎.", o:"1 2 3 4 5 11 6 7 8 10 9 12", t:"사람의 귀와 눈은 어찌 오래동안 수고롭게 사용을 하고서도 휴식을 취하지 않을 수 있는가", s:"淮南子 精神訓"},
+    {h:"佐師曰, 誰爲君婦人, 余胡不知.", o:"1 2 3 6 4 5 7 8 10 9", t:"좌사가 말하기를 누가 임금의 부인인가? 내가 어떻게 몰랐는가?", s:"출전 미상"},
+    {h:"曰奚亡之, 曰歧路之中, 又有歧焉.", o:"1 2 3 4 5 6 7 8 9 11 10 12", t:"물어 말하기를 어떻게 그것을 잃어버렸는가, 답하여 말하기를 갈림길의 가운데에 또 갈림길이 있었다.", s:"列子 說符"},
+    {h:"君安與項伯有故.", o:"1 2 4 3 6 5", t:"당신은 어떻게 전부터 항백을 알고 있었습니까?", s:"史記 項羽本紀"},
+    {h:"人惡得而知.", o:"1 2 5 3 4", t:"사람이 어떻게 하여서 알 수 있었는가?", s:"출전 미상"},
+    {h:"惡得有其一, 以慢其二哉.", o:"1 9 4 2 3 5 8 6 7 0", t:"어떻게 그 하나를 얻어서 그것으로써 그 두 개를 태만히 하는 것을 가능할 수 있는가", s:"孟子 公孫丑下"},
+    {h:"由此言之, 焉可忽乎.", o:"2 1 3 4 5 7 6 8", t:"이것으로 말미암아 말을 한다면, 어찌 소홀히 할 수 있겠는가?", s:"鍼灸甲乙經 序"},
+    {h:"亂世之主, 烏聞至樂.", o:"1 2 3 4 5 8 6 7", t:"어지러운 세상의 주인은(임금은) 어떻게 지극한 즐거움을 들을 수 있겠는가", s:"呂氏春秋 季夏紀"},
+    {h:"商人荒遽, 不知那向.", o:"1 2 3 4 8 7 5 6", t:"상인이 황급하게 떠나갔는데, 어디로 향하였는지 알지 못하겠다", s:"佛國記 法顯傳"},
+    {h:"惟無形者, 無可奈也.", o:"1 3 2 4 7 6 5 8", t:"형체가 없는 것은 어찌 할 수 있는 것이 없다", s:"淮南子 兵略訓"}
+  ]},
+  { id:"sd", label:"정도부사", items:[
+    {h:"今予病少愈(痊), 予又且復遊於六合之外.", o:"1 2 3 4 5 6 7 8 3 2 9 0 1", t:"병들었는데 잠깐 병이 나았다, 내가 다시 육합의 밖으로 놀러나가려 한다.", s:"莊子 徐無鬼"},
+    {h:"上怒稍解, 因上書請朝.", o:"1 2 3 4 5 7 6 9 8", t:"임금이 성이 났다가 잠깐 풀려서(누그러져서) 그것으로 말미암아 서를 올려서 조례하기를 요청하였다.", s:"史記 梁孝世家"},
+    {h:"書不能悉意, 略陳固陋.", o:"1 5 4 3 2 6 9 7 8", t:"서는 그 뜻을 다할 수는 없다(다 수록할 수 없다), 간략하게 고루한 의미를 펼치고자 한다.", s:"古文觀止 報任安書"},
+    {h:"自殷以前諸侯不可得而譜, 周以來乃頗可著.", o:"2 1 3 4 5 0 9 6 7 8 1 2 3 4 5 7 6", t:"은나라 이전 제후들은 글을 남길 수 없었는데, 주나라 이래로는 조금이나마 글로 남길 수 있었다.", s:"史記 三代世表"},
+    {h:"老臣今者殊不欲食, 乃自強步, 日三四里.", o:"1 2 3 4 5 8 7 6 9 0 1 2 3 4 5 6", t:"노신의 지금의 경우 전혀 음식을 바라지 않는데 이것으로 말미암아 스스로 억지로 걷기를 하여서 하루에 3~4리 정도를 하였다.", s:"戰國策 趙策"},
+    {h:"彭城王有快牛, 至愛惜之.", o:"1 2 3 6 4 5 7 9 10 8", t:"팽성왕에게 쾌우(재빠른 소)가 있었는데, 지극히 그것을 아끼고 또 아꼈다.", s:"南史 陳顯達傳"},
+    {h:"夫田成氏, 甚得齊民.", o:"1 2 3 6 4 5", t:"田成氏(사람 이름)는 제나라의 민심을 흠뻑 얻었다.", s:"韓非子 外儲說"},
+    {h:"孤極知燕小力少, 不足以報.", o:"1 10 11 2 3 4 5 9 8 6 7", t:"나는 연나라가 작고 힘도 적어서 그것으로써 보복을 하는 것은 충분하지 않다는 것을 매우 잘 안다.", s:"戰國策 燕策"},
+    {h:"文帝不樂, 從容問通曰, 天下誰最愛我者乎.", o:"1 3 2 4 5 7 6 8 9 0 1 3 2 4 5", t:"문제가 기뻐하지 않고 침착하게 정통(鄭通)에 관해 묻기를, 천하에서 누가 가장 나를 좋아하는가 라고 하였다.", s:"史記 佞幸列傳"},
+    {h:"太剛則折, 太柔則卷, 聖人正在剛柔之間, 乃得道之本.", o:"1 2 3 4 5 6 7 8 9 0 5 1 2 3 4 6 0 7 8 9", t:"크게 강하면 부러지고 크게 부드러우면 말리니 성인은 강과 유의 사이에 있어야지만 된다.", s:"淮南子 氾論訓"},
+    {h:"賢主愈大愈懼, 愈彊愈恐.", o:"1 2 3 4 5 6 7 8 9 0", t:"현명한 군주는 세력이 커질수록 더욱 두려워하고 강해질수록 더욱 두려워한다.", s:"呂氏春秋 愼大覽"},
+    {h:"君之病在腸胃, 不治將益甚.", o:"1 2 3 5 4 7 6 8 9 0", t:"임금님의 병은 장과 위에 있으니 치료하지 않으면 장차 더욱 깊어질 것입니다.", s:"韓非子 喩老"},
+    {h:"仰之彌高, 鑽之彌堅, 瞻之在前, 忽焉在後.", o:"1 2 3 4 5 6 7 8 9 0 2 1 3 4 6 5", t:"쳐다보면 더욱 높아보이고, 뚫어도 더욱 단단하다, 첨하니(보니) 눈 앞에 있고 문득(홀연히) 뒤에 있더라.", s:"論語 子罕"},
+    {h:"然是說也, 余(予)尤疑之.", o:"1 2 3 4 5 6 7 8", t:"그런데 이 말이라는 것은 내가 더욱 의심하였다 / 그러나 이 말에 대해서 나는 더욱 의심이 간다.", s:"古文觀止 宋文 石鐘山記"}
+  ]},
+  { id:"sb", label:"범위부사", items:[
+    {h:"時城中唯有八九千人.", o:"1 2 3 4 9 5 6 7 8", t:"당시에 성 가운데에는 오직 팔구천의 사람이 있었을 뿐이다 (엄) / 당시 성 안에는 단지 8-9천명 있었다 (책)", s:"後漢書 光武帝紀上"},
+    {h:"獨學而無友, 則孤陋而寡聞.", o:"1 2 3 5 4 6 7 8 9 0", t:"홀로 공부하고서 친구가 없으면, 고립되고 누추해지고 듣는 게 적어진다(없어진다) (엄) / 홀로 배워 친구가 없으면 고루해져 듣는 바가 적다 (책)", s:"禮記 學記"},
+    {h:"而漢王之將獨韓信可屬大事.", o:"1 2 3 4 5 6 0 9 7 8", t:"한나라 왕의 장수 중에는 홀로(단지) 한신이라는 사람에게만 큰 일을 맡길 수 있었다 (엄) / 한왕의 장수 중에서 단지 한신에게만 대사를 맡겼다 (책)", s:"漢書 張陳王周傳"},
+    {h:"是特姦人之誤於亂說.", o:"1 2 3 4 5 9 8 6 7", t:"이는 다만 간사한 사람이 어지러운 설명에 잘못 들은 것이다 (엄) / 이는 다만 간사한 사람들이 그릇된 학자의 말을 잘못들은 것이다 (책)", s:"荀子 正論"},
+    {h:"上曰, 夫人弟一見我, 將加賜金, 而予兄弟尊官.", o:"1 2 3 4 5 7 6 8 5 0 9 1 4 2 3", t:"너가 단지 한번만 나를 도와준다면 장차 천금을 더해줄 것이다 그리고 너의 형제들에게 높은 관직을 줄 것이다 (엄) / 황제께서 이르길 부인이 단지 한 번만 나를 본다면 장차 천금의 상을 내리고 그대 형제들의 벼슬을 높여 주겠다 (책)", s:"漢書 李夫人列傳"},
+    {h:"我州但有斷頭將軍, 無有降將軍也.", o:"1 2 3 7 5 4 6 1 9 8 0 2", t:"우리의 주(나라)에는 단지 머리를 자르는 장군은 있는데 항이 있는 장수는 없다 (항복하지 않는다는 뜻) (엄) / 나의 주에는 단지 목숨을 걸 장군만 있고 항복할 장군은 없다 (책)", s:"三國志 張飛傳"},
+    {h:"吾不見人, 徒見金耳.", o:"1 4 3 2 5 7 6 8", t:"나는 사람은 보지 않고 단지 돈만 볼 따름이다 (엄)", s:"淮南子 氾論訓"},
+    {h:"寡人非能好先王之樂也, 直好世俗之樂耳.", o:"1 7 6 5 2 3 4 8 9 3 0 1 2 4", t:"과인은 선왕의 음악을 좋아하는 것이 아니고 단지 세속의 음악을 좋아할 뿐이다 (엄)", s:"孟子 梁惠王下"},
+    {h:"於是, 吾僅得三士焉, 以正吾身, 以定天下.", o:"2 1 3 4 7 5 6 8 9 2 0 1 3 5 4", t:"이때에 내가 단지 세 명의 신하를 얻었더라면 내 몸을 바로잡고 천하를 평정했을 것이다 (엄) / 그리하여 나는 단지 세 사람의 선비만 얻더라도 내 몸을 바로잡고 천하를 안정시킬 것이다 (책)", s:"荀子 堯問"},
+    {h:"近行止一身, 遠去終轉迷.", o:"1 2 3 4 5 6 7 8 0 9", t:"가까운 곳을 갈 땐 단지 내 한 몸에 그친다면 멀리 떠날 때에는 끝내 미혹한 데에 구른다(미혹에 빠진다) (엄)", s:"杜甫詩 無家別"},
+    {h:"小人有母, 皆嘗小人之食矣, 未嘗君之羹, 請以遺之.", o:"1 3 2 7 8 4 5 6 9 4 3 0 1 2 5 6 7 8", t:"저에게는 어머니가 계신데 소인의 음식은 모두 맛보았습니다 임금님께서 하사하신 음식은 아직 맛 보지 않았으니 청컨대 보내(남겨) 주셨으면 합니다.", s:"春秋左傳 魯隱公元年 寤生"},
+    {h:"萬物畢同畢異, 此之謂大同異.", o:"1 2 3 4 5 6 7 8 9", t:"만물은 다 같고 다 다르니, 이것을 일러 '대동이'라고 한다 (엄)", s:"莊子 雜編 天下"},
+    {h:"事成功立, 上下俱富.", o:"1 2 3 4 5 6 7 8", t:"일도 이루어지고 공도 세우며 상하가 모두 부유해진다.", s:"荀子 富國"},
+    {h:"四罪而天下咸服, 誅不仁也.", o:"1 2 3 4 5 6 9 8 7 0", t:"네 명을 죄를 물어서 벌 주었더니 천하 사람들이 모두 탄복하였다 (어질지 못한 사람을 다 죽였기 때문이다) (엄) / 네 사람을 처벌하자 천하가 모두 복종하였으니 이는 어질지 못한 자를 벌한 것이다 (책)", s:"孟子 萬章上"},
+    {h:"王命衆, 悉至于庭.", o:"1 3 2 4 7 6 5", t:"왕이 여러 사람들에게 명령하였더니 모두가 조정에 이르렀다 (엄)", s:"書經 盤庚上"},
+    {h:"左右無人, 盡逐獸, 而火不救.", o:"1 3 2 4 6 5 7 8 0 9", t:"좌우에 사람이 없었는데 모두 짐승을 쫓아갔다 그래서 구제할 수 없었다 (엄) / 사람들이 모두 야수를 뒤쫓아갔으므로 불을 끄지 못했다 (책)", s:"韓非子集解 內儲說上"},
+    {h:"天下之民擧安, 王庶幾改之, 予日望之.", o:"1 2 3 4 5 6 7 8 9 0 1 2 3", t:"천하의 백성들이 모두 편안해질 것이니 왕이 거의 고치시기를 나는 매일 희망합니다 (엄)", s:"孟子 公孫丑下"}
+  ]},
+  { id:"st", label:"시간부사", items:[
+    {h:"晉侯始入而敎其民.", o:"1 2 3 4 5 8 6 7", t:"진나라 제후가 처음(비로소) 들어와서 그 백성들을 가르쳤다.", s:"左傳 僖公二十七年"},
+    {h:"方問國士, 而及諸兄, 是以尤之耳.", o:"1 3 2 4 7 5 6 8 9 0 1 2", t:"바야흐로 지금 막 국사에게 물었더니 그리고 여러 형제들에게 이르렀더니 이런 까닭으로 근심하였을 뿐이다 (엄) / 방금 내가 국사에게 물었는데 여러 형제들을 언급하였으므로 이로써 그대를 비판하는 것이다 (책)", s:"世說新語 言語"},
+    {h:"古之王者, 太子乃生, 固舉之禮.", o:"1 2 3 4 5 6 7 8 0 1 9", t:"막 태어나면 태어난 것으로 말미암아서 예를 시행하였다 (엄) / 고대의 제왕은 태자가 막 태어났을 때 의식을 거행하였다 (책)", s:"大戴禮記 保傅"},
+    {h:"鳥之將死, 其鳴也哀.", o:"1 2 3 4 5 6 7 8", t:"새가 장차 죽으려고 할 때에는 그 울음이 매우 슬프다.", s:"論語 泰伯"},
+    {h:"樹欲靜, 而風不止, 子欲養, 而親不待.", o:"1 3 2 4 5 7 6 1 3 2 4 5 7 6", t:"나무는 고요하기를 바라지만 바람은 멈추지를 않는다, 자식은 봉양하기를 바라지만 부모님은 기다리지를 않으신다.", s:"孔子家語"},
+    {h:"山雨欲來風滿樓.", o:"1 2 4 3 5 7 6", t:"산에 비가 오려고 하였더니, 바람이 누각에 가득하다.", s:"許渾詩 咸陽城東樓"},
+    {h:"北山愚公者, 年且九十.", o:"1 2 3 4 5 6", t:"북산에 사는 우공이라는 사람은 나이가 조금 있으면 장차 (90)이 될 것이다.", s:"列子 湯問"},
+    {h:"十八歲當一小發, 服此散, 亦行復差.", o:"1 2 6 3 4 5 8 6 7 9 2 0 1", t:"십팔년 뒤에 한번 작게 발작하는 것을 당할 것이니, 그때 가서 이 가루약을 복용한다면 또한 다시 차도가 있는 것을 경험할 것이다 (엄) / 18세가 되면 한 차례 작은 발작이 있을 텐데 이 가루약을 복용하면 다시 차도가 있을 것이다 (책)", s:"三國志 華佗傳"},
+    {h:"適啓其口, 匕首已陷其匈矣.", o:"1 4 2 3 5 6 9 7 8 0", t:"입을 열려고 하는데 비수가 이미 그 가슴에 파고들었다.", s:"漢書 賈誼傳"},
+    {h:"有過於江上者, 見人方引嬰兒而欲投之江中.", o:"6 4 3 1 2 5 17 7 8 0 9 1 6 4 5 2 3", t:"강 위를 지나는 사람이 있었는데, 어떤 사람이 막 영아를 끌어당겨서 강 속에다 던지려고 하는 것을 보았다.", s:"呂氏春秋 愼大覽"},
+    {h:"旣克, 公問其故.", o:"1 2 3 6 4 5", t:"이미 싸움에서 이기고 공이 그 까닭을 물었다 (엄) / 싸움에 이미 이긴 뒤에 공에게 그 까닭을 물었다 (책)", s:"春秋左氏傳 魯莊公十年"},
+    {h:"業許之, 不可易.", o:"1 2 3 6 5 4", t:"이미 그것을 허락하였기 때문에 바꿀 수 없었다", s:"新五代史 王珂傳"},
+    {h:"道之不行, 已知之矣.", o:"1 2 4 3 5 6 7 8", t:"도가 행하여지지 않는 것을 이미 그것을 알고 있다", s:"論語 微子"},
+    {h:"孟嘗君曾待客夜食.", o:"1 2 6 5 3 4", t:"맹상군이 일찍이 저녁식사에 손님을 초대하였다.", s:"史記 孟嘗君列傳"},
+    {h:"吾嘗終日不食, 終夜不寢, 以思無益.", o:"1 2 4 3 6 5 8 7 0 9 1 2 4 3", t:"나는 일찍이 날이 밝은 동안은 대개 밥을 먹지 못하였고, 밤이 새도록 잠을 자지 못하면서 생각해보았으나 유익함이 없었다", s:"論語 衛靈公"}
+  ]}
+];
+SENTENCES.forEach(u=>u.items.forEach((it,i)=>it._id=u.id+"_"+i));
+
+let testScope=SENTENCES[0].id, expScope="all";
+const testOrder={};            // 단원별 셔플 순서
+let revealed=new Set();         // 현재 화면에서 정답이 공개된 문항
+function normOrder(s){ return (s||"").replace(/\D/g,""); }
+function curOrder(unit){ if(!testOrder[unit.id]||testOrder[unit.id].length!==unit.items.length) testOrder[unit.id]=unit.items.map((_,i)=>i); return testOrder[unit.id]; }
+
+function buildScopeButtons(containerId, list, getCur, onPick){
+  const el=$(containerId); if(!el)return; el.innerHTML="";
+  list.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="scope-btn"+(getCur()===s.id?" active":""); b.textContent=s.label; b.dataset.sc=s.id;
+    b.addEventListener("click",()=>{ onPick(s.id); el.querySelectorAll(".scope-btn").forEach(x=>x.classList.toggle("active",x.dataset.sc===s.id)); });
+    el.appendChild(b);
+  });
+}
+
+/* ----- 테스트 렌더 ----- */
+function answerHTML(it){
+  return `<span class="src-badge">${esc(it.s)}</span>
+    <div class="qx-ans">
+      <div class="k">정답 해석</div><div class="v">${esc(it.t)}</div>
+      <div class="k" style="margin-top:12px">정답 순서</div><div class="v order">${esc(it.o)}</div>
+    </div>`;
+}
+function renderTest(){
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  revealed=new Set();
+  const ord=curOrder(unit);
+  $("qx-body").innerHTML=ord.map((idx,pos)=>{
+    const it=unit.items[idx]; const sv=STATE.test[it._id]||{};
+    return `<div class="qx" data-id="${it._id}">
+      <div class="qx-grid">
+        <div class="qx-left">
+          <div class="qx-num">${pos+1}번</div>
+          <div class="qx-hanja">${esc(it.h)}</div>
+          <div class="qx-lab">해석</div>
+          <textarea data-id="${it._id}" data-f="t" placeholder="문장의 해석을 적어보세요">${esc(sv.t||"")}</textarea>
+          <div class="qx-lab">해석 순서 (숫자 · 예: 1 2 3 4)</div>
+          <input type="text" data-id="${it._id}" data-f="o" placeholder="예: 1 2 3 4" autocomplete="off" value="${esc(sv.o||"")}">
+          <div class="qx-verdict" id="v-${it._id}"></div>
+          <div><button class="qx-check" data-check="${it._id}">채점하기</button></div>
+        </div>
+        <div class="qx-right">
+          <div class="qx-prompt">✏️ 정답을 입력해보세요<span class="sub">채점하면 여기에 정답이 나와요</span></div>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  $("qx-score").textContent="";
+}
+function checkOne(it){
+  const sv=STATE.test[it._id]||{}; const v=$("v-"+it._id);
+  const inp=document.querySelector('.qx input[data-id="'+it._id+'"][data-f="o"]');
+  const card=document.querySelector('.qx[data-id="'+it._id+'"]');
+  if(card){ const right=card.querySelector(".qx-right"); right.innerHTML=answerHTML(it); revealed.add(it._id);
+    const btn=card.querySelector(".qx-check"); if(btn){btn.classList.add("done"); btn.textContent="정답 확인됨";} }
+  const u=(sv.o||"");
+  if(!u.trim()){ if(v){v.className="qx-verdict";v.textContent="";} if(inp)inp.classList.remove("good","bad"); return {entered:false,correct:false}; }
+  const correct=normOrder(u)===normOrder(it.o);
+  if(v){ if(correct){v.className="qx-verdict ok";v.textContent="순서 정답 ✓";} else {v.className="qx-verdict no";v.textContent="순서 오답 — 정답: "+it.o;} }
+  if(inp){ inp.classList.toggle("good",correct); inp.classList.toggle("bad",!correct); }
+  return {entered:true,correct};
+}
+function gradeAll(){
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  let ok=0,done=0;
+  unit.items.forEach(it=>{ const r=checkOne(it); if(r.entered){done++; if(r.correct)ok++;} });
+  $("qx-score").textContent = done? ("입력 "+done+"개 중 순서 정답 "+ok+"개") : "순서를 입력한 문항이 없어요";
+}
+
+$("qx-body").addEventListener("input",e=>{
+  const el=e.target, id=el.dataset.id, f=el.dataset.f; if(!id||!f)return;
+  if(!STATE.test[id])STATE.test[id]={}; STATE.test[id][f]=el.value; saveState();
+});
+$("qx-body").addEventListener("click",e=>{
+  const b=e.target.closest(".qx-check"); if(!b)return;
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  const it=unit.items.find(x=>x._id===b.dataset.check); if(it)checkOne(it);
+});
+$("qx-grade").addEventListener("click",gradeAll);
+$("qx-shuffle").addEventListener("click",()=>{
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  const ord=curOrder(unit); for(let i=ord.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ord[i],ord[j]]=[ord[j],ord[i]];}
+  renderTest(); toast("문장을 섞었어요");
+});
+$("qx-restore").addEventListener("click",()=>{
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  testOrder[unit.id]=unit.items.map((_,i)=>i); renderTest(); toast("원래 순서로 되돌렸어요");
+});
+$("qx-clear").addEventListener("click",()=>{
+  const unit=SENTENCES.find(u=>u.id===testScope)||SENTENCES[0];
+  if(!confirm("["+unit.label+"] 입력한 내용을 지울까요?"))return;
+  unit.items.forEach(it=>{ delete STATE.test[it._id]; }); saveState(); renderTest(); toast("입력을 지웠어요");
+});
+
+/* ----- 해설지 렌더 ----- */
+function renderExp(){
+  const units = expScope==="all"?SENTENCES:SENTENCES.filter(u=>u.id===expScope);
+  $("exp-body").innerHTML=units.map(u=>{
+    return `<div class="unit-head">${esc(u.label)}<span class="cnt">${u.items.length}문장</span></div>
+    <div class="exp">`+u.items.map((it,i)=>`
+      <div class="exp-row">
+        <div class="exp-h">${i+1}. ${esc(it.h)}</div>
+        <div class="exp-o">순서 · ${esc(it.o)}</div>
+        <div class="exp-t">${esc(it.t)}</div>
+        <div class="exp-s">${esc(it.s)}</div>
+      </div>`).join("")+`</div>`;
+  }).join("");
+}
+
+/* ---- init ---- */
+(async function(){
+  await loadState();
+  buildScopes("r-scopes",()=>STATE.scope.r,(sc)=>pickScope("r",sc));
+  buildScopes("h-scopes",()=>STATE.scope.h,(sc)=>pickScope("h",sc));
+  buildScopes("b-scopes",()=>browseScope,(sc)=>{ browseScope=sc; renderBrowse(); });
+  buildScopeButtons("qx-scopes", SENTENCES.map(u=>({id:u.id,label:u.label})), ()=>testScope, sc=>{ testScope=sc; renderTest(); });
+  buildScopeButtons("exp-scopes", [{id:"all",label:"전체"}].concat(SENTENCES.map(u=>({id:u.id,label:u.label}))), ()=>expScope, sc=>{ expScope=sc; renderExp(); });
+  renderR(); renderH(); renderBrowse(); renderTest(); renderExp();
+})();
+</script>
+</body>
+</html>
