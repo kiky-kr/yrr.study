@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학습용 웹 앱 HUB</title>
+
+<!--
+====================================================================
+  ★ 편집하는 법 (딱 3가지만 기억하면 돼) ★
+====================================================================
+
+  1) 도구 이름/링크 바꾸기
+     아래 <a class="tool"> ... </a> 한 줄이 도구 하나야.
+     - href="..."  안의 이름을 네 진짜 파일 이름과 "똑같이" 맞춰.
+       (띄어쓰기 없이 하는 걸 추천! 예: 한문-엄-기말.html)
+     - 가운데 글자는 화면에 보이는 이름이야. 자유롭게 바꿔도 돼.
+
+  2) 도구 추가하기
+     <a class="tool"> 줄을 통째로 복사해서 밑에 붙여넣고
+     이름이랑 href만 바꾸면 끝.
+
+  3) 묶음(섹션) 제목 바꾸기
+     <h2 class="group"> 안의 글자를 바꾸면 돼.
+
+====================================================================
+-->
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<style>
+  :root{
+    --bg:#F5F6F8;         /* 배경 */
+    --card:#FFFFFF;       /* 카드 흰색 */
+    --ink:#1E2330;        /* 진한 글자 */
+    --muted:#868B96;      /* 흐린 글자 */
+    --line:#ECEEF1;       /* 얇은 구분선 */
+    --accent:#3B82F6;     /* 포인트 파랑 */
+    --grad:linear-gradient(100deg,#3B82F6 0%,#22A79C 52%,#4CB863 100%);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:60px 20px 80px;
+  }
+
+  .wrap{ max-width:640px; margin:0 auto; }
+
+  /* ---- 머리말 ---- */
+  header{ margin-bottom:40px; }
+
+  h1{
+    font-size:38px; font-weight:800; letter-spacing:-0.02em; line-height:1.2;
+  }
+  h1 .grad{
+    background:var(--grad);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+
+  .subtitle{ color:#3A404E; font-size:16px; font-weight:700; margin-top:10px; }
+
+  /* ---- 묶음(섹션) ---- */
+  .group{
+    font-size:14px; font-weight:600; color:var(--muted);
+    margin:32px 4px 12px;
+  }
+
+  .list{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+  }
+
+  /* ---- 도구 한 줄 ---- */
+  .tool{
+    display:flex; align-items:center; gap:12px;
+    padding:17px 20px;
+    text-decoration:none; color:var(--ink);
+    border-bottom:1px solid var(--line);
+    transition:background .15s ease;
+  }
+  .tool:last-child{ border-bottom:none; }
+  .tool:hover{ background:#F6F8FB; }
+
+  .tool .name{ flex:1; font-size:16px; font-weight:600; }
+
+  .tool .go{
+    color:#C4C9D2; font-size:18px; font-weight:700;
+    transition:transform .15s ease, color .15s ease;
+  }
+  .tool:hover .go{ color:var(--accent); transform:translateX(2px); }
+
+  footer{
+    margin-top:40px; text-align:center;
+    color:var(--muted); font-size:13px;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .tool,.tool .go{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>학습용 웹 앱 <span class="grad">HUB</span></h1>
+    <p class="subtitle">夜淚冷 스터디</p>
+  </header>
+
+  <!-- ============ 묶음 1 ============ -->
+  <h2 class="group">예 1-1</h2>
+  <div class="list">
+    <a class="tool" href="umhanmun1fin.html">
+      <span class="name">한의학 한문 (엄) 기말</span>
+      <span class="go">→</span>
+    </a>
+    <a class="tool" href="junghanmun1fin.html">
+      <span class="name">한의학 한문 (정) 기말</span>
+      <span class="go">→</span>
+    </a>
+    <a class="tool" href="biology-one.html">
+      <span class="name">일반 생물학 자습서</span>
+      <span class="go">→</span>
+    </a>
+  </div>
+
+  <!-- ============ 묶음 2 ============ -->
+  <h2 class="group">예 1-2</h2>
+  <div class="list">
+    <a class="tool" href="umhanmun2.html">
+      <span class="name">한의학 한문 (엄)</span>
+      <span class="go">→</span>
+    </a>
+    <a class="tool" href="junghanmun2mid.html">
+      <span class="name">한의학 한문 (정) 중간</span>
+      <span class="go">→</span>
+    </a>
+    <a class="tool" href="junghanmun2fin.html">
+      <span class="name">한의학 한문 (정) 기말</span>
+      <span class="go">→</span>
+    </a>
+    <!-- 도구 추가하고 싶으면 위 <a class="tool"> 줄을 복사해서 여기 붙여넣기 -->
+  </div>
+
+</div>
+</body>
+</html>
